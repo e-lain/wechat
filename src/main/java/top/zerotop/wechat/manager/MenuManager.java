@@ -50,9 +50,11 @@ public class MenuManager {
 		Button sb1 = new Button();
 		Button sb2 = new Button();
 		
-		b1.setName("点我");
+		b1.setType("view_limited");
+		b1.setName("素材");
 		b1.setType(ButtonTypeConstrant.TYPE_CLICK);
 		b1.setKey("clickme");
+		b1.setMedia_id("5ZaqY5prx25mSlK3XM-yBhQturTtvmBmvB-cNjPS2xM");
 		
 		b2.setName("再点我");
 //		b2.setType(ButtonTypeConstrant.TYPE_CLICK);
@@ -84,7 +86,7 @@ public class MenuManager {
 		Menu menu = new Menu();
 		menu.setButton(menubutton);
 		
-		String url = URLConstrant.URL_MENU_CREATE+"ACCESS_TOKEN";
+		String url = URLConstrant.URL_MENU_CREATE+"9_xMttY7_Bjkibr9-Ig__Cv8GadFlYBjP7xq-Hp_YBCxTMfk4N2HWgry3l_jIMbCBDSC8j3Xb3w0CFWpxSwEGOLDmImwuo-5ytmZ8AYJhX4npS4ybKOvl1GMG-zNs2rl7FY-PRi_CnUfoWQg3yGXXfAJAXOO";
 		
 //		System.out.println( gson.toJson(menu));
 		System.out.println(SendUtil.sendPost(url, gson.toJson(menu)));

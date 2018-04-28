@@ -56,6 +56,7 @@ public class Entrance extends HttpServlet{
 	 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
+			System.out.println("------start--------------");
 			String responseMessage = wechatService.processRequest(request);
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("");

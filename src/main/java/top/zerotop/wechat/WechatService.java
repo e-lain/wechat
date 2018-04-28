@@ -7,14 +7,18 @@ import java.util.HashMap;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+
+import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import top.zerotop.domain.ImageMessage;
 import top.zerotop.domain.Media;
+import top.zerotop.domain.NewsMessage;
 import top.zerotop.domain.TextMessage;
 import top.zerotop.domain.VoiceMessage;
 import top.zerotop.wechat.constrant.MessageTypeConstrant;
+import top.zerotop.wechat.manager.MediaManager;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -24,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class WechatService {
 
+	private static Gson gson = new Gson();
+	
 	Map<String, String> map = new HashMap<String, String>();
 	XStream xstream = new XStream(new DomDriver());
 	static final String defaultResponseMessage = "<xml><ToUserName>oXDH6wwHpgkMzThJxdBvTr0FGrkk</ToUserName>"
@@ -188,6 +194,44 @@ public class WechatService {
 				e.printStackTrace();
 			}
 		}
+		//菜单栏点击
+//		if(MessageTypeConstrant.MESSAGE_EVENT.equals(msgType)
+//				&&MessageTypeConstrant.MESSAGE_EVENT_CLICK.equals(map.get("Event"))
+//				&&"clickme".equals(map.get("EventKey"))){
+//			
+//						
+//			String data = "{"
+//					+"\"type\":\"news\","
+//					+"\"offset\":0,"
+//					+"\"count\":2"
+//					+"}";
+//			
+//			
+//			NewsMessage newMessage = new NewsMessage();
+//			newMessage.setToUserName(toUserName);
+//			newMessage.setFromUserName(fromUserName);
+//			newMessage.setCreateTime(System.currentTimeMillis());
+//			newMessage.setArticleCount(2);
+//			try{
+//				String articles = 
+//						MediaManager.getMediaFile(TokenThread.accessToken.getAccessToken(), data);
+//				newMessage.setArticles(articles);
+//			}catch(Exception e){
+//				e.printStackTrace();
+//			}
+//			newMessage.setTitle("永久素材");
+//			newMessage.setDescription("描述信息");
+//			newMessage.setPicUrl("www.zerotop.top/media/image/4.jpg");
+//			newMessage.setUrl("www.zerotop.top");
+//			newMessage.setMsgType("news");
+//			try {
+//				xstream.alias("xml", newMessage.getClass());
+//				responseMes = xstream.toXML(newMessage);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
 		
 		if(responseMes.equals("")){
 			responseMes = defaultResponseMessage;

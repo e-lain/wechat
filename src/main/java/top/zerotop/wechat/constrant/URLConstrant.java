@@ -5,7 +5,9 @@ public class URLConstrant {
 	/**
 	 * 素瓷
 	 */
-	public static final String URL_MEDIA_UPLOAD = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=";
+	public static final String URL_MEDIA_TEMP_UPLOAD = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=";
+	
+	public static final String URL_MEDIA_UPLOAD =  "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=";
 	
 	public static final String URL_MEDIA_GET = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=";
 	
