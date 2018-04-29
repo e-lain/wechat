@@ -18,19 +18,20 @@ import com.google.gson.JsonParser;
 
 public class SendUtil {
 	
-//	private PrintWriter out = null;
-//	private BufferedReader in = null;
     private static Gson gson = new Gson();
     
     private static JsonParser parser = new JsonParser();
+    
+    static URL realUrl = null;
+    
+    static HttpURLConnection conn = null;
 	
 	public static String sendPostSC(String url, String param) {
 		
-		HttpURLConnection conn = null;
 		OutputStream outt = null; // utf-8编码
 		try {
 			
-			URL realUrl = new URL(url);
+			realUrl = new URL(url);
 			conn = (HttpURLConnection) realUrl.openConnection();
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
@@ -46,9 +47,6 @@ public class SendUtil {
 			
 			outt.write(gson.toJson(param).toString().getBytes("UTF-8"));
 			System.out.println("param-- " +parser.parse(param));
-//			outt.write(parser.parse(param).toString().getBytes("UTF-8"));
-//			System.out.println("param" +parser.parse(param));
-			//outt.append((CharSequence) parser.parse(param).toString());
 			outt.flush();
 			outt.close();
 			
@@ -82,7 +80,9 @@ public class SendUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-
+			if(conn != null){
+				conn.disconnect();
+			}
 		}
 
 		return param;
@@ -91,13 +91,12 @@ public class SendUtil {
 	public static String sendPost(String url, String param) {
 		try {
 			
-			URL realUrl = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
+			realUrl = new URL(url);
+			conn = (HttpURLConnection) realUrl.openConnection();
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setUseCaches(false);
 			conn.setInstanceFollowRedirects(true);
-			// conn.setRequestProperty("user-agent", "Mozilla/5.0");
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
 			conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded"); // 设置发送数据的格式
@@ -105,7 +104,6 @@ public class SendUtil {
 			OutputStream outt = conn.getOutputStream(); // utf-8编码
 			outt.write(parser.parse(param).toString().getBytes("UTF-8"));
 			System.out.println("param: " +parser.parse(param));
-			//outt.append((CharSequence) parser.parse(param).toString());
 			outt.flush();
 			outt.close();
 			
@@ -138,6 +136,10 @@ public class SendUtil {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(conn != null){
+				conn.disconnect();
+			}
 		}
 
 		return param;
@@ -145,15 +147,14 @@ public class SendUtil {
 	
 	
 	public static String sendGet(String url, String param) {
+		
 		try {
-			
-			URL realUrl = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
+			realUrl = new URL(url);
+			conn = (HttpURLConnection) realUrl.openConnection();
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setUseCaches(false);
 			conn.setInstanceFollowRedirects(true);
-			// conn.setRequestProperty("user-agent", "Mozilla/5.0");
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
 			conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded"); // 设置发送数据的格式
@@ -193,8 +194,13 @@ public class SendUtil {
 				String resul = new String(data, "UTF-8"); // utf-8编码
 				return resul;
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(conn != null){
+				conn.disconnect();
+			}
 		}
 
 		return param;
@@ -203,8 +209,8 @@ public class SendUtil {
 	public static String sendGetImage(String url, String param) {
 		try {
 			
-			URL realUrl = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
+			realUrl = new URL(url);
+			conn = (HttpURLConnection) realUrl.openConnection();
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setUseCaches(false);
@@ -264,6 +270,10 @@ public class SendUtil {
 //			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(conn != null){
+				conn.disconnect();
+			}
 		}
 
 		return "getImage success";
@@ -278,8 +288,8 @@ public class SendUtil {
 	             throw new IOException("file is not exist");  
 	        }  
 			
-			URL realUrl = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
+			realUrl = new URL(url);
+			conn = (HttpURLConnection) realUrl.openConnection();
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setUseCaches(false);
@@ -351,6 +361,10 @@ public class SendUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "uploadTempMaterial error";
+		} finally {
+			if(conn != null){
+				conn.disconnect();
+			}
 		}
 		return "uploadTempMaterial null";
 	}

@@ -1,16 +1,23 @@
 package top.zerotop.wechat.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import top.zerotop.domain.Article;
 import top.zerotop.domain.Media;
+import top.zerotop.domain.NewsMessage;
+import top.zerotop.domain.material.Article;
+import top.zerotop.domain.material.ArticleItem;
+import top.zerotop.domain.material.Material;
 import top.zerotop.wechat.TokenThread;
 import top.zerotop.wechat.constrant.URLConstrant;
 import top.zerotop.wechat.util.SendUtil;
@@ -22,6 +29,9 @@ public class MediaManager {
 	public static final int MEDIA = 1; 
 	
 	private static Gson gson = new Gson();
+	
+	Map<String, String> map = new HashMap<String, String>();
+	static XStream xstream = new XStream(new DomDriver());
 	
 	public static void main(String args[]){
 		
@@ -51,15 +61,18 @@ public class MediaManager {
 //		article.setShow_cover_pic((byte)1);
 //		article.setContent_source_url("www.zerotop.top/blog/article/3270888");
 //		articles.add(article);
-//		MediaManager.uploadNewsMediaFile("9_7RX7mAM56LnWkR4Lp1b0Q6uhRGTkY2jvGo9HtGNU7F1diNEnD8QlyrB6SYCbaljqx0tYuFOBRmP3d_JrmELwE5s3CQ0R5AYH3MXfh0fu8YCoFsWxV4UhiKyBPOOs3cu-TMTCi63zs0Bc_BVbXEEdAJAAHH", 
+//		MediaManager.uploadNewsMediaFile("9_hxDzj0PooTwCWKTIMYBR0UEx4zTCq6EpCXmebLPwNtQJdP11jX3pLgyQ8zTOhmtLtzLntnUgylElr4kUNA_D_jRc0KAtq-2XkxxIrMNroM6vW75LknKCQAX1WqDc5iG7nfkPENohwOZKUnWYUSRbAEAZXW", 
 //				articles);
 	
-		String accessToken = "9_jEP_NF42VMHEm4sUXMqMJ_GGh_DPZP45HifW-L0GZMrxNVwJrk1kyufDD2IxnhFcQtRNXRGC4VpI9oQUr93xPHvZ3ak-rSXyrspNe-tfvPWtpazK27gH-hVU_0xEpE21_nxVQ69iPLHMvsaERVJaAIAWAO";
+		/**
+		 * 查看所有素材
+		 */
+		String accessToken = "9_RzxK2lklnJjvRc_LMYBR0UEx4zTCq6EpCXmebDJ96MI2VvH9xUWHKNRvRuvfunB3V_EL7dVHxFZc62v9rkljLHq_8oa1eCZwPjbmMojAcS4EchQtTCfr5odCc6WZX5tJ9Si4KwvV9sd6R1UkBFRbAGASWI";
 		
 		String data = "{"
 				+"\"type\":\"news\","
 				+"\"offset\":0,"
-				+"\"count\":2"
+				+"\"count\":5"
 				+"}";
 		
 		MediaManager.getMediaFile(accessToken, data);
@@ -125,35 +138,76 @@ public class MediaManager {
     	
     	System.out.println("{\"articles\":"+gson.toJson(articles)+"}");
     	
-    	String url = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token="+accessToken;
+//    	String url = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token="+accessToken;
     	
-    	SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
+    	try{
+//    		SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
+    	} catch(Exception e){
+    		e.printStackTrace();
+    	}
     	
     	return "";
     }
     
-    public static String getMediaFile(String accessToken, String data){
+    public static List<ArticleItem> getMediaFile(String accessToken, String data){
     	
     	String url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token="+accessToken;
-    	List<Article> articles = new ArrayList<Article>();
+    	List<Material> materialList = new ArrayList<Material>();
+    	List<ArticleItem> artItemList = new ArrayList<ArticleItem>();
+		Material me = new Material();
+		ArticleItem artItem = new ArticleItem();
     	try{
     		String json = SendUtil.sendPost(url, data);
     		System.out.println(json);
+    		System.out.println(json.toString());
 			JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
 			com.google.gson.JsonArray jsonArray = jsonObject.getAsJsonArray("item");
-			Article art = new Article();
+			
 			if(jsonArray != null){
 				for (JsonElement a : jsonArray) {				
-					art = gson.fromJson(a, new TypeToken<Article>() {}.getType());
-					articles.add(art);
+					me = gson.fromJson(a, new TypeToken<Material>() {}.getType());
+//					System.out.println("me-"+me.toString());
+					materialList.add(me);	
+					
+					xstream.alias("art", NewsMessage.class);
+					String resMes = xstream.toXML(me);
+					System.out.println(resMes+"-----------------");
+					
+					List<Article> alist = me.getContent().getNews_item();
+					if(alist.size() >= 0){
+						for(Article ait: alist ){
+							artItem = new ArticleItem();
+							artItem.setDescription("描述");
+							artItem.setPicUrl("www.zerotop.top/resource/image/e.jpg");
+							artItem.setTitle("我的文章");
+							artItem.setUrl(ait.getUrl());
+							artItemList.add(artItem);
+						}
+					}
+					
+					System.out.println(artItem.toString());
+					
+//					article = gson.fromJson(art.getContent().toString(), Article.class);
+//					System.out.println(article.toString());
 				}
 			}
-    	
-		System.out.println(gson.toJson(articles));
-    	}catch(Exception e){
+			
+			System.out.println("----------------------------------+++++++++++++++++++");
+			
+//			NewsMessage nmes = new NewsMessage();
+//			nmes.setArticleCount(2);
+//			nmes.setCreateTime(System.currentTimeMillis());
+//			nmes.setArticles(artItemList);
+//			
+//			xstream.alias("", NewsMessage.class);
+//			String res = xstream.toXML(nmes);
+//			
+//			System.out.println(res);
+			
+       	}catch(Exception e){
     		e.printStackTrace();
     	}    	
-    	return gson.toJson(articles);
+    	return artItemList;
     }
     
     

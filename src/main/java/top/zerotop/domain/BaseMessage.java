@@ -23,6 +23,7 @@ public class BaseMessage {
 	 */
 	private String MsgId;
 	
+	
 	public String getToUserName() {
 		return ToUserName;
 	}

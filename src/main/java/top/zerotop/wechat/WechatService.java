@@ -17,6 +17,8 @@ import top.zerotop.domain.Media;
 import top.zerotop.domain.NewsMessage;
 import top.zerotop.domain.TextMessage;
 import top.zerotop.domain.VoiceMessage;
+import top.zerotop.domain.material.ArticleItem;
+import top.zerotop.domain.material.Material;
 import top.zerotop.wechat.constrant.MessageTypeConstrant;
 import top.zerotop.wechat.manager.MediaManager;
 
@@ -68,7 +70,7 @@ public class WechatService {
 		try {
 			Element root = doc.getRootElement();
 //			System.out.println("\nroot --- \n" + root.asXML().toString());
-			System.out.println("\nroot --- ");
+			System.out.println("root --- ");
 			@SuppressWarnings("unchecked")
 			List<Element> list = root.elements();
 			for (Element e : list) {
@@ -195,43 +197,39 @@ public class WechatService {
 			}
 		}
 		//菜单栏点击
-//		if(MessageTypeConstrant.MESSAGE_EVENT.equals(msgType)
-//				&&MessageTypeConstrant.MESSAGE_EVENT_CLICK.equals(map.get("Event"))
-//				&&"clickme".equals(map.get("EventKey"))){
-//			
-//						
-//			String data = "{"
-//					+"\"type\":\"news\","
-//					+"\"offset\":0,"
-//					+"\"count\":2"
-//					+"}";
-//			
-//			
-//			NewsMessage newMessage = new NewsMessage();
-//			newMessage.setToUserName(toUserName);
-//			newMessage.setFromUserName(fromUserName);
-//			newMessage.setCreateTime(System.currentTimeMillis());
-//			newMessage.setArticleCount(2);
-//			try{
-//				String articles = 
-//						MediaManager.getMediaFile(TokenThread.accessToken.getAccessToken(), data);
-//				newMessage.setArticles(articles);
-//			}catch(Exception e){
-//				e.printStackTrace();
-//			}
-//			newMessage.setTitle("永久素材");
-//			newMessage.setDescription("描述信息");
-//			newMessage.setPicUrl("www.zerotop.top/media/image/4.jpg");
-//			newMessage.setUrl("www.zerotop.top");
-//			newMessage.setMsgType("news");
-//			try {
-//				xstream.alias("xml", newMessage.getClass());
-//				responseMes = xstream.toXML(newMessage);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			
-//		}
+		if(MessageTypeConstrant.MESSAGE_EVENT.equals(msgType)
+				&&MessageTypeConstrant.MESSAGE_EVENT_CLICK.equals(map.get("Event"))
+				&&"clickme".equals(map.get("EventKey"))){
+			
+						
+			String data = "{"
+					+"\"type\":\"news\","
+					+"\"offset\":0,"
+					+"\"count\":5"
+					+"}";
+			
+			
+			NewsMessage newMessage = new NewsMessage();
+			newMessage.setToUserName(toUserName);
+			newMessage.setFromUserName(fromUserName);
+			newMessage.setCreateTime(System.currentTimeMillis());
+			newMessage.setArticleCount(2);
+			try{
+				List<ArticleItem> itemList = 
+						MediaManager.getMediaFile(TokenThread.accessToken.getAccessToken(), data);
+				newMessage.setArticles(itemList);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			try {
+				xstream.alias("xml", newMessage.getClass());
+				responseMes = xstream.toXML(newMessage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 		if(responseMes.equals("")){
 			responseMes = defaultResponseMessage;
