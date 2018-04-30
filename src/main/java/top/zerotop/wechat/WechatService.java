@@ -3,6 +3,7 @@ package top.zerotop.wechat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -35,12 +36,6 @@ public class WechatService {
 	
 	Map<String, String> map = new HashMap<String, String>();
 	XStream xstream = new XStream(new DomDriver());
-	static final String defaultResponseMessage = "<xml><ToUserName>oXDH6wwHpgkMzThJxdBvTr0FGrkk</ToUserName>"
-				+ "<FromUserName>gh_3f50e140f148</FromUserName>" 
-				+ "<CreateTime>" + System.currentTimeMillis()+ "</CreateTime>"
-				+ "<MsgType>text</MsgType>"
-				+ "<Content>收到消息：默认处理</Content>" 
-				+ "</xml>";
 	String responseMes;
 
 	public String processRequest(HttpServletRequest request) {
@@ -211,14 +206,16 @@ public class WechatService {
 			
 			
 			NewsMessage newMessage = new NewsMessage();
-			newMessage.setToUserName(toUserName);
-			newMessage.setFromUserName(fromUserName);
+			newMessage.setToUserName(fromUserName);
+			newMessage.setFromUserName(toUserName);
 			newMessage.setCreateTime(System.currentTimeMillis());
-			newMessage.setArticleCount(2);
+			newMessage.setMsgType("news");
 			try{
 				List<ArticleItem> itemList = 
-						MediaManager.getMediaFile(AccessToken.accessToken, data);
+						MediaManager.getMediaFile(AccessToken.accessToken, data);		
 				newMessage.setArticles(itemList);
+				newMessage.setArticleCount(itemList.size());
+				
 				System.out.println(" get itemlist ------ ");
 			}catch(Exception e){
 				e.printStackTrace();
@@ -235,7 +232,12 @@ public class WechatService {
 		}
 		
 		if(responseMes.equals("")){
-			responseMes = defaultResponseMessage;
+			responseMes = "<xml><ToUserName>"+fromUserName+"</ToUserName>"
+					+ "<FromUserName>"+toUserName+"</FromUserName>" 
+					+ "<CreateTime>" + System.currentTimeMillis()+ "</CreateTime>"
+					+ "<MsgType>text</MsgType>"
+					+ "<Content>收到消息：默认处理</Content>" 
+					+ "</xml>";;
 		}
 		System.out.println("-------- res  ");	
 		System.out.println(" res: \n" + responseMes);

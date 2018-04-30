@@ -35,7 +35,7 @@ public class MediaManager {
 	
 	public static void main(String args[]){
 		
-//		 String re = MediaManager.uploadMediaFile("9_mv1gMhFg5mARJ4tapaRKghafUhmSIUNad3ztMy9J9sgVf8N9Z4bm-ti5yHBs_V0IiXMzyre918FVHBXA9l2oc8cnpWfH8YvBeHqQrd7llqbgTCb-fgbqAew-MJnDNa9W_ZcYMnPQwxGS9YjRLFYdAJAYSL", 
+//		 String re = MediaManager.uploadMediaFile("access_token", 
 //				 "image", 
 //				 "D:/me.jpg");
 //		 
@@ -44,7 +44,7 @@ public class MediaManager {
 		/**
 		 * 获取素材
 		 */
-//		String url = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=9_mv1gMhFg5mARJ4tapaRKghafUhmSIUNad3ztMy9J9sgVf8N9Z4bm-ti5yHBs_V0IiXMzyre918FVHBXA9l2oc8cnpWfH8YvBeHqQrd7llqbgTCb-fgbqAew-MJnDNa9W_ZcYMnPQwxGS9YjRLFYdAJAYSL";
+//		String url = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=access_token";
 //		
 //		MediaManager.listMediaFile(url);
 		
@@ -61,21 +61,21 @@ public class MediaManager {
 //		article.setShow_cover_pic((byte)1);
 //		article.setContent_source_url("www.zerotop.top/blog/article/3270888");
 //		articles.add(article);
-//		MediaManager.uploadNewsMediaFile("9_hxDzj0PooTwCWKTIMYBR0UEx4zTCq6EpCXmebLPwNtQJdP11jX3pLgyQ8zTOhmtLtzLntnUgylElr4kUNA_D_jRc0KAtq-2XkxxIrMNroM6vW75LknKCQAX1WqDc5iG7nfkPENohwOZKUnWYUSRbAEAZXW", 
+//		MediaManager.uploadNewsMediaFile("access_token", 
 //				articles);
 	
 		/**
 		 * 查看所有素材
 		 */
-		String accessToken = "9_msmi0hvwE72ma8JFhxr70sbSfQ_I1tSUZ-nge40sFYiIdF5tGMt1FDa-0cC4uv4KlWYvhdZY9wnTJH-4-1t2KSHtvW6wH6-Bb_uGd49HOnYe-xkOAqp2MY7pnM96dHrMbNxC4fxL9FBNT2bfEKEcAJALRL";
-		
-		String data = "{"
-				+"\"type\":\"news\","
-				+"\"offset\":0,"
-				+"\"count\":5"
-				+"}";
-		
-		MediaManager.getMediaFile(accessToken, data);
+//		String accessToken = "access_token";
+//		
+//		String data = "{"
+//				+"\"type\":\"news\","
+//				+"\"offset\":0,"
+//				+"\"count\":5"
+//				+"}";
+//		
+//		MediaManager.getMediaFile(accessToken, data);
 	}
     
 	/** 
@@ -127,7 +127,6 @@ public class MediaManager {
     	
     	Media media = new Media();
     	media.setMedia_id("5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk");
-//    	System.out.println(gson.toJson(media));
     	
     	System.out.println(SendUtil.sendPost(url, gson.toJson(media)));
     	
@@ -176,7 +175,7 @@ public class MediaManager {
 						for(Article ait: alist ){
 							artItem = new ArticleItem();
 							artItem.setDescription("描述");
-							artItem.setPicUrl("www.zerotop.top/resource/image/e.jpg");
+							artItem.setPicUrl("http://mmbiz.qpic.cn/mmbiz_jpg/vS1hjjKOH4TJjZwZwrQXb5rxJMshWteFJQQuW6nCiax2gQ3F4vfNqd6xVLOD2ic2ldaqoick1T3QYhXiboEnwO2Yyw/0?wx_fmt=jpeg");
 							artItem.setTitle("我的文章");
 							artItem.setUrl(ait.getUrl());
 							artItemList.add(artItem);
