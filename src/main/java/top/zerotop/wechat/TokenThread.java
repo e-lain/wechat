@@ -55,7 +55,7 @@ public class TokenThread implements Runnable {
 		// response.getWriter().println(result);
 		JSONObject json = JSON.parseObject(result);
 		AccessToken token = new AccessToken();
-		token.setAccessToken(json.getString("access_token"));
+		AccessToken.setAccessToken(json.getString("access_token"));
 		token.setExpiresin(json.getInteger("expires_in"));
 		return token;
 	}

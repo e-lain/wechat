@@ -16,11 +16,11 @@ public class AccessToken {
         return accessToken;
     }
  
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public static void setAccessToken(String accessToken) {
+		AccessToken.accessToken = accessToken;
     }
- 
-    public int getExpiresin() {
+
+	public int getExpiresin() {
         return expiresin;
     }
  

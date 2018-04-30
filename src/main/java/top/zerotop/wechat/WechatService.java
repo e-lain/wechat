@@ -3,7 +3,6 @@ package top.zerotop.wechat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -20,7 +19,6 @@ import top.zerotop.domain.NewsMessage;
 import top.zerotop.domain.TextMessage;
 import top.zerotop.domain.VoiceMessage;
 import top.zerotop.domain.material.ArticleItem;
-import top.zerotop.domain.material.Material;
 import top.zerotop.wechat.constrant.MessageTypeConstrant;
 import top.zerotop.wechat.manager.MediaManager;
 

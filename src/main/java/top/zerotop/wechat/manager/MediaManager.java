@@ -14,11 +14,9 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import top.zerotop.domain.Media;
-import top.zerotop.domain.NewsMessage;
 import top.zerotop.domain.material.Article;
 import top.zerotop.domain.material.ArticleItem;
 import top.zerotop.domain.material.Material;
-import top.zerotop.wechat.TokenThread;
 import top.zerotop.wechat.constrant.URLConstrant;
 import top.zerotop.wechat.util.SendUtil;
 
@@ -99,7 +97,7 @@ public class MediaManager {
     }  
     
     /** 
-     * 上传y永久素材
+     * 上传永久素材
      * @param accessToken 
      * @param 
      * @return 
@@ -157,7 +155,7 @@ public class MediaManager {
 		ArticleItem artItem = new ArticleItem();
     	try{
     		String json = SendUtil.sendPost(url, data);
-    		System.out.println(json);
+//    		System.out.println(json);
 			JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
 			com.google.gson.JsonArray jsonArray = jsonObject.getAsJsonArray("item");
 			
@@ -181,17 +179,15 @@ public class MediaManager {
 							artItemList.add(artItem);
 						}
 					}
-					
-					System.out.println(artItem.toString());
+//					System.out.println(artItem.toString());
 					
 				}
 			}
 			
-			System.out.println("----------------------------------+++++++++++++++++++");
-			
-			xstream.alias("item", artItemList.getClass());
-			String resM = xstream.toXML(artItemList);
-			System.out.println(resM);
+			System.out.println("-----------------------------");
+//			xstream.alias("item", artItemList.getClass());
+//			String resM = xstream.toXML(artItemList);
+//			System.out.println(resM);
 			
        	}catch(Exception e){
     		e.printStackTrace();

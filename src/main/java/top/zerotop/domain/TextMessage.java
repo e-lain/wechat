@@ -2,9 +2,6 @@ package top.zerotop.domain;
 
 import java.util.List;
 
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-
-
 public class TextMessage extends BaseMessage {
 	
 	/**
