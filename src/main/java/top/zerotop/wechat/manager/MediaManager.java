@@ -67,7 +67,7 @@ public class MediaManager {
 		/**
 		 * 查看所有素材
 		 */
-		String accessToken = "9_RzxK2lklnJjvRc_LMYBR0UEx4zTCq6EpCXmebDJ96MI2VvH9xUWHKNRvRuvfunB3V_EL7dVHxFZc62v9rkljLHq_8oa1eCZwPjbmMojAcS4EchQtTCfr5odCc6WZX5tJ9Si4KwvV9sd6R1UkBFRbAGASWI";
+		String accessToken = "9_msmi0hvwE72ma8JFhxr70sbSfQ_I1tSUZ-nge40sFYiIdF5tGMt1FDa-0cC4uv4KlWYvhdZY9wnTJH-4-1t2KSHtvW6wH6-Bb_uGd49HOnYe-xkOAqp2MY7pnM96dHrMbNxC4fxL9FBNT2bfEKEcAJALRL";
 		
 		String data = "{"
 				+"\"type\":\"news\","
@@ -159,17 +159,15 @@ public class MediaManager {
     	try{
     		String json = SendUtil.sendPost(url, data);
     		System.out.println(json);
-    		System.out.println(json.toString());
 			JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
 			com.google.gson.JsonArray jsonArray = jsonObject.getAsJsonArray("item");
 			
 			if(jsonArray != null){
 				for (JsonElement a : jsonArray) {				
 					me = gson.fromJson(a, new TypeToken<Material>() {}.getType());
-//					System.out.println("me-"+me.toString());
 					materialList.add(me);	
 					
-					xstream.alias("art", NewsMessage.class);
+					xstream.alias("art", me.getClass());
 					String resMes = xstream.toXML(me);
 					System.out.println(resMes+"-----------------");
 					
@@ -187,22 +185,14 @@ public class MediaManager {
 					
 					System.out.println(artItem.toString());
 					
-//					article = gson.fromJson(art.getContent().toString(), Article.class);
-//					System.out.println(article.toString());
 				}
 			}
 			
 			System.out.println("----------------------------------+++++++++++++++++++");
 			
-//			NewsMessage nmes = new NewsMessage();
-//			nmes.setArticleCount(2);
-//			nmes.setCreateTime(System.currentTimeMillis());
-//			nmes.setArticles(artItemList);
-//			
-//			xstream.alias("", NewsMessage.class);
-//			String res = xstream.toXML(nmes);
-//			
-//			System.out.println(res);
+			xstream.alias("item", artItemList.getClass());
+			String resM = xstream.toXML(artItemList);
+			System.out.println(resM);
 			
        	}catch(Exception e){
     		e.printStackTrace();

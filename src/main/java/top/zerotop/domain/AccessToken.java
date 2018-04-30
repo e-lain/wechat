@@ -5,7 +5,7 @@ public class AccessToken {
 	/**
 	 * accessToken
 	 */
-	private String accessToken;
+	public static String accessToken;
 	
 	/**
 	 * token有效期

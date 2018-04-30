@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import top.zerotop.domain.AccessToken;
 import top.zerotop.domain.ImageMessage;
 import top.zerotop.domain.Media;
 import top.zerotop.domain.NewsMessage;
@@ -200,7 +201,7 @@ public class WechatService {
 		if(MessageTypeConstrant.MESSAGE_EVENT.equals(msgType)
 				&&MessageTypeConstrant.MESSAGE_EVENT_CLICK.equals(map.get("Event"))
 				&&"clickme".equals(map.get("EventKey"))){
-			
+			System.out.println(" clickme event ------ ");
 						
 			String data = "{"
 					+"\"type\":\"news\","
@@ -216,8 +217,9 @@ public class WechatService {
 			newMessage.setArticleCount(2);
 			try{
 				List<ArticleItem> itemList = 
-						MediaManager.getMediaFile(TokenThread.accessToken.getAccessToken(), data);
+						MediaManager.getMediaFile(AccessToken.accessToken, data);
 				newMessage.setArticles(itemList);
+				System.out.println(" get itemlist ------ ");
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -225,6 +227,7 @@ public class WechatService {
 			try {
 				xstream.alias("xml", newMessage.getClass());
 				responseMes = xstream.toXML(newMessage);
+				responseMes = responseMes.replaceAll("top.zerotop.domain.material.ArticleItem", "item");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
