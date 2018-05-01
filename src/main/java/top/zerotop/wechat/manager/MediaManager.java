@@ -44,9 +44,9 @@ public class MediaManager {
 		/**
 		 * 获取素材
 		 */
-		String accessToken = "accessToken";
-		String mediaid = "mediaid";
-		MediaManager.getMaterial(accessToken, mediaid);
+//		String accessToken = "9_cphUg-6SZZkBL7GvPCPqMEXmpFDZWnzL_qswxJCzlKdu8e2oDwKNqj3RVXTZCgFS5hq9yxgtvxvl_n9u2BA_9u_sVVBwhQKXtYxw2kvaNMiz4P3gEj-yT62zfhFJEVRZxuLN62WMyPs1dAcqHHZfAFAOOG";
+//		String mediaid = "5ZaqY5prx25mSlK3XM-yBuuI5rnCnofBFJrtZPW36-s";
+//		MediaManager.getMaterial(accessToken, mediaid);
 		
 		/**
 		 * 创建新的素材
@@ -57,8 +57,8 @@ public class MediaManager {
 //		Article article = new Article();
 //		article.setAuthor("zerotop");
 //		article.setContent("<p data-v-e335c1d2=\"\">罗小黑战记<br><img src=\"http://www.zerotop.top/media/image/054104085441068E6A0A4D03B62C726E.jpg\" style=\"max-width: 100%;\"></p><p data-v-e335c1d2=\"\">小黑</p><p><br></p>");
-//		article.setDigest("罗小黑战记");
 //		article.setTitle("罗小黑战记");
+//		article.setDigest("罗小黑战记");
 //		article.setThumb_media_id("5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk");
 //		article.setShow_cover_pic((byte)1);
 //		article.setContent_source_url("www.zerotop.top/blog/article/2343489");
@@ -66,7 +66,7 @@ public class MediaManager {
 ////		article.setOnly_fans_can_comment(1);
 //		articles.add(article);
 //		
-//		MediaManager.uploadNewsMediaFile("accessToken", 
+//		MediaManager.addNews("accessToken", 
 //				articles);
 	
 		/**
@@ -81,6 +81,21 @@ public class MediaManager {
 //				+"}";
 //		
 //		MediaManager.getMediaFile(accessToken, data);
+		
+		
+		/**
+		 * 修改永久素材
+		 */
+//		Article article = new Article();
+//		article.setAuthor("zerotop");
+//		article.setContent("<p data-v-e335c1d2=\"\">罗小黑战记<br><img src=\"http://www.zerotop.top/media/image/054104085441068E6A0A4D03B62C726E.jpg\" style=\"max-width: 100%;\"></p><p data-v-e335c1d2=\"\">小黑</p><p><br></p>");
+//		article.setTitle("罗小黑战记精选");
+//		article.setDigest("罗小黑战记");
+//		article.setThumb_media_id("5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk");
+//		article.setShow_cover_pic((byte)1);
+//		article.setContent_source_url("www.zerotop.top/blog/article/2343489");
+//		MediaManager.updateNews("accessToken", 
+//				"mediaid", 0, article);
 	}
     
 	/** 
@@ -152,7 +167,7 @@ public class MediaManager {
      * @param articles
      * @return
      */
-    public static String uploadNewsMediaFile(String accessToken, List<Article> articles){
+    public static String addNews(String accessToken, List<Article> articles){
     	
     	System.out.println("{\"articles\":"+gson.toJson(articles)+"}");
     	
@@ -160,6 +175,29 @@ public class MediaManager {
     	
     	try{
     		String res =  SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
+    		System.out.println(res);
+    	} catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	
+    	return "";
+    }
+    /**
+     * 修改永久素材
+     * @param accessToken
+     * @param mediaid         要修改的图文消息的id
+     * @param index           要更新的文章在图文消息中的位置（多图文消息时，此字段才有意义），第一篇为0
+     * @param article         文章对象
+     * @return
+     */
+    public static String updateNews(String accessToken, String mediaid, int index ,Article article){
+    	
+    	String url = URLConstrant.URL_MATERIAL_UPDATE_NEWS + accessToken;
+    	
+    	String data = "{\"media_id\":"+mediaid+",\"index\":"+index+",\"articles\":"+gson.toJson(article)+"}";
+    	
+    	try{
+    		String res =  SendUtil.sendPost(url, data);
     		System.out.println(res);
     	} catch(Exception e){
     		e.printStackTrace();

@@ -21,6 +21,8 @@ public class URLConstrant {
 	//获取素材
 	public static final String URL_MATERIAL_GET_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=";
 	
+	public static final String URL_MATERIAL_UPDATE_NEWS = "https://api.weixin.qq.com/cgi-bin/material/update_news?access_token=";
+	
 	/**
 	 * menu
 	 */
