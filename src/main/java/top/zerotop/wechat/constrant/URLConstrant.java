@@ -5,17 +5,20 @@ public class URLConstrant {
 	/**
 	 * 临时素瓷
 	 */
-	public static final String URL_MEDIA_TEMP_UPLOAD = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=";
+	public static final String URL_MEDIA_UPLOAD = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=";
 	
 	public static final String URL_MEDIA_GET = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=";
 	
 	/**
 	 * 永久素材
 	 */
-	public static final String URL_MEDIA_UPLOAD =  "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=";
+	//添加素材
+	public static final String URL_MATERIAL_ADD_MATERIAL =  "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=";
+	//添加图文素材
+	public static final String URL_MATERIAL_ADD_NEWS = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=";
 	
 	public static final String URL_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=";
-	
+	//获取素材
 	public static final String URL_MATERIAL_GET_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=";
 	
 	/**

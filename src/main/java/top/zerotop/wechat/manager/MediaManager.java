@@ -93,7 +93,7 @@ public class MediaManager {
     public static String uploadTempMediaFile(String accessToken,String type,String path){  
         String result = null;  
         	
-        String url =  URLConstrant.URL_MEDIA_TEMP_UPLOAD + accessToken + "&type="+type;
+        String url =  URLConstrant.URL_MEDIA_UPLOAD + accessToken + "&type="+type;
         
         try {  
             result = SendUtil.uploadTempMaterial(url, path);  
@@ -116,7 +116,7 @@ public class MediaManager {
 //        params.put("access_token", accessToken);  
 //        params.put("type", type);  
        
-        String url = URLConstrant.URL_MEDIA_UPLOAD  + accessToken + "&type="+type;
+        String url = URLConstrant.URL_MATERIAL_ADD_MATERIAL  + accessToken + "&type="+type;
         
         try {  
             result = SendUtil.uploadTempMaterial(url, path);  
@@ -156,7 +156,7 @@ public class MediaManager {
     	
     	System.out.println("{\"articles\":"+gson.toJson(articles)+"}");
     	
-    	String url = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token="+accessToken;
+    	String url = URLConstrant.URL_MATERIAL_ADD_NEWS + accessToken;
     	
     	try{
     		String res =  SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
