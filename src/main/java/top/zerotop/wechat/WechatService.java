@@ -210,7 +210,7 @@ public class WechatService {
 			newMessage.setMsgType("news");
 			try{
 				List<ArticleItem> itemList = 
-						MediaManager.getMediaFile(AccessToken.accessToken, data);		
+						MediaManager.batchgetMaterial(AccessToken.accessToken, data);		
 				newMessage.setArticles(itemList);
 				newMessage.setArticleCount(itemList.size());
 				

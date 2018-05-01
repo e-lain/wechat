@@ -36,16 +36,16 @@ public class MediaManager {
 		/**
 		 * 上传临时素材
 		 */
-//		 String re = MediaManager.uploadMediaFile("access_token", 
+//		 String re = MediaManager.uploadTempMediaFile("accessToken", 
 //				 "image", 
-//				 "D:/me.jpg");
+//				 "D:/wangye.jpg");
 //		 System.out.println(re);
 		
 		/**
 		 * 获取素材
 		 */
-//		String accessToken = "9_cphUg-6SZZkBL7GvPCPqMEXmpFDZWnzL_qswxJCzlKdu8e2oDwKNqj3RVXTZCgFS5hq9yxgtvxvl_n9u2BA_9u_sVVBwhQKXtYxw2kvaNMiz4P3gEj-yT62zfhFJEVRZxuLN62WMyPs1dAcqHHZfAFAOOG";
-//		String mediaid = "5ZaqY5prx25mSlK3XM-yBuuI5rnCnofBFJrtZPW36-s";
+//		String accessToken = "accessToken";
+//		String mediaid = "mediaid";
 //		MediaManager.getMaterial(accessToken, mediaid);
 		
 		/**
@@ -57,9 +57,9 @@ public class MediaManager {
 //		Article article = new Article();
 //		article.setAuthor("zerotop");
 //		article.setContent("<p data-v-e335c1d2=\"\">罗小黑战记<br><img src=\"http://www.zerotop.top/media/image/054104085441068E6A0A4D03B62C726E.jpg\" style=\"max-width: 100%;\"></p><p data-v-e335c1d2=\"\">小黑</p><p><br></p>");
-//		article.setTitle("罗小黑战记");
+//		article.setTitle("罗小黑战记群发版");
 //		article.setDigest("罗小黑战记");
-//		article.setThumb_media_id("5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk");
+//		article.setThumb_media_id("ibIdmu1_flVW0x6kKg4TnGA6nAESalUQJbJYwErn1TaZPIiwKoA-yhl0gbgExLwz");
 //		article.setShow_cover_pic((byte)1);
 //		article.setContent_source_url("www.zerotop.top/blog/article/2343489");
 ////		article.setNeed_open_comment(1);
@@ -72,7 +72,7 @@ public class MediaManager {
 		/**
 		 * 查看所有素材
 		 */
-//		String accessToken = "access_token";
+//		String accessToken = "accesstoken";
 //		
 //		String data = "{"
 //				+"\"type\":\"news\","
@@ -80,7 +80,7 @@ public class MediaManager {
 //				+"\"count\":5"
 //				+"}";
 //		
-//		MediaManager.getMediaFile(accessToken, data);
+//		MediaManager.batchgetMaterial(accessToken, data);
 		
 		
 		/**
@@ -89,11 +89,13 @@ public class MediaManager {
 //		Article article = new Article();
 //		article.setAuthor("zerotop");
 //		article.setContent("<p data-v-e335c1d2=\"\">罗小黑战记<br><img src=\"http://www.zerotop.top/media/image/054104085441068E6A0A4D03B62C726E.jpg\" style=\"max-width: 100%;\"></p><p data-v-e335c1d2=\"\">小黑</p><p><br></p>");
-//		article.setTitle("罗小黑战记精选");
-//		article.setDigest("罗小黑战记");
-//		article.setThumb_media_id("5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk");
+//		article.setTitle("罗小黑战记");
+//		article.setDigest("罗小黑战记精选");
+//		article.setThumb_media_id("mediaid");
 //		article.setShow_cover_pic((byte)1);
 //		article.setContent_source_url("www.zerotop.top/blog/article/2343489");
+//		article.setNeed_open_comment(1);
+//		article.setOnly_fans_can_comment(1);
 //		MediaManager.updateNews("accessToken", 
 //				"mediaid", 0, article);
 	}
@@ -105,11 +107,11 @@ public class MediaManager {
      * @param path 图片路径 
      * @return 
      */  
-    public static String uploadTempMediaFile(String accessToken,String type,String path){  
+    public static String uploadTempMediaFile(String accessToken,String type, String path){  
         String result = null;  
         	
         String url =  URLConstrant.URL_MEDIA_UPLOAD + accessToken + "&type="+type;
-        
+       
         try {  
             result = SendUtil.uploadTempMaterial(url, path);  
         } catch (Exception e) {  
@@ -119,13 +121,13 @@ public class MediaManager {
     }  
     
     /**
-     * 上传永久素材
+     * 新增永久素材
      * @param accessToken
      * @param type
      * @param path
      * @return
      */
-    public static String uploadMediaFile(String accessToken, String type,String path){  
+    public static String addMaterial(String accessToken, String type, String path){  
         String result = null;  
 //        TreeMap<String, String> params = new TreeMap<String, String>();  
 //        params.put("access_token", accessToken);  
@@ -171,7 +173,8 @@ public class MediaManager {
     	
     	System.out.println("{\"articles\":"+gson.toJson(articles)+"}");
     	
-    	String url = URLConstrant.URL_MATERIAL_ADD_NEWS + accessToken;
+//    	String url = URLConstrant.URL_MATERIAL_ADD_NEWS + accessToken;
+    	String url = "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token="+ accessToken;
     	
     	try{
     		String res =  SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
@@ -213,16 +216,16 @@ public class MediaManager {
      * @param data  
      * @return
      */
-    public static List<ArticleItem> getMediaFile(String accessToken, String data){
+    public static List<ArticleItem> batchgetMaterial(String accessToken, String data){
     	
-    	String url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token="+accessToken;
+    	String url = URLConstrant.URL_MATERIAL_BATCHGET_MATERIAL +accessToken;
     	List<Material> materialList = new ArrayList<Material>();
     	List<ArticleItem> artItemList = new ArrayList<ArticleItem>();
 		Material me = new Material();
 		ArticleItem artItem = new ArticleItem();
     	try{
     		String json = SendUtil.sendPost(url, data);
-//    		System.out.println(json);
+    		System.out.println(json);
 			JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
 			com.google.gson.JsonArray jsonArray = jsonObject.getAsJsonArray("item");
 			
@@ -246,7 +249,7 @@ public class MediaManager {
 							artItemList.add(artItem);
 						}
 					}
-//					System.out.println(artItem.toString());
+					System.out.println(artItem.toString());
 					
 				}
 			}

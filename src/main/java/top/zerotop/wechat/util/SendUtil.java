@@ -102,8 +102,11 @@ public class SendUtil {
 			conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded"); // 设置发送数据的格式
 			conn.connect();
 			OutputStream outt = conn.getOutputStream(); // utf-8编码
-			outt.write(parser.parse(param).toString().getBytes("UTF-8"));
-			System.out.println("param: " +parser.parse(param));
+			
+		//为群发修改，其他接口问题之后调试
+			outt.write((param).getBytes("UTF-8"));
+//			outt.write(parser.parse(param).toString().getBytes("UTF-8"));
+//			System.out.println("param: " +parser.parse(param));
 			outt.flush();
 			outt.close();
 			
@@ -279,6 +282,12 @@ public class SendUtil {
 		return "getImage success";
 	}
 	
+	/**
+	 * 上传临时素材
+	 * @param url    上传接口地址
+	 * @param imgUrl 图片本地地址
+	 * @return
+	 */
 	public static String uploadTempMaterial(String url, String imgUrl){
 		File file = new File(imgUrl);
 		OutputStream output = null;  

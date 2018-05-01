@@ -16,11 +16,11 @@ public class URLConstrant {
 	public static final String URL_MATERIAL_ADD_MATERIAL =  "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=";
 	//添加图文素材
 	public static final String URL_MATERIAL_ADD_NEWS = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=";
-	
-	public static final String URL_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=";
+	//获取素材列表
+	public static final String URL_MATERIAL_BATCHGET_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=";
 	//获取素材
 	public static final String URL_MATERIAL_GET_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=";
-	
+	//更新图文素材
 	public static final String URL_MATERIAL_UPDATE_NEWS = "https://api.weixin.qq.com/cgi-bin/material/update_news?access_token=";
 	
 	/**

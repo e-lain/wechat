@@ -19,6 +19,12 @@ public class FollowerManager {
 		
 	}
 	
+	
+	/**
+	 * 列出所有用户
+	 * @param access_token
+	 * @return
+	 */
 	public String ListFollower(String access_token){		
 		String url = URLConstrant.URL_FOLLOWER_GET + access_token;
 		
@@ -31,6 +37,12 @@ public class FollowerManager {
 		return url;
 	}
 	
+	/**
+	 * 获取用户信息
+	 * @param access_token
+	 * @param openid
+	 * @return
+	 */
 	public String UserInfo(String access_token, String openid){
 		
 		String url = "https://api.weixin.qq.com/cgi-bin/user/info?"
