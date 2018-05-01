@@ -33,33 +33,40 @@ public class MediaManager {
 	
 	public static void main(String args[]){
 		
+		/**
+		 * 上传临时素材
+		 */
 //		 String re = MediaManager.uploadMediaFile("access_token", 
 //				 "image", 
 //				 "D:/me.jpg");
-//		 
 //		 System.out.println(re);
 		
 		/**
 		 * 获取素材
 		 */
-//		String url = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=access_token";
-//		
-//		MediaManager.listMediaFile(url);
+		String accessToken = "accessToken";
+		String mediaid = "mediaid";
+		MediaManager.getMaterial(accessToken, mediaid);
 		
 		/**
 		 * 创建新的素材
 		 */
+		
+		
 //		List<Article> articles = new ArrayList<Article>();
 //		Article article = new Article();
 //		article.setAuthor("zerotop");
-//		article.setContent("文章---第二篇永久素材--内容是我随便编的");
-//		article.setDigest("第二篇文章");
-//		article.setTitle("test");
+//		article.setContent("<p data-v-e335c1d2=\"\">罗小黑战记<br><img src=\"http://www.zerotop.top/media/image/054104085441068E6A0A4D03B62C726E.jpg\" style=\"max-width: 100%;\"></p><p data-v-e335c1d2=\"\">小黑</p><p><br></p>");
+//		article.setDigest("罗小黑战记");
+//		article.setTitle("罗小黑战记");
 //		article.setThumb_media_id("5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk");
 //		article.setShow_cover_pic((byte)1);
-//		article.setContent_source_url("www.zerotop.top/blog/article/3270888");
+//		article.setContent_source_url("www.zerotop.top/blog/article/2343489");
+////		article.setNeed_open_comment(1);
+////		article.setOnly_fans_can_comment(1);
 //		articles.add(article);
-//		MediaManager.uploadNewsMediaFile("access_token", 
+//		
+//		MediaManager.uploadNewsMediaFile("accessToken", 
 //				articles);
 	
 		/**
@@ -96,19 +103,19 @@ public class MediaManager {
         return result;  
     }  
     
-    /** 
+    /**
      * 上传永久素材
-     * @param accessToken 
-     * @param 
-     * @return 
-     */  
+     * @param accessToken
+     * @param type
+     * @param path
+     * @return
+     */
     public static String uploadMediaFile(String accessToken, String type,String path){  
         String result = null;  
 //        TreeMap<String, String> params = new TreeMap<String, String>();  
 //        params.put("access_token", accessToken);  
 //        params.put("type", type);  
-        
-        
+       
         String url = URLConstrant.URL_MEDIA_UPLOAD  + accessToken + "&type="+type;
         
         try {  
@@ -121,24 +128,39 @@ public class MediaManager {
     
 //    {"media_id":"5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk","url":"http:\/\/mmbiz.qpic.cn\/mmbiz_jpg\/vS1hjjKOH4TJjZwZwrQXb5rxJMshWteFJQQuW6nCiax2gQ3F4vfNqd6xVLOD2ic2ldaqoick1T3QYhXiboEnwO2Yyw\/0?wx_fmt=jpeg"}
     
-    public static String listMediaFile(String url){
+    /**
+     * 根据mediaid获取素材
+     * @param url 
+     * @return
+     */
+    public static String getMaterial(String accessToken, String mediaid){
+    	
+    	String url = URLConstrant.URL_MATERIAL_GET_MATERIAL + accessToken;
     	
     	Media media = new Media();
-    	media.setMedia_id("5ZaqY5prx25mSlK3XM-yBuBJm89j3El56IeQxJ0q8sk");
+    	media.setMedia_id(mediaid);
     	
     	System.out.println(SendUtil.sendPost(url, gson.toJson(media)));
     	
     	return url;
     }
-      
+     
+    
+    /**
+     * 上传图文素材
+     * @param accessToken
+     * @param articles
+     * @return
+     */
     public static String uploadNewsMediaFile(String accessToken, List<Article> articles){
     	
     	System.out.println("{\"articles\":"+gson.toJson(articles)+"}");
     	
-//    	String url = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token="+accessToken;
+    	String url = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token="+accessToken;
     	
     	try{
-//    		SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
+    		String res =  SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
+    		System.out.println(res);
     	} catch(Exception e){
     		e.printStackTrace();
     	}
@@ -146,6 +168,13 @@ public class MediaManager {
     	return "";
     }
     
+    /**
+     * 获取所有素材-- 并返回素材列表
+     * 用于定制回复用户图文消息
+     * @param accessToken
+     * @param data  
+     * @return
+     */
     public static List<ArticleItem> getMediaFile(String accessToken, String data){
     	
     	String url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token="+accessToken;
