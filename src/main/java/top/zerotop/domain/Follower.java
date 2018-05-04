@@ -15,7 +15,7 @@ public class Follower {
 	private int count;
 	
 	/**
-	 * opeinid 列表
+	 * opeinid 
 	 */
 	private OpenIdList data;
 	
