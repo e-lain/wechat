@@ -8,6 +8,9 @@
 	<name>wechat project</name>
 	<properties>
 		<webVersion>3.1</webVersion>
+        <project.build.sourceEncoding>
+            UTF-8
+        </project.build.sourceEncoding>
 	</properties>
 	<url>http://maven.apache.org</url>
 	<dependencies>

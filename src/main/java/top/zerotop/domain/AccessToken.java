@@ -5,7 +5,9 @@ public class AccessToken {
 	/**
 	 * accessToken
 	 */
-	public static String accessToken;
+	private static String accessToken;
+	
+	private static String jsapiTicket;
 	
 	/**
 	 * token有效期
@@ -13,13 +15,21 @@ public class AccessToken {
     private int expiresin;
     
 	
-    public String getAccessToken() {
+    public static String getAccessToken() {
         return accessToken;
     }
  
     public static void setAccessToken(String accessToken) {
 		AccessToken.accessToken = accessToken;
     }
+
+	public static String getJsapiTicket() {
+		return jsapiTicket;
+	}
+
+	public static void setJsapiTicket(String jsapiTicket) {
+		AccessToken.jsapiTicket = jsapiTicket;
+	}
 
 	public int getExpiresin() {
         return expiresin;

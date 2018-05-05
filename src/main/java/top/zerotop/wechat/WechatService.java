@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -29,8 +28,6 @@ import org.dom4j.Element;
 import javax.servlet.http.HttpServletRequest;
 
 public class WechatService {
-
-	private static Gson gson = new Gson();
 	
 	Map<String, String> map = new HashMap<String, String>();
 	XStream xstream = new XStream(new DomDriver());
@@ -210,7 +207,7 @@ public class WechatService {
 			newMessage.setMsgType("news");
 			try{
 				List<ArticleItem> itemList = 
-						MediaManager.batchgetMaterial(AccessToken.accessToken, data);		
+						MediaManager.batchgetMaterial(AccessToken.getAccessToken(), data);		
 				newMessage.setArticles(itemList);
 				newMessage.setArticleCount(itemList.size());
 				

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import top.zerotop.domain.AccessToken;
+import top.zerotop.wechat.util.SendUtil;
 
 public class TokenThread implements Runnable {
 	
@@ -21,7 +22,7 @@ public class TokenThread implements Runnable {
 			try {
 				accessToken = this.getAccessToken();
 				if (null != accessToken) {
-					System.out.println(accessToken.getAccessToken());
+					System.out.println(AccessToken.getAccessToken());
 					Thread.sleep(7000 * 1000); // 获取到access_token 休眠7000秒
 
 				} else {
@@ -57,6 +58,13 @@ public class TokenThread implements Runnable {
 		AccessToken token = new AccessToken();
 		AccessToken.setAccessToken(json.getString("access_token"));
 		token.setExpiresin(json.getInteger("expires_in"));
+		
+		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+AccessToken.getAccessToken()+"&type=jsapi";
+		
+		String ticket = SendUtil.sendGet(url, null);
+		JSONObject tjson = JSON.parseObject(ticket);
+		AccessToken.setJsapiTicket(tjson.getString("ticket"));
+		
 		return token;
 	}
 }
