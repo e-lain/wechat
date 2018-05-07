@@ -11,6 +11,7 @@ wechat development
 项目有关直接通过发送请求即可达到目的的接口，直接在本地测试
 例如获取用户列表
 
+#################
 服务器上部署：
 暂时只是将项目中的classes直接放到tomcat项目WEB-INF下
 在tomcat下的web.xml中写入微信公众号的appid和appsecret
@@ -46,5 +47,39 @@ wechat development
 		<servlet-name>entrance</servlet-name>
 		<url-pattern>/wechat</url-pattern>
 	</servlet-mapping>
- 
+	
+	<filter>
+    		<filter-name>encodingFilter</filter-name>
+    		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    	<init-param>
+      		<param-name>encoding</param-name>
+      		<param-value>UTF-8</param-value>
+    	</init-param>
+    	<init-param>
+      		<param-name>forceEncoding</param-name>
+     		<param-value>true</param-value>
+	</init-param>
+  	</filter>
+  		<filter-mapping>
+    		<filter-name>encodingFilter</filter-name>
+    		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  
+  	<servlet>
+    		<servlet-name>springDispatcher</servlet-name>
+    		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    		<init-param>
+      			<param-name>contextConfigLocation</param-name>
+      			<param-value>classpath:application-context.xml</param-value>
+    		</init-param>
+    		<load-on-startup>2</load-on-startup>
+  	</servlet>
+  	<servlet-mapping>
+    		<servlet-name>springDispatcher</servlet-name>
+    		<url-pattern>/</url-pattern>
+  	</servlet-mapping>
+
 </web-app>
+
+#########
+由于添加了jssdk,所以使用了spring
