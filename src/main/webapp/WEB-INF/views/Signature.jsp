@@ -175,6 +175,12 @@ wx.ready(function() {
     download();
   };
 });
+
+wx.error(function (res) {
+  alert(res.errMsg);
+});
 </script>
+<!-- 
     <script src="http://203.195.235.76/jssdk/js/zepto.min.js"></script>
+ -->
 </html>

@@ -19,8 +19,11 @@ public class MenuManager {
 		
 		MenuManager menumanager = new MenuManager();
 		
+		String accessToken = "9_Jwxri3VSAHSCmyUyc7YBHH1AJKVjpaa1TLJORikY84VaWMuYRO-PSg_UFQv9JJ3pUPVCzdJf1QjIiiU_wBcPAsgQZMYqsZOgxgEyobTXP4sPRdxPqZR6KNuEORqHdH3SnbBQXIakwchfYYC_REGcAEAVIK";
+		
 //		menumanager.getMenu("ACCESS_TOKEN");
-		menumanager.createMenu("ACCESS_TOKEN");
+		
+		menumanager.createMenu(accessToken);
 	}
 	
 	public String getMenu(String access_token){
@@ -41,7 +44,7 @@ public class MenuManager {
 		return url;
 	}
 	
-	public String createMenu(String access_token){
+	public String createMenu(String accessToken){
 		
 		Button b1 = new Button();
 		Button b2 = new Button();
@@ -65,8 +68,9 @@ public class MenuManager {
 		sb1.setType(ButtonTypeConstrant.TYPE_CLICK);
 		
 		sb2.setKey("sb2");
-		sb2.setName("子菜单2");
-		sb2.setType(ButtonTypeConstrant.TYPE_CLICK);
+		sb2.setName("jssdk");
+		sb2.setType(ButtonTypeConstrant.TYPE_VIEW);
+		sb2.setUrl("http://www.zerotop.top/wechat/signature");
 		List<Button> buttonlist = new ArrayList<Button>();
 		buttonlist.add(sb1);
 		buttonlist.add(sb2);
@@ -86,7 +90,7 @@ public class MenuManager {
 		Menu menu = new Menu();
 		menu.setButton(menubutton);
 		
-		String url = URLConstrant.URL_MENU_CREATE+"9_xMttY7_Bjkibr9-Ig__Cv8GadFlYBjP7xq-Hp_YBCxTMfk4N2HWgry3l_jIMbCBDSC8j3Xb3w0CFWpxSwEGOLDmImwuo-5ytmZ8AYJhX4npS4ybKOvl1GMG-zNs2rl7FY-PRi_CnUfoWQg3yGXXfAJAXOO";
+		String url = URLConstrant.URL_MENU_CREATE + accessToken;
 		
 //		System.out.println( gson.toJson(menu));
 		System.out.println(SendUtil.sendPost(url, gson.toJson(menu)));

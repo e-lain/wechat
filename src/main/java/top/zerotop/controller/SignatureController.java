@@ -6,10 +6,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 import top.zerotop.domain.AccessToken;
 import top.zerotop.wechat.util.Decript;
@@ -20,6 +24,8 @@ import top.zerotop.wechat.util.Decript;
  */
 @Controller
 public class SignatureController {
+	
+	private static Gson gson = new Gson();
 
 	@RequestMapping("/signature")
 	public ModelAndView signature(HttpServletRequest req){
@@ -47,6 +53,36 @@ public class SignatureController {
 		view.addObject("signature", signature);
 		System.out.println("-----------end---------------");
 		return view;
+	}
+	
+	@RequestMapping(value= "/signature/vue", produces="application/json;charset=utf-8")
+//	@RequestMapping("/signature/vue")
+	public @ResponseBody String signatureVue(HttpServletRequest req, HttpServletResponse res){
+		
+		System.out.println("--------------- vue signature -------------------");
+		
+		Map<String, String> map = new HashMap<String, String>();
+		
+		String url = req.getRequestURL().toString();
+		String timestamp = SignatureController.createTimestamp();
+		String nonceStr = SignatureController.createNonce();
+		String signatureStr = "jsapi_ticket="+AccessToken.getJsapiTicket()
+							+ "&noncestr="+nonceStr
+							+ "&timestamp="+timestamp
+							+ "&url="+url;
+		String signature = Decript.SHA1(signatureStr);
+		System.out.println("url:"+url);
+		System.out.println("timestamp:"+timestamp);
+		System.out.println("nonceStr:"+nonceStr);
+		System.out.println("signatureStr:"+signatureStr);
+		System.out.println("signature:"+signature);
+		
+		map.put("appId", "appId");
+		map.put("nonceStr", nonceStr);
+		map.put("timestamp", timestamp);
+		map.put("signature", signature);
+		
+		return gson.toJson(map);
 	}
 
 	private static String createTimestamp() {
