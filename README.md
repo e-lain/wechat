@@ -12,6 +12,7 @@ wechat development
 例如获取用户列表
 
 #################
+
 服务器上部署：
 暂时只是将项目中的classes直接放到tomcat项目WEB-INF下
 在tomcat下的web.xml中写入微信公众号的appid和appsecret
@@ -82,4 +83,11 @@ wechat development
 </web-app>
 
 #########
+
 由于添加了jssdk,所以使用了spring
+
+
+
+按照微信jssdk的逻辑，感觉可以在本地vue或者其他页面里初始化config
+并调用微信接口中的方法。然后暂时还在尝试，之后更新
+
