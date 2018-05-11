@@ -66,6 +66,36 @@ wechat development
     		<url-pattern>/*</url-pattern>
   	</filter-mapping>
   
+  	 <filter>         
+    		<filter-name>CORS</filter-name>  
+    		<filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>  
+    		<init-param>  
+     			<param-name>cors.allowOrigin</param-name>  
+        		<param-value>*</param-value>  
+    		</init-param>  
+    		<init-param>  
+     			<param-name>cors.supportedMethods</param-name>  
+        		<param-value>GET, POST, HEAD, PUT, DELETE</param-value>  
+    		</init-param>  
+    		<init-param>  
+     			<param-name>cors.supportedHeaders</param-name>  
+        		<param-value>Accept, Origin, X-Requested-With, Content-Type, Last-Modified</param-value>  
+    		</init-param>  
+    		<init-param>  
+        		<param-name>cors.exposedHeaders</param-name>  
+        		<param-value>Set-Cookie</param-value>  
+    		</init-param>  
+    		<init-param>  
+        		<param-name>cors.supportsCredentials</param-name>  
+        		<param-value>true</param-value>  
+    		</init-param>
+	</filter>  
+  
+	<filter-mapping>  
+    		<filter-name>CORS</filter-name>  
+    		<url-pattern>/*</url-pattern>  
+	</filter-mapping>
+  
   	<servlet>
     		<servlet-name>springDispatcher</servlet-name>
     		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -90,4 +120,5 @@ wechat development
 
 按照微信jssdk的逻辑，感觉可以在本地vue或者其他页面里初始化config
 并调用微信接口中的方法。然后暂时还在尝试，之后更新
-
+本地无法使用jssdk,所需要的url为开发者服务器上地址，并且不包括url中#号后的内容
+？意味着vue这类的单页面应用可以在app中config？待验证
