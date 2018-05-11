@@ -6,17 +6,21 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 
 import top.zerotop.domain.AccessToken;
+import top.zerotop.util.ExtractJsonString;
 import top.zerotop.wechat.util.Decript;
+import top.zerotop.wechat.util.SendUtil;
 
 /**
  * @author 作者: zerotop
@@ -27,6 +31,11 @@ public class SignatureController {
 	
 	private static Gson gson = new Gson();
 
+	/**
+	 * 项目中jsp使用jssdk签名接口
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/signature")
 	public ModelAndView signature(HttpServletRequest req){
 		
@@ -55,23 +64,71 @@ public class SignatureController {
 		return view;
 	}
 	
-	@RequestMapping(value= "/signature/vue", produces="application/json;charset=utf-8")
-//	@RequestMapping("/signature/vue")
-	public @ResponseBody String signatureVue(HttpServletRequest req, HttpServletResponse res){
-		
-		System.out.println("--------------- vue signature -------------------");
+	/**
+	 * 微信小程序登录        wx。login
+	 * @param req	 HttpServletRequest
+	 * @param code   临时登录凭证code只能使用一次
+	 * @return
+	 */
+	@RequestMapping(value = "/mini/login/{code}", produces="application/json;charset=utf-8")
+	public @ResponseBody String miniLogin(HttpServletRequest req ,@PathVariable("code")String code){
 		
 		Map<String, String> map = new HashMap<String, String>();
 		
-		String url = req.getRequestURL().toString();
+		System.out.println("sessionid:"+req.getSession().getId());
+		
+		String url = "https://api.weixin.qq.com/sns/jscode2session?"
+				+ "appid=yourappid"
+				+ "&secret=yoursecret"
+				+ "&js_code="+code
+				+ "&grant_type=authorization_code";
+		System.out.println("rul: "+ url);
+		
+		String res = SendUtil.sendGet(url, null);	
+		
+		JSONObject tjson = JSON.parseObject(res);
+		String openid = tjson.get("openid").toString();
+		String session_key = tjson.get("openid").toString();
+		
+		//用于验证微信小程序用户身份
+		String minisign = Decript.SHA1(openid+session_key);
+		req.getSession().setAttribute("minisign", minisign);
+		
+		map.put("session_id", req.getSession().getId());
+		map.put("minisign", minisign);
+		
+		
+		return JSON.toJSONString(map);
+	}
+		
+	/**
+	 * 微信公众号本地jssdk验证
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value= "/signature/vue", produces="application/json;charset=utf-8")
+	public @ResponseBody String signatureVue(HttpServletRequest req){
+		
+		System.out.println("--------------- vue signature -------------------");
+		
+		String json = ExtractJsonString.extractJson(req);
+		System.out.println("json: "+json);
+		Gson gson = new Gson();
+		JSONObject tjson = JSON.parseObject(json);
+		String rurl = tjson.get("url").toString();
+		System.out.println("realurl: "+rurl);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		
+//		String url = req.getRequestURL().toString();
 		String timestamp = SignatureController.createTimestamp();
 		String nonceStr = SignatureController.createNonce();
 		String signatureStr = "jsapi_ticket="+AccessToken.getJsapiTicket()
 							+ "&noncestr="+nonceStr
 							+ "&timestamp="+timestamp
-							+ "&url="+url;
+							+ "&url="+rurl;
 		String signature = Decript.SHA1(signatureStr);
-		System.out.println("url:"+url);
+		System.out.println("url:"+rurl);
 		System.out.println("timestamp:"+timestamp);
 		System.out.println("nonceStr:"+nonceStr);
 		System.out.println("signatureStr:"+signatureStr);
