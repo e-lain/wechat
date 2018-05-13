@@ -170,6 +170,23 @@ public class WechatService {
 			}
 		}
 		
+		if(MessageTypeConstrant.MESSAGE_EVENT.equals(msgType)&&MessageTypeConstrant.MESSAGE_EVENT_SUBSCRIBE.equals(map.get("Event"))){
+			System.out.println(" Text message ------ ");
+			TextMessage textMessage = new TextMessage();
+			textMessage.setMsgType(msgType);
+			textMessage.setToUserName(fromUserName);
+			textMessage.setFromUserName(toUserName);
+			textMessage.setCreateTime(System.currentTimeMillis());
+			textMessage.setContent("感谢您的关注");
+
+			try {
+				xstream.alias("xml", textMessage.getClass());
+				responseMes = xstream.toXML(textMessage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		//接收用户位置信息
 		if(MessageTypeConstrant.MESSAGE_EVENT.equals(msgType)&&MessageTypeConstrant.MESSAGE_LOCATION.equals(map.get("Event"))){
 			System.out.println(" locationevent message ------ ");
