@@ -115,10 +115,3 @@ wechat development
 #########
 
 由于添加了jssdk,所以使用了spring
-
-
-
-按照微信jssdk的逻辑，感觉可以在本地vue或者其他页面里初始化config
-并调用微信接口中的方法。然后暂时还在尝试，之后更新
-本地无法使用jssdk,所需要的url为开发者服务器上地址，并且不包括url中#号后的内容
-？意味着vue这类的单页面应用可以在app中config？待验证
