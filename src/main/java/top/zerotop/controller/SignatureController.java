@@ -158,8 +158,7 @@ public class SignatureController {
 		String[] strArray = { ticket, timestamp, nonceStr, url};
 		Map<String, String> map = new HashMap<String, String>();
 		map.put( ticket,"jsapi_ticket");
-		map.put(nonceStr,"noncestr");
-		map.put(timestamp,"timestamp");
+		map.put(nonceStr,"noncestr");		map.put(timestamp,"timestamp");
 		map.put(url,"url");
 		Arrays.sort(strArray);
 		
