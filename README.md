@@ -13,14 +13,15 @@ wechat development
 
 * * *
 
-
-
-项目是直接在maven项目中修改的，pom.xml懒得改了  
+项目是直接在maven项目中修改的，pom.xml如下
 
 服务器上部署：  
 暂时只是将项目中的classes直接放到tomcat项目WEB-INF下  
 在tomcat下的web.xml中写入微信公众号的appid和appsecret  
-就可以直接运行
+就可以直接运行  
+
+* * *
+
 `<?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -119,5 +120,18 @@ wechat development
 
 * * *
 
+技术栈：  
+maven构建项目  
 
-由于添加了jssdk,所以使用了spring对项目进行改进
+spring管理，mybatis与数据库连接  
+数据库使用mysql  
+
+由于添加了jssdk,所以打算使用spring mvc
+
+* * *
+
+项目结构比较乱，等之后会对项目进行重构  
+项目现在仅尝试部分接口，等之后会更对的进行尝试
+
+
+
