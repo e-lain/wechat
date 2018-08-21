@@ -22,14 +22,9 @@ public class MusicController {
 		String sMinisign = req.getSession().getAttribute("minisign").toString();
 		String minisign = req.getParameter("minisigan");
 		
-		System.out.println("session_id:"+req.getSession().getId());
-		System.out.println("session minisign:"+sMinisign);
-		System.out.println("minisign: "+minisign);
-		
-		
 		if(sMinisign.equals(minisign))
-			return "musiclist";
+			return "music list";
 		else
-			return "musicfail";
+			return "music fail";
 	}
 }

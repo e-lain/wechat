@@ -29,8 +29,6 @@ import top.zerotop.wechat.util.SendUtil;
 @Controller
 public class SignatureController {
 	
-	private static Gson gson = new Gson();
-
 	/**
 	 * 项目中jsp使用jssdk签名接口
 	 * @param req
