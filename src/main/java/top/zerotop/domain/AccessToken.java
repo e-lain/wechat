@@ -13,8 +13,7 @@ public class AccessToken {
 	 * token有效期
 	 */
     private int expiresin;
-    
-	
+
     public static String getAccessToken() {
         return accessToken;
     }

@@ -25,6 +25,7 @@ public class TextMessage extends BaseMessage {
 	public List<Media> getMedialist() {
 		return medialist;
 	}
+
 	public void setMedialist(List<Media> medialist) {
 		this.medialist = medialist;
 	}

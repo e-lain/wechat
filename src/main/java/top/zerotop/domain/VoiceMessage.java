@@ -29,8 +29,6 @@ public class VoiceMessage extends BaseMessage {
 		Format = format;
 	}
 
-
-
 	public String getRecognition() {
 		return Recognition;
 	}

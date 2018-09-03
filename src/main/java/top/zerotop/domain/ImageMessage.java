@@ -19,12 +19,15 @@ public class ImageMessage extends BaseMessage {
 	public String getMediaId() {
 		return MediaId;
 	}
+
 	public void setMediaId(String mediaId) {
 		MediaId = mediaId;
 	}
+
 	public Media getImage() {
 		return Image;
 	}
+
 	public void setImage(Media image) {
 		Image = image;
 	}
