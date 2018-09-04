@@ -32,7 +32,6 @@ public class MessageTypeConstrant {
 	/**
 	 * 地理位置消息
 	 */
-//	public static final String MESSAGE_LOCATION = "location";
 	public static final String MESSAGE_LOCATION = "LOCATION";
 	/**
 	 * 链接消息

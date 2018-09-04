@@ -25,7 +25,8 @@ public class FollowerManager {
 	 * @param access_token
 	 * @return
 	 */
-	public String ListFollower(String access_token){		
+	public String ListFollower(String access_token){
+
 		String url = URLConstrant.URL_FOLLOWER_GET + access_token;
 		
 		String param = SendUtil.sendGet(url, null);

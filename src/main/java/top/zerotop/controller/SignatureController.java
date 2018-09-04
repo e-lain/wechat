@@ -126,6 +126,7 @@ public class SignatureController {
 							+ "&timestamp="+timestamp
 							+ "&url="+rurl;
 		String signature = Decript.SHA1(signatureStr);
+
 		System.out.println("url:"+rurl);
 		System.out.println("timestamp:"+timestamp);
 		System.out.println("nonceStr:"+nonceStr);
@@ -159,12 +160,7 @@ public class SignatureController {
 		map.put(nonceStr,"noncestr");		map.put(timestamp,"timestamp");
 		map.put(url,"url");
 		Arrays.sort(strArray);
-		
 
-//		StringBuilder sbuilder = new StringBuilder();
-//		for (String str : strArray) {
-//			sbuilder.append(str);
-//		}
 		String str = map.get(strArray[0])+"="+strArray[0]
 						+"&"+map.get(strArray[1])+"="+strArray[1]
 						+"&"+map.get(strArray[2])+"="+strArray[2]

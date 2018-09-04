@@ -49,8 +49,6 @@ public class SendUtil {
 			System.out.println("param-- " +parser.parse(param));
 			outt.flush();
 			outt.close();
-			
-			System.out.println("----------------conn--------------------" );
 
 			int code = conn.getResponseCode();
 			System.out.println("code " + code);
@@ -64,7 +62,6 @@ public class SendUtil {
 
 			// 读取响应
 			int length = (int) conn.getContentLength();// 获取长度
-			System.out.println("length " + length);
 			if (length != -1) {
 				byte[] data = new byte[length];
 				byte[] temp = new byte[512];
@@ -109,12 +106,8 @@ public class SendUtil {
 //			System.out.println("param: " +parser.parse(param));
 			outt.flush();
 			outt.close();
-			
-			System.out.println("----------------conn--------------------" );
 
 			int code = conn.getResponseCode();
-			System.out.println("code " + code);
-			System.out.println("resmessage " + conn.getResponseMessage());
 			InputStream is = null;
 			if (code == 200) {
 				is = conn.getInputStream();
