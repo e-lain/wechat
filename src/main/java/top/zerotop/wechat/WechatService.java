@@ -11,6 +11,7 @@ import java.util.Map;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import org.dom4j.DocumentException;
 import top.zerotop.domain.AccessToken;
 import top.zerotop.domain.ImageMessage;
 import top.zerotop.domain.Media;
@@ -29,65 +30,46 @@ import javax.servlet.http.HttpServletRequest;
 
 public class WechatService {
 	
-	Map<String, String> map = new HashMap<String, String>();
-	XStream xstream = new XStream(new DomDriver());
-	String responseMes;
+	private Map<String, String> map = new HashMap<>();
+	private XStream xstream = new XStream(new DomDriver());
+	private String responseMes;
 
 	public String processRequest(HttpServletRequest request) {
 		responseMes = "";
-		InputStream ins = null;
+		InputStream inputStream = null;
+
 		try {
-			ins = request.getInputStream();
+			inputStream = request.getInputStream();
 		} catch (IOException e1) {
-			System.out.println("In WechatService [processRequest] ins exception ------ ");
-			e1.printStackTrace();
+			System.out.println("In WechatService [processRequest] get inputStream exception ");
 		}
 
 		Document doc = null;
+		StringBuffer content = new StringBuffer();
+		String line = null;
 		try {
-			StringBuffer content = new StringBuffer();
-			BufferedReader br = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
-			String line = null;
-			while ((line = br.readLine()) != null) {
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+			while (null != (line = bufferedReader.readLine())) {
 				content.append(line + "\n");
 			}
-			br.close();
+			bufferedReader.close();
+			inputStream.close();
 			doc = DocumentHelper.parseText(content.toString());
-//			System.out.println("doc ----- \n" + doc.asXML().toString());
-		} catch (Exception e1) {
-			System.out.println("In WechatService [processRequest] doc exception ------ ");
-			e1.printStackTrace();
-		}
-		try {
+		} catch (IOException e2) {
+			System.out.println("In WechatService [processRequest] close inputStream exception ");
+		} catch (DocumentException e) {
+            System.out.println("In WechatService [processRequest] close inputStream exception ");
+        }
+
+
+        try {
 			Element root = doc.getRootElement();
-//			System.out.println("\nroot --- \n" + root.asXML().toString());
-			System.out.println("root --- ");
-			@SuppressWarnings("unchecked")
 			List<Element> list = root.elements();
 			for (Element e : list) {
-//				System.out.println("--- " + e.asXML().toString());
 				map.put(e.getName(), e.getText());
 			}
 		} catch (Exception e) {
-			System.out.println("In WechatService [processRequest] exception ------ ");
-			e.printStackTrace();
-		}
-		try {
-			ins.close();
-		} catch (IOException e1) {
-			System.out.println("In WechatService [processRequest] exception ------ ");
-			e1.printStackTrace();
-		}
-		try {
-			// map = WechatMessageUtil.xmlToMap(request);
-			System.out.println("-------------------  map  -------------------- ");
-			for (String str : map.keySet()) {
-				System.out.println(str + " : " + map.get(str));
-			}
-			System.out.println("-------- map   ");
-		} catch (Exception e) {
-			System.out.println("In WechatService [processRequest] exception ------ ");
-			e.printStackTrace();
+			System.out.println("In WechatService [processRequest] get root exception ");
 		}
 
 		// 发送信息内容
@@ -209,7 +191,7 @@ public class WechatService {
 				&&MessageTypeConstrant.MESSAGE_EVENT_CLICK.equals(map.get("Event"))
 				&&"clickme".equals(map.get("EventKey"))){
 			System.out.println(" clickme event ------ ");
-						
+
 			String data = "{"
 					+"\"type\":\"news\","
 					+"\"offset\":0,"
