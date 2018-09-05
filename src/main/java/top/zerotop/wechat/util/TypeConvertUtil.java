@@ -36,7 +36,6 @@ public class TypeConvertUtil {
 			ins = request.getInputStream();
 		} catch (IOException e1) {
 			System.out.println("In WechatMessageutil [xmlToMap] exception------ ");
-			e1.printStackTrace();
 		}
 
 		Document doc = null;
@@ -52,8 +51,7 @@ public class TypeConvertUtil {
 			
 //			System.out.println("doc ---- " + doc.asXML().toString());
 		} catch (Exception e1) {
-			System.out.println("In WechatMessageutil [xmlToMap] exception ------ "+e1.getMessage());
-			e1.printStackTrace();
+			System.out.println("In WechatMessageutil [xmlToMap] exception  "+e1.getMessage());
 		}
 		try {
 			Element root = doc.getRootElement();
@@ -63,14 +61,12 @@ public class TypeConvertUtil {
 				map.put(e.getName(), e.getText());
 			}
 		} catch (Exception e) {
-			System.out.println("In WechatMessageutil [xmlToMap] exception ------ ");
-			e.printStackTrace();
+			System.out.println("In WechatMessageutil [xmlToMap] exception  " + e.getMessage());
 		}
 		try {
 			ins.close();
 		} catch (IOException e1) {
-			System.out.println("In WechatMessageutil [xmlToMap] exception ------ ");
-			e1.printStackTrace();
+			System.out.println("In WechatMessageutil [xmlToMap] exception ");
 		}
 		return map;
 	}
