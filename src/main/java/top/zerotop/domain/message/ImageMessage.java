@@ -1,6 +1,8 @@
-package top.zerotop.domain;
+package top.zerotop.domain.message;
 
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import top.zerotop.domain.Media;
+import top.zerotop.domain.message.BaseMessage;
 
 public class ImageMessage extends BaseMessage {
 

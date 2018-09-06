@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -24,17 +25,26 @@ public class NetWorkHelper {
     public String getHttpsResponse(String hsUrl, String requestMethod) {
         URL url;
         InputStream is = null;
+        HttpsURLConnection con = null;
         String resultData = "";
         try {
             url = new URL(hsUrl);
+            con = (HttpsURLConnection) url.openConnection();
+
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         TrustManager[] tm = {xtm};
 
-        SSLContext ctx = SSLContext.getInstance("TLS");
+        SSLContext ctx = null;
+        try {
+            ctx = SSLContext.getInstance("TLS");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         try {
             ctx.init(null, tm, null);
         } catch (KeyManagementException e) {
@@ -64,16 +74,10 @@ public class NetWorkHelper {
 
 
         try {
-            is = con.getInputStream();
 
+            is = con.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader bufferReader = new BufferedReader(isr);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
 
 
             String inputLine = "";

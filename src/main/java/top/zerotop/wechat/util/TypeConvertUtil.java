@@ -17,7 +17,7 @@ import org.dom4j.Element;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import top.zerotop.domain.TextMessage;
+import top.zerotop.domain.message.TextMessage;
 
 public class TypeConvertUtil {
 

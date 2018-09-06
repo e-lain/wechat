@@ -1,4 +1,7 @@
-package top.zerotop.domain;
+package top.zerotop.domain.message;
+
+import top.zerotop.domain.Media;
+import top.zerotop.domain.message.BaseMessage;
 
 import java.util.List;
 

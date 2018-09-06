@@ -1,8 +1,9 @@
-package top.zerotop.domain;
+package top.zerotop.domain.message;
 
 import java.util.List;
 
 import top.zerotop.domain.material.ArticleItem;
+import top.zerotop.domain.message.BaseMessage;
 
 /**
  *@author 作者: zerotop

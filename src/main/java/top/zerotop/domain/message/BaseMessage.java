@@ -1,4 +1,4 @@
-package top.zerotop.domain;
+package top.zerotop.domain.message;
 
 public class BaseMessage {
 
