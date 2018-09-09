@@ -2,8 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" 
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
@@ -13,33 +11,17 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/context 
-       http://www.springframework.org/schema/context/spring-context-4.1.xsd
-       http://www.springframework.org/schema/mvc 
-       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       http://www.springframework.org/schema/context/spring-context-4.1.xsd">
        
-    <context:component-scan base-package="top.zerotop.wechat.tunnel.service"/>
-       
-       
-       
-         <mvc:annotation-driven />
-    <!-- 扫描controller包，使注解生效 -->
-    <context:component-scan base-package="top.zerotop.controller"/>
+
+
     
-     <!-- 配置视图解析器，将ModelAndView及字符串解析为据图界面 -->
-    <bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-        p:viewClass="org.springframework.web.servlet.view.JstlView"
-        p:prefix="/WEB-INF/views/"
-        p:suffix=".jsp"
-    /> 
-    
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="10240000"/>
-        <property name="defaultEncoding" value="UTF-8"/>
-    </bean>
-        
-    
-    <context:property-placeholder location="classpath:jdbc.properties"/>
-    
+    <context:property-placeholder location="classpath:database/jdbc.properties"/>
+
+    <import resource="classpath:spring-mvc.xml"/>
+
+    <!--<bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>-->
+
     <!-- 数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 
@@ -47,6 +29,10 @@
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
+
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+        <property name="minIdle" value = "${jdbc.minIdle}"/>
+        <property name="maxActive" value = "${jdbc.maxActive}"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -59,27 +45,24 @@
     </bean>
     
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="top.zerotop.wechat.tunnel.dao"/>
+        <property name="basePackage" value="top.zerotop.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
-    
-
     
     <!--配置Spring的事务管理器 --> 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>  
     
-    <tx:annotation-driven transaction-manager="transactionManager" /> 
-    
-    <!-- -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
+    <tx:annotation-driven/>
+
+    <tx:advice id="txAdvice">
     
         <tx:attributes>  
-            <tx:method name="add*" propagation="REQUIRED"/>
-            <tx:method name="insert*" propagation="REQUIRED"/>
-            <tx:method name="update*" propagation="REQUIRED"/>
-            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="add*"/>
+            <tx:method name="insert*"/>
+            <tx:method name="update*"/>
+            <tx:method name="delete*"/>
              
             <tx:method name="list*" propagation="SUPPORTS" read-only="true" />
             <tx:method name="get*" propagation="SUPPORTS" read-only="true" />

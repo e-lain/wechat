@@ -11,10 +11,16 @@
        http://www.springframework.org/schema/mvc 
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
        
-       <mvc:annotation-driven />
+    <mvc:annotation-driven />
     <!-- 扫描controller包，使注解生效 -->
     <context:component-scan base-package="top.zerotop.controller"/>
-    
+    <context:component-scan base-package="top.zerotop.config"/>
+
+    <mvc:default-servlet-handler />
+
+    <mvc:resources mapping="/swagger/**" location="/WEB-INF/views/swagger/"/>
+    <!--<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>-->
+
      <!-- 配置视图解析器，将ModelAndView及字符串解析为据图界面 -->
     <bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver"
         p:viewClass="org.springframework.web.servlet.view.JstlView"
@@ -26,5 +32,6 @@
         <property name="maxUploadSize" value="10240000"/>
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
-    
+
+
 </beans>
