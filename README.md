@@ -1,28 +1,31 @@
 # wechat
+  
+
 wechat development
 
-* * *
 
+### 一些微信公众号接口的开发尝试  
 
-一些微信公众号接口的开发尝试  
-
-项目有关直接通过发送get请求即可获取数据的接口  
+>项目有关直接通过发送get请求即可获取数据的接口  
 可直接在本地用js构造请求  
 例如获取用户列表
 
 
 * * *
 
-项目是直接在maven项目中修改的，pom.xml如下
+### 项目部署
 
-服务器上部署：  
+>项目是直接在maven项目中修改的，pom.xml如下
+
+>服务器上部署：  
 暂时只是将项目中的classes直接放到tomcat项目WEB-INF下  
 在tomcat下的web.xml中写入微信公众号的appid和appsecret  
 就可以直接运行  
 
-* * *
 
-`<?xml version="1.0" encoding="UTF-8"?>
+``` 
+
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
@@ -117,20 +120,19 @@ wechat development
 
 </web-app>`
 
+```
 
-* * *
+### 技术栈  
 
-技术栈：  
 maven构建项目  
 
 spring管理，mybatis与数据库连接  
 数据库使用mysql  
 
-由于添加了jssdk,所以打算使用spring mvc
+由于添加了jssdk,所以打算使用spring mvc  
+  
+添加接口测试工具 swagger-ui
 
 * * *
 
 项目现在仅尝试部分接口，等之后会更对的进行尝试
-
-
-
