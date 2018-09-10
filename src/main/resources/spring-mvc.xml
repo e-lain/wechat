@@ -18,9 +18,6 @@
 
     <mvc:default-servlet-handler />
 
-    <mvc:resources mapping="/swagger/**" location="/WEB-INF/views/swagger/"/>
-    <!--<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>-->
-
      <!-- 配置视图解析器，将ModelAndView及字符串解析为据图界面 -->
     <bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver"
         p:viewClass="org.springframework.web.servlet.view.JstlView"

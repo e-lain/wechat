@@ -70,10 +70,10 @@
     <param-value>classpath:log4j.properties</param-value>
   </context-param>
   <welcome-file-list>
-    <welcome-file>/user/index</welcome-file>
+    <welcome-file>/index.jsp</welcome-file>
   </welcome-file-list>
   <error-page>
     <error-code>404</error-code>
-    <location>/user/error</location>
+    <location>/Signature.jsp</location>
   </error-page>
 </web-app>
