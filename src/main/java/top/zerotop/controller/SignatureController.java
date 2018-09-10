@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
@@ -26,7 +26,8 @@ import top.zerotop.wechat.util.SendUtil;
  * @author 作者: zerotop
  * @createDate 创建时间: 2018年5月4日下午9:48:14
  */
-@Controller
+@Api(value = "WeChat接口")
+@RestController
 public class SignatureController {
 	
 	/**
@@ -34,8 +35,9 @@ public class SignatureController {
 	 * @param req
 	 * @return
 	 */
-	@RequestMapping("/signature")
-	public ModelAndView signature(HttpServletRequest req){
+	@ApiOperation(value = "微信接口验证")
+	@GetMapping("/signature")
+	public Map<String, String> signature(HttpServletRequest req){
 		
 		System.out.println("-----------signature---------------");
 		
@@ -53,25 +55,26 @@ public class SignatureController {
 		System.out.println("signatureStr:"+signatureStr);
 		System.out.println("signature:"+signature);
 		
-		ModelAndView view = new ModelAndView("Signature");
-		view.addObject("appId", "appId");
-		view.addObject("nonceStr", nonceStr);
-		view.addObject("timestamp", timestamp);
-		view.addObject("signature", signature);
+		Map<String, String> result = new HashMap<>();
+		result.put("appId", "appId");
+		result.put("nonceStr", nonceStr);
+		result.put("timestamp", timestamp);
+		result.put("signature", signature);
 		System.out.println("-----------end---------------");
-		return view;
+		return result;
 	}
 	
 	/**
-	 * 微信小程序登录        wx。login
+	 * 微信小程序登录        wx.login
 	 * @param req	 HttpServletRequest
 	 * @param code   临时登录凭证code只能使用一次
 	 * @return
 	 */
-	@RequestMapping(value = "/mini/login/{code}", produces="application/json;charset=utf-8")
-	public @ResponseBody String miniLogin(HttpServletRequest req ,@PathVariable("code")String code){
+	@ApiOperation(value = "微信小程序登录接口")
+	@GetMapping(value = "/mini/login/{code}", produces="application/json;charset=utf-8")
+	public String miniLogin(HttpServletRequest req ,@PathVariable("code")String code){
 		
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		
 		System.out.println("sessionid:"+req.getSession().getId());
 		
@@ -104,7 +107,8 @@ public class SignatureController {
 	 * @param req
 	 * @return
 	 */
-	@RequestMapping(value= "/signature/vue", produces="application/json;charset=utf-8")
+	@ApiOperation(value = "微信公众号本地jssdk验证")
+	@PostMapping(value= "/signature/vue")
 	public @ResponseBody String signatureVue(HttpServletRequest req){
 		
 		System.out.println("--------------- vue signature -------------------");
