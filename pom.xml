@@ -115,6 +115,13 @@
 		<version>2.7.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+
         <!--静态页面依赖的webjar-->
         <dependency>
             <groupId>org.webjars.bower</groupId>
@@ -246,6 +253,9 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <bootclasspath>${JAVA_HOME}/jre/lib/rt.jar</bootclasspath>
+                    </compilerArguments>
 				</configuration>
 			</plugin>
 

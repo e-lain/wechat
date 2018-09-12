@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 import top.zerotop.domain.AccessToken;
 import top.zerotop.util.ExtractJsonString;
+import top.zerotop.wechat.TokenThread;
 import top.zerotop.wechat.util.Decript;
 import top.zerotop.wechat.util.SendUtil;
 
@@ -29,6 +30,13 @@ import top.zerotop.wechat.util.SendUtil;
 @Api(value = "WeChat接口")
 @RestController
 public class SignatureController {
+
+
+	@GetMapping(value = "/token")
+	public @ResponseBody String getToken() {
+
+		return TokenThread.accessToken.getAccessToken();
+	}
 	
 	/**
 	 * 项目中jsp使用jssdk签名接口
@@ -174,4 +182,5 @@ public class SignatureController {
 
 		return str;
 	}
+
 }
