@@ -1,4 +1,4 @@
-package top.zerotop.wechat.util;
+package top.zerotop.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

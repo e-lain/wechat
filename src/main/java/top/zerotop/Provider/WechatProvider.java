@@ -1,4 +1,4 @@
-package top.zerotop.wechat;
+package top.zerotop.Provider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import org.dom4j.DocumentException;
 import top.zerotop.domain.AccessToken;
 import top.zerotop.domain.message.NewsMessage;
 import top.zerotop.domain.material.ArticleItem;
+import top.zerotop.wechat.EventHandler;
 import top.zerotop.wechat.constrant.MessageTypeConstrant;
 import top.zerotop.wechat.manager.MediaManager;
 
@@ -24,7 +25,7 @@ import org.dom4j.Element;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class WechatService {
+public class WechatProvider {
 
     private Map<String, String> map = new HashMap<>();
     private XStream xstream = new XStream(new DomDriver());

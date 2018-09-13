@@ -18,7 +18,7 @@ import top.zerotop.domain.material.Article;
 import top.zerotop.domain.material.ArticleItem;
 import top.zerotop.domain.material.Material;
 import top.zerotop.wechat.constrant.URLConstrant;
-import top.zerotop.wechat.util.SendUtil;
+import top.zerotop.util.SendUtil;
 
 public class MediaManager {
 	

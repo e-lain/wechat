@@ -1,4 +1,4 @@
-package top.zerotop.wechat;
+package top.zerotop.Provider;
 
 import java.io.BufferedReader;
 import java.io.IOException;

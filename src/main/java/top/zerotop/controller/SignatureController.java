@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -20,8 +18,8 @@ import com.google.gson.Gson;
 import top.zerotop.domain.AccessToken;
 import top.zerotop.util.ExtractJsonString;
 import top.zerotop.wechat.TokenThread;
-import top.zerotop.wechat.util.Decript;
-import top.zerotop.wechat.util.SendUtil;
+import top.zerotop.util.Decript;
+import top.zerotop.util.SendUtil;
 
 /**
  * @author 作者: zerotop

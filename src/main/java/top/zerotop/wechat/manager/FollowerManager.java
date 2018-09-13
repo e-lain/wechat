@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 import top.zerotop.domain.Follower;
 import top.zerotop.wechat.constrant.URLConstrant;
-import top.zerotop.wechat.util.SendUtil;
+import top.zerotop.util.SendUtil;
 
 public class FollowerManager {
 	

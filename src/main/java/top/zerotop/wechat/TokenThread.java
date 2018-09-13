@@ -3,8 +3,9 @@ package top.zerotop.wechat;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import top.zerotop.Provider.NetWorkHelper;
 import top.zerotop.domain.AccessToken;
-import top.zerotop.wechat.util.SendUtil;
+import top.zerotop.util.SendUtil;
 
 public class TokenThread implements Runnable {
 	

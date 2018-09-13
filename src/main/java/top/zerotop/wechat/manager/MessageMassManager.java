@@ -1,6 +1,6 @@
 package top.zerotop.wechat.manager;
 
-import top.zerotop.wechat.util.SendUtil;
+import top.zerotop.util.SendUtil;
 
 /**
  * 群发

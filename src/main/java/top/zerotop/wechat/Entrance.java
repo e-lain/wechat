@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import top.zerotop.wechat.util.Decript;
+import top.zerotop.Provider.WechatProvider;
+import top.zerotop.util.Decript;
 
 
 
@@ -24,7 +25,7 @@ public class Entrance extends HttpServlet{
 	 */
 	private final String token = "zerotop";
 	
-	WechatService wechatService = new WechatService();
+	WechatProvider wechatService = new WechatProvider();
 	 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
