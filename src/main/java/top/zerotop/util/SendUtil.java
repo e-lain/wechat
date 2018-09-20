@@ -252,18 +252,6 @@ public class SendUtil {
 	        //关闭输出流  
 	        foutStream.close();  
 	        conn.disconnect();
-//			if (length != -1) {
-//				byte[] data = new byte[length];
-//				byte[] temp = new byte[512];
-//				int readLen = 0;
-//				int destPos = 0;
-//				while ((readLen = is.read(temp)) > 0) {
-//					System.arraycopy(temp, 0, data, destPos, readLen);
-//					destPos += readLen;
-//				}
-//				String resul = new String(data, "UTF-8"); // utf-8编码
-//				return resul;
-//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

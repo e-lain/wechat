@@ -49,7 +49,7 @@ public class TypeConvertUtil {
 			br.close();
 			doc = DocumentHelper.parseText(content.toString());
 			
-//			System.out.println("doc ---- " + doc.asXML().toString());
+		} catch (Exception e1) {
 		} catch (Exception e1) {
 			System.out.println("In WechatMessageutil [xmlToMap] exception  "+e1.getMessage());
 		}

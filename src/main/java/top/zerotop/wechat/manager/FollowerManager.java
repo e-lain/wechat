@@ -14,7 +14,6 @@ public class FollowerManager {
 				
 		FollowerManager followermanager = new FollowerManager();
 		
-		
 		followermanager.UserInfo("ACCESS_TOKEN","openid");
 		
 	}
