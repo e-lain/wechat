@@ -13,7 +13,7 @@ public class FollowerManager {
 	public static void main(String args[]){
 				
 		FollowerManager followermanager = new FollowerManager();
-		
+
 		followermanager.UserInfo("ACCESS_TOKEN","openid");
 		
 	}
