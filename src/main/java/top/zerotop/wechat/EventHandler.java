@@ -1,5 +1,6 @@
 package top.zerotop.wechat;
 
+import com.alibaba.fastjson.JSON;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import top.zerotop.domain.AccessToken;
@@ -9,6 +10,7 @@ import top.zerotop.domain.Media;
 import top.zerotop.wechat.constrant.MessageTypeConstrant;
 import top.zerotop.wechat.manager.MediaManager;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,12 +105,11 @@ public class EventHandler {
         //菜单栏点击
         if ("clickme".equals(map.get("EventKey"))) {
             System.out.println(" ======= clickme event ======= ");
-
-            String data = "{"
-                    + "\"type\":\"news\","
-                    + "\"offset\":0,"
-                    + "\"count\":5"
-                    + "}";
+            
+            Map<String, String> map = new HashMap<>();
+            map.put("type","news");
+            map.put("offset","0");
+            map.put("count","5");
 
 
             NewsMessage newMessage = new NewsMessage();
@@ -118,7 +119,7 @@ public class EventHandler {
             newMessage.setMsgType("news");
             try {
                 List<ArticleItem> itemList =
-                        MediaManager.batchgetMaterial(AccessToken.getAccessToken(), data);
+                        MediaManager.batchgetMaterial(AccessToken.getAccessToken(), JSON.toJSONString(map));
                 newMessage.setArticles(itemList);
                 newMessage.setArticleCount(itemList.size());
             } catch (Exception e) {
@@ -154,7 +155,6 @@ public class EventHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            responseMsg = "";
         }
 
         return responseMsg;
