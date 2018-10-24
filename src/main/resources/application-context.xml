@@ -16,7 +16,7 @@
 
 
     
-    <context:property-placeholder location="classpath:database/jdbc.properties"/>
+    <context:property-placeholder location="classpath:database/*.properties"/>
 
     <import resource="classpath:spring-mvc.xml"/>
 
@@ -43,7 +43,7 @@
     </bean>
     
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="top.zerotop.mapper"/>
+        <property name="basePackage" value="top.zerotop.data.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
     
