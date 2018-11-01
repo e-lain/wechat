@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSON;
@@ -28,11 +30,10 @@ import top.zerotop.util.SendUtil;
 @Api(value = "WeChat接口")
 @RestController
 public class SignatureController {
-
+	private static Logger logger = LoggerFactory.getLogger(SignatureController.class);
 
 	@GetMapping(value = "/token")
 	public @ResponseBody String getToken() {
-
 		return TokenThread.accessToken.getAccessToken();
 	}
 	
@@ -44,9 +45,6 @@ public class SignatureController {
 	@ApiOperation(value = "微信接口验证")
 	@GetMapping("/signature")
 	public Map<String, String> signature(HttpServletRequest req){
-		
-		System.out.println("-----------signature---------------");
-		
 		String url = req.getRequestURL().toString();
 		String timestamp = SignatureController.createTimestamp();
 		String nonceStr = SignatureController.createNonce();
@@ -55,18 +53,17 @@ public class SignatureController {
 							+ "&timestamp="+timestamp
 							+ "&url="+url;
 		String signature = Decript.SHA1(signatureStr);
-		System.out.println("url:"+url);
-		System.out.println("timestamp:"+timestamp);
-		System.out.println("nonceStr:"+nonceStr);
-		System.out.println("signatureStr:"+signatureStr);
-		System.out.println("signature:"+signature);
+		logger.info("url:"+url);
+		logger.info("timestamp:"+timestamp);
+		logger.info("nonceStr:"+nonceStr);
+		logger.info("signatureStr:"+signatureStr);
+		logger.info("signature:"+signature);
 		
 		Map<String, String> result = new HashMap<>();
 		result.put("appId", "appId");
 		result.put("nonceStr", nonceStr);
 		result.put("timestamp", timestamp);
 		result.put("signature", signature);
-		System.out.println("-----------end---------------");
 		return result;
 	}
 	
@@ -81,21 +78,21 @@ public class SignatureController {
 	public String miniLogin(HttpServletRequest req ,@PathVariable("code")String code){
 		
 		Map<String, String> map = new HashMap<>();
-		
-		System.out.println("sessionid:"+req.getSession().getId());
+
+		logger.info("sessionid:"+req.getSession().getId());
 		
 		String url = "https://api.weixin.qq.com/sns/jscode2session?"
 				+ "appid=yourappid"
 				+ "&secret=yoursecret"
 				+ "&js_code="+code
 				+ "&grant_type=authorization_code";
-		System.out.println("rul: "+ url);
+		logger.info("splice is url: "+ url);
 		
 		String res = SendUtil.sendGet(url, null);	
 		
-		JSONObject tjson = JSON.parseObject(res);
-		String openid = tjson.get("openid").toString();
-		String session_key = tjson.get("openid").toString();
+		JSONObject json = JSON.parseObject(res);
+		String openid = json.get("openid").toString();
+		String session_key = json.get("openid").toString();
 		
 		//用于验证微信小程序用户身份
 		String minisign = Decript.SHA1(openid+session_key);
@@ -103,8 +100,7 @@ public class SignatureController {
 		
 		map.put("session_id", req.getSession().getId());
 		map.put("minisign", minisign);
-		
-		
+
 		return JSON.toJSONString(map);
 	}
 		
@@ -120,12 +116,11 @@ public class SignatureController {
 		System.out.println("--------------- vue signature -------------------");
 		
 		String json = ExtractJsonString.extractJson(req);
-		System.out.println("json: "+json);
 		Gson gson = new Gson();
 		JSONObject tjson = JSON.parseObject(json);
 		String rurl = tjson.get("url").toString();
 		System.out.println("realurl: "+rurl);
-		
+
 		Map<String, String> map = new HashMap<String, String>();
 		
 //		String url = req.getRequestURL().toString();
@@ -137,11 +132,11 @@ public class SignatureController {
 							+ "&url="+rurl;
 		String signature = Decript.SHA1(signatureStr);
 
-		System.out.println("url:"+rurl);
-		System.out.println("timestamp:"+timestamp);
-		System.out.println("nonceStr:"+nonceStr);
-		System.out.println("signatureStr:"+signatureStr);
-		System.out.println("signature:"+signature);
+		logger.info("signatureVue url:"+rurl);
+		logger.info("signatureVue timestamp:"+timestamp);
+		logger.info("signatureVue nonceStr:"+nonceStr);
+		logger.info("signatureVue signatureStr:"+signatureStr);
+		logger.info("signatureVue signature:"+signature);
 		
 		map.put("appId", "appId");
 		map.put("nonceStr", nonceStr);
@@ -174,9 +169,9 @@ public class SignatureController {
 		String str = map.get(strArray[0])+"="+strArray[0]
 						+"&"+map.get(strArray[1])+"="+strArray[1]
 						+"&"+map.get(strArray[2])+"="+strArray[2]
-						+"&"+map.get(strArray[3])+"="+strArray[3]; 
-		
-		System.out.println("str:"+str);
+						+"&"+map.get(strArray[3])+"="+strArray[3];
+
+		logger.info("str:"+str);
 
 		return str;
 	}

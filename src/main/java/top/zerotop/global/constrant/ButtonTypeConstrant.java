@@ -1,4 +1,4 @@
-package top.zerotop.wechat.constrant;
+package top.zerotop.global.constrant;
 
 public class ButtonTypeConstrant {
 
