@@ -17,25 +17,27 @@ import org.dom4j.Element;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zerotop.domain.message.TextMessage;
 
 public class TypeConvertUtil {
+	private static final Logger logger = LoggerFactory.getLogger(TypeConvertUtil.class);
 
 	/**
 	 * Xml 转化为 Map
-	 * 
 	 * @param request
 	 * @return
 	 */
 	public static Map<String, String> xmlToMap(HttpServletRequest request) {
 
-		System.out.println("In WechatMessageutil [xmlToMap] ------ ");
+		logger.info(" now begin convert ");
 		Map<String, String> map = new HashMap<String, String>();
 		InputStream ins = null;
 		try {
 			ins = request.getInputStream();
 		} catch (IOException e1) {
-			System.out.println("In WechatMessageutil [xmlToMap] exception------ ");
+			logger.info("e1");
 		}
 
 		Document doc = null;
@@ -50,8 +52,7 @@ public class TypeConvertUtil {
 			doc = DocumentHelper.parseText(content.toString());
 			
 		} catch (Exception e1) {
-		} catch (Exception e1) {
-			System.out.println("In WechatMessageutil [xmlToMap] exception  "+e1.getMessage());
+			logger.info(e1.getMessage());
 		}
 		try {
 			Element root = doc.getRootElement();
@@ -61,12 +62,12 @@ public class TypeConvertUtil {
 				map.put(e.getName(), e.getText());
 			}
 		} catch (Exception e) {
-			System.out.println("In WechatMessageutil [xmlToMap] exception  " + e.getMessage());
+			logger.info(e.getMessage());
 		}
 		try {
 			ins.close();
 		} catch (IOException e1) {
-			System.out.println("In WechatMessageutil [xmlToMap] exception ");
+			logger.info(e1.getMessage());
 		}
 		return map;
 	}
@@ -84,5 +85,4 @@ public class TypeConvertUtil {
 		return xstream.toXML(textMessage);
 
 	}
-	
 }

@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ExtractJsonString {
+public class ExtractJsonUtils {
 
 	public static String extractJson(HttpServletRequest req){
 		
