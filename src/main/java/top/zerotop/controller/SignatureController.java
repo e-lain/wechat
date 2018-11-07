@@ -18,10 +18,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 
 import top.zerotop.domain.AccessToken;
-import top.zerotop.util.ExtractJsonString;
+import top.zerotop.util.ExtractJsonUtils;
 import top.zerotop.wechat.TokenThread;
-import top.zerotop.util.Decript;
-import top.zerotop.util.SendUtil;
+import top.zerotop.util.DecriptUtils;
+import top.zerotop.util.SendUtils;
 
 /**
  * @author 作者: zerotop
@@ -52,7 +52,7 @@ public class SignatureController {
 							+ "&noncestr="+nonceStr
 							+ "&timestamp="+timestamp
 							+ "&url="+url;
-		String signature = Decript.SHA1(signatureStr);
+		String signature = DecriptUtils.SHA1(signatureStr);
 		logger.info("url:"+url);
 		logger.info("timestamp:"+timestamp);
 		logger.info("nonceStr:"+nonceStr);
@@ -88,14 +88,14 @@ public class SignatureController {
 				+ "&grant_type=authorization_code";
 		logger.info("splice is url: "+ url);
 		
-		String res = SendUtil.sendGet(url, null);	
+		String res = SendUtils.sendGet(url, null);
 		
 		JSONObject json = JSON.parseObject(res);
 		String openid = json.get("openid").toString();
 		String session_key = json.get("openid").toString();
 		
 		//用于验证微信小程序用户身份
-		String minisign = Decript.SHA1(openid+session_key);
+		String minisign = DecriptUtils.SHA1(openid+session_key);
 		req.getSession().setAttribute("minisign", minisign);
 		
 		map.put("session_id", req.getSession().getId());
@@ -115,7 +115,7 @@ public class SignatureController {
 		
 		System.out.println("--------------- vue signature -------------------");
 		
-		String json = ExtractJsonString.extractJson(req);
+		String json = ExtractJsonUtils.extractJson(req);
 		Gson gson = new Gson();
 		JSONObject tjson = JSON.parseObject(json);
 		String rurl = tjson.get("url").toString();
@@ -130,7 +130,7 @@ public class SignatureController {
 							+ "&noncestr="+nonceStr
 							+ "&timestamp="+timestamp
 							+ "&url="+rurl;
-		String signature = Decript.SHA1(signatureStr);
+		String signature = DecriptUtils.SHA1(signatureStr);
 
 		logger.info("signatureVue url:"+rurl);
 		logger.info("signatureVue timestamp:"+timestamp);

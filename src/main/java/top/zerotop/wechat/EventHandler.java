@@ -3,11 +3,13 @@ package top.zerotop.wechat;
 import com.alibaba.fastjson.JSON;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zerotop.domain.AccessToken;
 import top.zerotop.domain.material.ArticleItem;
 import top.zerotop.domain.message.*;
 import top.zerotop.domain.Media;
-import top.zerotop.wechat.constrant.MessageTypeConstrant;
+import top.zerotop.global.constrant.MessageTypeConstrant;
 import top.zerotop.wechat.manager.MediaManager;
 
 import java.util.HashMap;
@@ -15,13 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 public class EventHandler {
+    private static Logger logger = LoggerFactory.getLogger(EventHandler.class);
 
     private static XStream xstream = new XStream(new DomDriver());
     private static String responseMsg;
 
     public static String textEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
         // 文本消息
-        System.out.println("======== Text message ======= ");
+        logger.info("======== Text message ======= ");
         TextMessage textMessage = new TextMessage();
         textMessage.setMsgType(msgType);
         textMessage.setToUserName(fromUserName);
@@ -35,7 +38,7 @@ public class EventHandler {
 
     public static String imgEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
         // 图片消息
-        System.out.println(" ======= Image message ======= ");
+        logger.info(" ======= Image message ======= ");
         ImageMessage imageMessage = new ImageMessage();
         imageMessage.setToUserName(fromUserName);
         imageMessage.setFromUserName(toUserName);
@@ -50,7 +53,7 @@ public class EventHandler {
 
     public static String voiceEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
         // 语音消息
-        System.out.println(" ======= Voice message ======= ");
+        logger.info(" ======= Voice message ======= ");
         VoiceMessage voiceMessage = new VoiceMessage();
         voiceMessage.setToUserName(fromUserName);
         voiceMessage.setFromUserName(toUserName);
@@ -67,49 +70,45 @@ public class EventHandler {
 
 
     public static String mssageEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
-
+        TextMessage textMessage = new TextMessage();
         switch (map.get("Event")) {
             case MessageTypeConstrant.MESSAGE_EVENT_SUBSCRIBE :
-                System.out.println(" ======= Text message ======= ");
-                TextMessage textMessage = new TextMessage();
+                logger.info(" ======= Text message ======= ");
                 textMessage.setMsgType(msgType);
                 textMessage.setToUserName(fromUserName);
                 textMessage.setFromUserName(toUserName);
                 textMessage.setCreateTime(System.currentTimeMillis());
                 textMessage.setContent("感谢您的关注");
-
                 responseMsg =  makeXML(textMessage);
+                break;
 
             case MessageTypeConstrant.MESSAGE_LOCATION :
-                System.out.println(" ======= locationevent message ======= ");
+                logger.info(" ======= locationevent message ======= ");
                 textMessage = new TextMessage();
                 textMessage.setMsgType(msgType);
                 textMessage.setToUserName(fromUserName);
                 textMessage.setFromUserName(toUserName);
                 textMessage.setCreateTime(System.currentTimeMillis());
                 textMessage.setContent("维度:" + map.get("Latitude") + "  经度:" + map.get("Longitude") + "  精度:" + map.get("Precision"));
-
                 responseMsg =  makeXML(textMessage);
+                break;
 
             case MessageTypeConstrant.MESSAGE_EVENT_CLICK :
-
                 responseMsg =  clickEventHandler(map, fromUserName, toUserName, msgType);
+                break;
         }
 
         return responseMsg;
     }
 
     private static String clickEventHandler(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
-
-
         //菜单栏点击
         if ("clickme".equals(map.get("EventKey"))) {
-            System.out.println(" ======= clickme event ======= ");
-            
-            Map<String, String> map = new HashMap<>();
-            map.put("type","news");
-            map.put("offset","0");
-            map.put("count","5");
+            logger.info(" ======= clickme event ======= ");
+            Map<String, String> tempMap = new HashMap<>();
+            tempMap.put("type","news");
+            tempMap.put("offset","0");
+            tempMap.put("count","5");
 
 
             NewsMessage newMessage = new NewsMessage();
@@ -125,15 +124,12 @@ public class EventHandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             responseMsg = makeXML(newMessage);
             responseMsg = responseMsg.replaceAll("top.zerotop.domain.material.ArticleItem", "item");
-
         }
 
         else {
-
-            System.out.println(" ======= click message ======= ");
+            logger.info(" ======= click message ======= ");
             ImageMessage imageMessage = new ImageMessage();
             imageMessage.setToUserName(fromUserName);
             imageMessage.setFromUserName(toUserName);
@@ -148,7 +144,6 @@ public class EventHandler {
     }
 
     private static String makeXML(BaseMessage message) {
-
         try {
             xstream.alias("xml", message.getClass());
             responseMsg = xstream.toXML(message);
@@ -156,9 +151,6 @@ public class EventHandler {
             e.printStackTrace();
         }finally {
         }
-
         return responseMsg;
-
     }
-
 }

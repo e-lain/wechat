@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import top.zerotop.Provider.WechatProvider;
-import top.zerotop.util.Decript;
+import top.zerotop.util.DecriptUtils;
 
 
 
@@ -37,7 +37,7 @@ public class Entrance extends HttpServlet{
 	 
 	    //排序 加密 校验签名
 	    String sortString = sort(token, timestamp, nonce);
-	    String mytoken = Decript.SHA1(sortString);
+	    String mytoken = DecriptUtils.SHA1(sortString);
 	    if (null != mytoken && mytoken != "" && mytoken.equals(signature)) {
 	        System.out.println("签名校验通过。");
 	        response.getWriter().println(echostr); //如果检验成功输出echostr，微信服务器接收到此输出，才会确认检验完成。

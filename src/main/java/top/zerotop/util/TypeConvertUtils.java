@@ -21,8 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.zerotop.domain.message.TextMessage;
 
-public class TypeConvertUtil {
-	private static final Logger logger = LoggerFactory.getLogger(TypeConvertUtil.class);
+public class TypeConvertUtils {
+	private static final Logger logger = LoggerFactory.getLogger(TypeConvertUtils.class);
 
 	/**
 	 * Xml 转化为 Map

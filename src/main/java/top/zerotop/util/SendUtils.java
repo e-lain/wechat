@@ -2,6 +2,7 @@ package top.zerotop.util;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.google.gson.Gson;
@@ -10,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class SendUtil {
-    private static Logger logger = LoggerFactory.getLogger(SendUtil.class);
+public class SendUtils {
+    private static Logger logger = LoggerFactory.getLogger(SendUtils.class);
 
     private static Gson gson = new Gson();
 
@@ -23,7 +24,7 @@ public class SendUtil {
 
     private static String result;
 
-    private static void getConn(String url) {
+    private static void getConn(String url) throws MalformedURLException, IOException {
         realUrl = new URL(url);
         conn = (HttpURLConnection) realUrl.openConnection();
         conn.setDoOutput(true);
@@ -36,7 +37,7 @@ public class SendUtil {
 
         OutputStream outt = null; // utf-8编码
         try {
-            getConn(String url);
+            getConn(url);
             // conn.setRequestProperty("user-agent", "Mozilla/5.0");
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
@@ -73,7 +74,7 @@ public class SendUtil {
 
     public static String sendPost(String url, String param) {
         try {
-            getConn(String url);
+            getConn(url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
@@ -111,7 +112,7 @@ public class SendUtil {
 
     public static String sendGet(String url, String param) {
         try {
-            getConn(String url);
+            getConn(url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
@@ -148,7 +149,7 @@ public class SendUtil {
 
     public static String sendGetImage(String url, String param) {
         try {
-            getConn(String url);
+            getConn(url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
@@ -214,7 +215,7 @@ public class SendUtil {
                 throw new IOException("file is not exist");
             }
 
-            getConn(String url);
+            getConn(url);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Charset", "UTF-8");
@@ -275,7 +276,7 @@ public class SendUtil {
         return result;
     }
 
-    private static String readData(int length, InputStream is) throws UnsupportedEncodingException {
+    private static String readData(int length, InputStream is) throws UnsupportedEncodingException, IOException {
         byte[] data = new byte[length];
         if (length != -1) {
             byte[] temp = new byte[512];

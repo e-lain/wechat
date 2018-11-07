@@ -31,7 +31,6 @@ public class NetWorkHelper {
             url = new URL(hsUrl);
             con = (HttpsURLConnection) url.openConnection();
 
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -72,9 +71,7 @@ public class NetWorkHelper {
             e.printStackTrace();
         }
 
-
         try {
-
             is = con.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader bufferReader = new BufferedReader(isr);

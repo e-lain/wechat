@@ -12,12 +12,10 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import org.dom4j.DocumentException;
-import top.zerotop.domain.AccessToken;
-import top.zerotop.domain.message.NewsMessage;
-import top.zerotop.domain.material.ArticleItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zerotop.wechat.EventHandler;
-import top.zerotop.wechat.constrant.MessageTypeConstrant;
-import top.zerotop.wechat.manager.MediaManager;
+import top.zerotop.global.constrant.MessageTypeConstrant;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -26,6 +24,7 @@ import org.dom4j.Element;
 import javax.servlet.http.HttpServletRequest;
 
 public class WechatProvider {
+    private static Logger logger = LoggerFactory.getLogger(WechatProvider.class);
 
     private Map<String, String> map = new HashMap<>();
     private XStream xstream = new XStream(new DomDriver());
@@ -38,7 +37,7 @@ public class WechatProvider {
         try {
             inputStream = request.getInputStream();
         } catch (IOException e1) {
-            System.out.println("In WechatService [processRequest] get inputStream exception ");
+            logger.info(e1.getMessage());
         }
 
         Document doc = null;
@@ -53,22 +52,20 @@ public class WechatProvider {
             inputStream.close();
             doc = DocumentHelper.parseText(content.toString());
         } catch (IOException e2) {
-            System.out.println("In WechatService [processRequest] close inputStream exception ");
+            logger.info(e2.getMessage());
         } catch (DocumentException e) {
-            System.out.println("In WechatService [processRequest] close inputStream exception ");
+            logger.info(e.getMessage());
         }
-
 
         try {
             Element root = doc.getRootElement();
             List<Element> list = root.elements();
-            for (Element e : list) {
+            list.forEach(e -> {
                 map.put(e.getName(), e.getText());
-            }
+            });
         } catch (Exception e) {
-            System.out.println("In WechatService [processRequest] get root exception ");
+            logger.info(e.getMessage());
         }
-
         responseMes = createResponseMessage();
 
         return responseMes;
@@ -98,7 +95,6 @@ public class WechatProvider {
                 EventHandler.mssageEvent(map, fromUserName, toUserName, msgType);
         }
 
-
         if (responseMes.equals("")) {
             responseMes = "<xml><ToUserName>" + fromUserName + "</ToUserName>"
                     + "<FromUserName>" + toUserName + "</FromUserName>"
@@ -107,9 +103,7 @@ public class WechatProvider {
                     + "<Content>收到消息：默认处理</Content>"
                     + "</xml>";
         }
-        System.out.println(" ======= res  ");
-        System.out.println(" res: \n" + responseMes);
-        System.out.println(" ======= res ======= ");
+        logger.info(" res: " + responseMes);
 
         return responseMes;
     }

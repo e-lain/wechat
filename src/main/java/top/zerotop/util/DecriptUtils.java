@@ -1,8 +1,17 @@
 package top.zerotop.util;
+import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Decript {
+public class DecriptUtils {
+    public static String MD5(String str) {
+        if (StringUtils.hasText(str)){
+            return null;
+        }
+        return DigestUtils.md5DigestAsHex(str.getBytes());
+    }
   
     public static String SHA1(String decript) {
         try {

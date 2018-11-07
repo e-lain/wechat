@@ -7,7 +7,6 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 
 public class ExtractJsonUtils {
-
 	public static String extractJson(HttpServletRequest req){
 		
 		StringBuffer jsonString = new java.lang.StringBuffer();
