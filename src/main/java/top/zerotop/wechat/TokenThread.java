@@ -3,12 +3,15 @@ package top.zerotop.wechat;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zerotop.Provider.NetWorkHelper;
 import top.zerotop.domain.AccessToken;
-import top.zerotop.util.SendUtil;
+import top.zerotop.util.SendUtils;
 
 public class TokenThread implements Runnable {
-	
+	private static Logger logger = LoggerFactory.getLogger(Runnable.class);
+
 	public static String appId = "";
 
 	public static String appSecret = "";
@@ -25,12 +28,11 @@ public class TokenThread implements Runnable {
 				if (null != accessToken) {
 					System.out.println(AccessToken.getAccessToken());
 					Thread.sleep(7000 * 1000); // 获取到access_token 休眠7000秒
-
 				} else {
 					Thread.sleep(1000 * 3); // 获取的access_token为空 休眠3秒
 				}
 			} catch (Exception e) {
-				System.out.println("发生异常：" + e.getMessage());
+				logger.info("发生异常：" + e.getMessage());
 				e.printStackTrace();
 				try {
 					Thread.sleep(1000 * 10); // 发生异常休眠1秒
@@ -53,8 +55,7 @@ public class TokenThread implements Runnable {
 				TokenThread.appId, TokenThread.appSecret);
 		
 		String result = netHelper.getHttpsResponse(Url, "");
-		System.out.println(result);
-		// response.getWriter().println(result);
+		logger.info(result);
 		JSONObject json = JSON.parseObject(result);
 		AccessToken token = new AccessToken();
 		AccessToken.setAccessToken(json.getString("access_token"));
@@ -62,7 +63,7 @@ public class TokenThread implements Runnable {
 		
 		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+AccessToken.getAccessToken()+"&type=jsapi";
 		
-		String ticket = SendUtil.sendGet(url, null);
+		String ticket = SendUtils.sendGet(url, null);
 		JSONObject tjson = JSON.parseObject(ticket);
 		AccessToken.setJsapiTicket(tjson.getString("ticket"));
 		
