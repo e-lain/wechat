@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zerotop.Provider.WechatProvider;
 import top.zerotop.util.DecriptUtils;
 
 
 
 public class Entrance extends HttpServlet{
-	
-	/**
-	 * 
-	 */
+	private static Logger logger = LoggerFactory.getLogger(Entrance.class);
+
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -29,7 +29,7 @@ public class Entrance extends HttpServlet{
 	 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-	    System.out.println("开始签名校验");
+        logger.info("开始签名校验");
 	    String signature = request.getParameter("signature");
 	    String timestamp = request.getParameter("timestamp");
 	    String nonce = request.getParameter("nonce");

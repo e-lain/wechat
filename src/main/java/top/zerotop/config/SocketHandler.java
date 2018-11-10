@@ -1,5 +1,7 @@
 package top.zerotop.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -13,17 +15,16 @@ import java.util.List;
  * Created by jupeng.wang on 2018/9/11.
  */
 public class SocketHandler extends TextWebSocketHandler {
+    private static Logger logger = LoggerFactory.getLogger(TextWebSocketHandler.class);
 
     public final static List<WebSocketSession> socketSession = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        System.out.println("get message "+message.getPayload());
-
+        logger.info("get message "+message.getPayload());
         for (WebSocketSession websession : socketSession) {
             websession.sendMessage(new TextMessage("收到新消息"+message.getPayload()));
         }
-
 
         super.handleTextMessage(session, message);
     }
