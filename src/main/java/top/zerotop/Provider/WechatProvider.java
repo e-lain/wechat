@@ -8,9 +8,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +24,6 @@ public class WechatProvider {
     private static Logger logger = LoggerFactory.getLogger(WechatProvider.class);
 
     private Map<String, String> map = new HashMap<>();
-    private XStream xstream = new XStream(new DomDriver());
     private String responseMes;
 
     public String processRequest(HttpServletRequest request) {
