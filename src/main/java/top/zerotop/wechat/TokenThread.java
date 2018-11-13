@@ -7,10 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.zerotop.Provider.NetWorkHelper;
 import top.zerotop.domain.AccessToken;
+import top.zerotop.global.constrant.URLConstrant;
 import top.zerotop.util.SendUtils;
 
 public class TokenThread implements Runnable {
-	private static Logger logger = LoggerFactory.getLogger(Runnable.class);
+	private static Logger logger = LoggerFactory.getLogger(TokenThread.class);
 
 	public static String appId = "";
 
@@ -26,6 +27,7 @@ public class TokenThread implements Runnable {
 			try {
 				accessToken = this.getAccessToken();
 				if (null != accessToken) {
+					System.out.println("==============token===============");
 					System.out.println(AccessToken.getAccessToken());
 					Thread.sleep(7000 * 1000); // 获取到access_token 休眠7000秒
 				} else {
@@ -51,17 +53,19 @@ public class TokenThread implements Runnable {
 	private AccessToken getAccessToken() {
 		NetWorkHelper netHelper = new NetWorkHelper();
 		String Url = String.format(
-				"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
+				URLConstrant.BASE_URL + "/token?grant_type=client_credential&appid=%s&secret=%s",
 				TokenThread.appId, TokenThread.appSecret);
 		
 		String result = netHelper.getHttpsResponse(Url, "");
+		System.out.println("=================");
+		System.out.println(result);
 		logger.info(result);
 		JSONObject json = JSON.parseObject(result);
 		AccessToken token = new AccessToken();
 		AccessToken.setAccessToken(json.getString("access_token"));
 		token.setExpiresin(json.getInteger("expires_in"));
 		
-		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+AccessToken.getAccessToken()+"&type=jsapi";
+		String url = URLConstrant.BASE_URL +  "/ticket/getticket?access_token="+AccessToken.getAccessToken()+"&type=jsapi";
 		
 		String ticket = SendUtils.sendGet(url, null);
 		JSONObject tjson = JSON.parseObject(ticket);

@@ -23,6 +23,7 @@ public class EventHandler {
     private static String responseMsg;
 
     public static String textEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
+        System.out.println("textEvent===");
         // 文本消息
         logger.info("======== Text message ======= ");
         TextMessage textMessage = new TextMessage();
@@ -33,10 +34,13 @@ public class EventHandler {
         textMessage.setContent("收到消息: " + map.get("Content"));
 
         responseMsg =  makeXML(textMessage);
+        System.out.println(responseMsg);
+
         return responseMsg;
     }
 
     public static String imgEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
+        System.out.println("imgEvent===");
         // 图片消息
         logger.info(" ======= Image message ======= ");
         ImageMessage imageMessage = new ImageMessage();
@@ -52,6 +56,7 @@ public class EventHandler {
     }
 
     public static String voiceEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
+        System.out.println("voiceEvent===");
         // 语音消息
         logger.info(" ======= Voice message ======= ");
         VoiceMessage voiceMessage = new VoiceMessage();
@@ -70,6 +75,7 @@ public class EventHandler {
 
 
     public static String mssageEvent(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
+        System.out.println("mssageEvent===");
         TextMessage textMessage = new TextMessage();
         switch (map.get("Event")) {
             case MessageTypeConstrant.MESSAGE_EVENT_SUBSCRIBE :
@@ -102,6 +108,7 @@ public class EventHandler {
     }
 
     private static String clickEventHandler(Map<String, String> map, String fromUserName, String toUserName, String msgType) {
+        System.out.println("clickEventHandler===");
         //菜单栏点击
         if ("clickme".equals(map.get("EventKey"))) {
             logger.info(" ======= clickme event ======= ");

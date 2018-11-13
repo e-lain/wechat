@@ -1,6 +1,11 @@
 package top.zerotop.wechat.manager;
 
-import top.zerotop.util.SendUtil;
+import com.alibaba.fastjson.JSON;
+import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.SendUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 群发
@@ -11,16 +16,14 @@ import top.zerotop.util.SendUtil;
 public class MessageMassManager {
 
 	public static void main(String args[]) {
-
 		String accessToken = "accessToken";
 		String mediaid = "";
 		MessageMassManager.send(accessToken, mediaid);
-		
 	}
 
 	public static String send(String accessToken, String mediaid){
 		
-//		String url = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token="+accessToken;
+//		String url = URLConstrant.BASE_URL + "/message/mass/send?access_token="+accessToken;
 		
 //		String data = "{\"touser\":["
 //				+ "\"OPENID1\","
@@ -31,19 +34,15 @@ public class MessageMassManager {
 //				+"\"msgtype\":\"mpnews\"，"
 //				+"\"send_ignore_reprint\":0}";
 		
-		String url = "https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token="+accessToken;
-		
-		String data = "{"
-				   +"\"touser\":\"OPENID1\"," 
-				   +"\"mpnews\":{"
-				   + "\"media_id\":\"mediaid\""               
-				   + "},"
-				   +"\"msgtype\":\"mpnews\"" 
-				   +"}";
-			String res = SendUtil.sendPost(url, data);
-			System.out.println(res);
-		
-			return"";
+		String url = URLConstrant.BASE_URL + "/message/mass/preview?access_token="+accessToken;
 
+		Map<String, String> map = new HashMap<>();
+		map.put("touser","OPENID1");
+		map.put("msgtype","mpnews");
+		map.put("mpnews","'media_id':'mediaid'" );
+		String res = SendUtils.sendPost(url, JSON.toJSONString(map));
+		System.out.println(res);
+		
+		return"";
 	}
 }

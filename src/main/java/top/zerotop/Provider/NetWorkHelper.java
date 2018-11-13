@@ -30,7 +30,6 @@ public class NetWorkHelper {
         try {
             url = new URL(hsUrl);
             con = (HttpsURLConnection) url.openConnection();
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
