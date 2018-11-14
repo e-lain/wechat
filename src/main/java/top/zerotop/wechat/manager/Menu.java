@@ -2,7 +2,7 @@ package top.zerotop.wechat.manager;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import top.zerotop.util.SendUtil;
+import top.zerotop.util.SendUtils;
 
 public class Menu {
 
@@ -17,7 +17,7 @@ public class Menu {
 		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?"
 				+ "access_token="+token;
 
-		return SendUtil.sendPost(url, data);
+		return SendUtils.sendPost(url, data);
 	}
 
 	//

@@ -17,8 +17,8 @@ import top.zerotop.domain.Media;
 import top.zerotop.domain.material.Article;
 import top.zerotop.domain.material.ArticleItem;
 import top.zerotop.domain.material.Material;
-import top.zerotop.wechat.constrant.URLConstrant;
-import top.zerotop.util.SendUtil;
+import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.SendUtils;
 
 public class MediaManager {
 	
@@ -113,7 +113,7 @@ public class MediaManager {
         String url =  URLConstrant.URL_MEDIA_UPLOAD + accessToken + "&type="+type;
        
         try {  
-            result = SendUtil.uploadTempMaterial(url, path);  
+            result = SendUtils.uploadTempMaterial(url, path);
         } catch (Exception e) {  
             e.printStackTrace();  
         }  
@@ -136,7 +136,7 @@ public class MediaManager {
         String url = URLConstrant.URL_MATERIAL_ADD_MATERIAL  + accessToken + "&type="+type;
         
         try {  
-            result = SendUtil.uploadTempMaterial(url, path);  
+            result = SendUtils.uploadTempMaterial(url, path);
         } catch (Exception e) {  
             e.printStackTrace();  
         }  
@@ -157,7 +157,7 @@ public class MediaManager {
     	Media media = new Media();
     	media.setMedia_id(mediaid);
     	
-    	System.out.println(SendUtil.sendPost(url, gson.toJson(media)));
+    	System.out.println(SendUtils.sendPost(url, gson.toJson(media)));
     	
     	return url;
     }
@@ -177,7 +177,7 @@ public class MediaManager {
     	String url = "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token="+ accessToken;
     	
     	try{
-    		String res =  SendUtil.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
+    		String res =  SendUtils.sendPost(url, "{\"articles\":"+gson.toJson(articles)+"}");
     		System.out.println(res);
     	} catch(Exception e){
     		e.printStackTrace();
@@ -200,7 +200,7 @@ public class MediaManager {
     	String data = "{\"media_id\":"+mediaid+",\"index\":"+index+",\"articles\":"+gson.toJson(article)+"}";
     	
     	try{
-    		String res =  SendUtil.sendPost(url, data);
+    		String res =  SendUtils.sendPost(url, data);
     		System.out.println(res);
     	} catch(Exception e){
     		e.printStackTrace();
@@ -224,7 +224,7 @@ public class MediaManager {
 		Material me = new Material();
 		ArticleItem artItem = new ArticleItem();
     	try{
-    		String json = SendUtil.sendPost(url, data);
+    		String json = SendUtils.sendPost(url, data);
     		System.out.println(json);
 			JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
 			com.google.gson.JsonArray jsonArray = jsonObject.getAsJsonArray("item");

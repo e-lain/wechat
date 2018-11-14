@@ -134,7 +134,7 @@ public class SendUtils {
 
             // 读取响应
             int length = (int) conn.getContentLength();// 获取长度
-            System.out.println("length " + length);
+            logger.info("length " + length);
             result = readData(length, is);
         } catch (Exception e) {
             e.printStackTrace();

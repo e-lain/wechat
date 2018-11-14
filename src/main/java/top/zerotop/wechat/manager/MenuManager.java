@@ -3,14 +3,13 @@ package top.zerotop.wechat.manager;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 import top.zerotop.domain.menu.Button;
 import top.zerotop.domain.menu.Menu;
-import top.zerotop.wechat.constrant.ButtonTypeConstrant;
-import top.zerotop.wechat.constrant.URLConstrant;
-import top.zerotop.util.SendUtil;
+import top.zerotop.global.constrant.ButtonTypeConstrant;
+import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.SendUtils;
 
 public class MenuManager {
 	
@@ -30,7 +29,7 @@ public class MenuManager {
 		
 		String url = URLConstrant.URL_MENU_GET + access_token;
 		
-		System.out.println(SendUtil.sendGet(url, null));
+		System.out.println(SendUtils.sendGet(url, null));
 		
 		return url;
 	}
@@ -40,7 +39,7 @@ public class MenuManager {
 		
 		String url = URLConstrant.URL_MENU_GET + access_token;
 		
-		System.out.println(SendUtil.sendGet(url, null));
+		System.out.println(SendUtils.sendGet(url, null));
 		
 		return url;
 	}
@@ -86,7 +85,7 @@ public class MenuManager {
 		
 		String url = URLConstrant.URL_MENU_CREATE + accessToken;
 		
-		System.out.println(SendUtil.sendPost(url, gson.toJson(menu)));
+		System.out.println(SendUtils.sendPost(url, gson.toJson(menu)));
 		
 		return url; 
 	}
