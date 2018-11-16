@@ -70,14 +70,12 @@ public class EventHandler {
         switch (map.get("Event")) {
             case MessageTypeConstrant.MESSAGE_EVENT_SUBSCRIBE :
                 logger.info(" ======= Text message ======= ");
-                textMessage.setCreateTime(System.currentTimeMillis());
                 textMessage.setContent("感谢您的关注");
                 responseMsg =  makeXML(textMessage);
                 break;
 
             case MessageTypeConstrant.MESSAGE_LOCATION :
                 logger.info(" ======= locationevent message ======= ");
-                textMessage.setCreateTime(System.currentTimeMillis());
                 textMessage.setContent("维度:" + map.get("Latitude") + "  经度:" + map.get("Longitude") + "  精度:" + map.get("Precision"));
                 responseMsg =  makeXML(textMessage);
                 break;

@@ -5,69 +5,57 @@ public class BaseMessage {
 	/**
 	 * 开发者微信号
 	 */
-	private String toUserName;
+	private String ToUserName;
 	/**
 	 * 发送方帐号（一个OpenID）
 	 */
-	private String fromUserName;
+	private String FromUserName;
 	/**
 	 * 消息创建时间 （整型）
 	 */
-	private long createTime;
+	private long CreateTime;
 	/**
 	 * 消息类型
 	 */
-	private String msgType;
+	private String MsgType;
 	/**
 	 * 消息id，64位整型
 	 */
-	private String msgId;
+	private String MsgId;
 
 	public BaseMessage(String msgType, String fromUserName, String toUserName) {
-		this.msgType = msgType;
-		this.fromUserName = fromUserName;
-		this.toUserName = toUserName;
-		this.createTime = System.currentTimeMillis();
+		this.MsgType = msgType;
+		this.FromUserName = toUserName;
+		this.ToUserName = fromUserName;
+		this.CreateTime = System.currentTimeMillis();
 	}
 
 
 	public String getToUserName() {
-		return toUserName;
+		return ToUserName;
 	}
 
 	public void setToUserName(String toUserName) {
-		this.toUserName = toUserName;
+		this.ToUserName = toUserName;
 	}
 
-	public String getFromUserName() {
-		return fromUserName;
-	}
+    public String getFromUserName() {
+        return FromUserName;
+    }
 
-	public void setFromUserName(String fromUserName) {
-		this.fromUserName = fromUserName;
-	}
+    public void setFromUserName(String fromUserName) {
+        FromUserName = fromUserName;
+    }
 
-	public long getCreateTime() {
-		return createTime;
-	}
+    public void setMsgType(String msgType) {
+        MsgType = msgType;
+    }
 
-	public void setCreateTime(long createTime) {
-		this.createTime = createTime;
-	}
+    public String getMsgId() {
+        return MsgId;
+    }
 
-	public String getMsgType() {
-		return msgType;
-	}
-
-	public void setMsgType(String msgType) {
-		this.msgType = msgType;
-	}
-
-	public String getMsgId() {
-		return msgId;
-	}
-
-	public void setMsgId(String msgId) {
-		this.msgId = msgId;
-	}
+    public void setMsgId(String msgId) {
+        MsgId = msgId;
+    }
 }

@@ -1,7 +1,6 @@
 package top.zerotop.domain.message;
 
 import top.zerotop.domain.Media;
-import top.zerotop.domain.message.BaseMessage;
 import top.zerotop.global.constrant.MessageTypeConstrant;
 
 public class VoiceMessage extends BaseMessage {
