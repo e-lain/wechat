@@ -2,6 +2,7 @@ package top.zerotop.domain.message;
 
 import top.zerotop.domain.Media;
 import top.zerotop.domain.message.BaseMessage;
+import top.zerotop.global.constrant.MessageTypeConstrant;
 
 public class VoiceMessage extends BaseMessage {
 	
@@ -15,6 +16,10 @@ public class VoiceMessage extends BaseMessage {
 	private Media Voice;
 	
 	private String Recognition;
+
+	public VoiceMessage(String fromUserName, String toUserName) {
+		super(MessageTypeConstrant.MESSAGE_VOICE, fromUserName, toUserName);
+	}
 
 	public String getMediaId() {
 		return MediaId;

@@ -76,16 +76,16 @@ public class WechatProvider {
         // 对消息进行处理
         switch (msgType) {
             case MessageTypeConstrant.MESSAGE_TEXT:
-                responseMes = EventHandler.textEvent(map, fromUserName, toUserName, msgType);
+                responseMes = EventHandler.textEvent(map, fromUserName, toUserName);
                 break;
             case MessageTypeConstrant.MESSAGE_IMAGE:
-                responseMes = EventHandler.imgEvent(map, fromUserName, toUserName, msgType);
+                responseMes = EventHandler.imgEvent(map, fromUserName, toUserName);
                 break;
             case MessageTypeConstrant.MESSAGE_VOICE:
-                responseMes = EventHandler.voiceEvent(map, fromUserName, toUserName, msgType);
+                responseMes = EventHandler.voiceEvent(map, fromUserName, toUserName);
                 break;
             case MessageTypeConstrant.MESSAGE_EVENT:
-                responseMes = EventHandler.mssageEvent(map, fromUserName, toUserName, msgType);
+                responseMes = EventHandler.mssageEvent(map, fromUserName, toUserName);
                 break;
         }
 

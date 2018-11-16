@@ -4,6 +4,7 @@ import java.util.List;
 
 import top.zerotop.domain.material.ArticleItem;
 import top.zerotop.domain.message.BaseMessage;
+import top.zerotop.global.constrant.MessageTypeConstrant;
 
 /**
  *@author 作者: zerotop
@@ -14,6 +15,10 @@ public class NewsMessage extends BaseMessage {
 	private int ArticleCount;
 	
 	private List<ArticleItem> Articles;
+
+	public NewsMessage(String fromUserName, String toUserName) {
+		super(MessageTypeConstrant.MESSAGE_NEWS, fromUserName, toUserName);
+	}
 
 	public int getArticleCount() {
 		return ArticleCount;

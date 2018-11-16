@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import top.zerotop.Provider.WechatProvider;
 import top.zerotop.util.DecriptUtils;
 
-
-
 public class Entrance extends HttpServlet{
 	private static Logger logger = LoggerFactory.getLogger(Entrance.class);
 

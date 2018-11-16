@@ -3,6 +3,7 @@ package top.zerotop.domain.message;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import top.zerotop.domain.Media;
 import top.zerotop.domain.message.BaseMessage;
+import top.zerotop.global.constrant.MessageTypeConstrant;
 
 public class ImageMessage extends BaseMessage {
 
@@ -17,6 +18,10 @@ public class ImageMessage extends BaseMessage {
 	 * 图标消息 --- xml解析是标签为<Image>
 	 */
 	private Media Image;
+
+	public ImageMessage(String fromUserName, String toUserName) {
+		super(MessageTypeConstrant.MESSAGE_IMAGE, fromUserName, toUserName);
+	}
 	
 	public String getMediaId() {
 		return MediaId;
