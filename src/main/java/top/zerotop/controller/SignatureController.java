@@ -88,7 +88,7 @@ public class SignatureController {
 				+ "&grant_type=authorization_code";
 		logger.info("splice is url: "+ url);
 		
-		String res = SendUtils.sendGet(url, null);
+		String res = SendUtils.sendGet(url);
 		
 		JSONObject json = JSON.parseObject(res);
 		String openid = json.get("openid").toString();
