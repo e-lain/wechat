@@ -3,11 +3,10 @@ package top.zerotop.wechat.manager;
 import com.google.gson.Gson;
 
 import top.zerotop.domain.Follower;
-import top.zerotop.wechat.constrant.URLConstrant;
-import top.zerotop.util.SendUtil;
+import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.SendUtils;
 
 public class FollowerManager {
-	
 	public static Gson gson = new Gson();
 
 	public static void main(String args[]){
@@ -28,7 +27,7 @@ public class FollowerManager {
 
 		String url = URLConstrant.URL_FOLLOWER_GET + access_token;
 		
-		String param = SendUtil.sendGet(url, null);
+		String param = SendUtils.sendGet(url);
 		
 		Follower follow = gson.fromJson(param, Follower.class);
 		
@@ -50,7 +49,7 @@ public class FollowerManager {
 				+ "&openid="+openid
 				+ "&lang=zh_CN";
 		
-		String param = SendUtil.sendGet(url, null);
+		String param = SendUtils.sendGet(url);
 		
 		System.out.println(param);
 		

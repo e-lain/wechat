@@ -67,7 +67,7 @@ public class TokenThread implements Runnable {
 		
 		String url = URLConstrant.BASE_URL +  "/ticket/getticket?access_token="+AccessToken.getAccessToken()+"&type=jsapi";
 		
-		String ticket = SendUtils.sendGet(url, null);
+		String ticket = SendUtils.sendGet(url);
 		JSONObject tjson = JSON.parseObject(ticket);
 		AccessToken.setJsapiTicket(tjson.getString("ticket"));
 		

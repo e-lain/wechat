@@ -29,7 +29,7 @@ public class MenuManager {
 		
 		String url = URLConstrant.URL_MENU_GET + access_token;
 		
-		System.out.println(SendUtils.sendGet(url, null));
+		System.out.println(SendUtils.sendGet(url));
 		
 		return url;
 	}
@@ -39,7 +39,7 @@ public class MenuManager {
 		
 		String url = URLConstrant.URL_MENU_GET + access_token;
 		
-		System.out.println(SendUtils.sendGet(url, null));
+		System.out.println(SendUtils.sendGet(url));
 		
 		return url;
 	}
@@ -64,7 +64,7 @@ public class MenuManager {
 		sb2.setName("jssdk");
 		sb2.setType(ButtonTypeConstrant.TYPE_VIEW);
 		sb2.setUrl("http://www.zerotop.top/wechat/signature");
-		List<Button> buttonlist = new ArrayList<Button>();
+		List<Button> buttonlist = new ArrayList<>();
 		buttonlist.add(sb1);
 		buttonlist.add(sb2);
 		b2.setSub_button(buttonlist);

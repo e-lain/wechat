@@ -147,7 +147,6 @@ public class MediaManager {
     
     /**
      * 根据mediaid获取素材
-     * @param url 
      * @return
      */
     public static String getMaterial(String accessToken, String mediaid){

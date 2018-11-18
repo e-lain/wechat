@@ -110,7 +110,7 @@ public class SendUtils {
     }
 
 
-    public static String sendGet(String url, String param) {
+    public static String sendGet(String url) {
         try {
             getConn(url);
             conn.setRequestMethod("GET");

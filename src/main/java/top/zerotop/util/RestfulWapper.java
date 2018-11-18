@@ -1,6 +1,7 @@
 package top.zerotop.util;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,14 +22,20 @@ public class RestfulWapper {
 
     private static CloseableHttpClient httpclient = HttpClients.createDefault();
 
-    public static void getWapper(String url) throws IOException {
+    private static  String result = "";
+
+    public static String getWapper(String url) throws IOException {
+        System.out.println(url);
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse res = null;
+        HttpEntity entity1 = null;
         try {
             res = httpclient.execute(httpGet);
-            HttpEntity entity1 = res.getEntity();
-            EntityUtils.consume(entity1);
-            logger.info(EntityUtils.toString(entity1, "UTF-8"));
+            if(HttpStatus.SC_OK == res.getStatusLine().getStatusCode()) {
+                entity1 = res.getEntity();
+                result = EntityUtils.toString(entity1, "UTF-8");
+            }
+            System.out.println(result);
         } catch (IOException e1) {
             logger.info(String.format("url:[%s], get fail, exception:[IOException]", url));
         } finally {
@@ -36,6 +43,7 @@ public class RestfulWapper {
                 res.close();
             }
         }
+        return result;
     }
 
     public static void postWapper(String url, String data) throws IOException {
