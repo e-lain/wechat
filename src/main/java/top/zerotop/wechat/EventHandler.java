@@ -90,6 +90,7 @@ public class EventHandler {
 
     private static String clickEventHandler(Map<String, String> map, String fromUserName, String toUserName) {
         System.out.println("clickEventHandler===");
+        System.out.println(JSON.toJSONString(map));
         //菜单栏点击
         if ("clickme".equals(map.get("EventKey"))) {
             logger.info(" ======= clickme event ======= ");
@@ -113,11 +114,13 @@ public class EventHandler {
 
         else {
             logger.info(" ======= click message ======= ");
-            ImageMessage imageMessage = new ImageMessage(fromUserName, toUserName);
-            Media image = new Media("MediaId");
-            imageMessage.setImage(image);
+//            ImageMessage imageMessage = new ImageMessage(fromUserName, toUserName);
+//            Media image = new Media("MediaId");
+//            imageMessage.setImage(image);
+            TextMessage textMessage = new TextMessage(fromUserName, toUserName);
+            textMessage.setContent("获取click事件" + map.get("EventKey"));
 
-            responseMsg = makeXML(imageMessage);
+            responseMsg = makeXML(textMessage);
         }
         return responseMsg;
     }

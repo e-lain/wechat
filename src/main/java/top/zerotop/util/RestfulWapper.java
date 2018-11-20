@@ -46,7 +46,7 @@ public class RestfulWapper {
         return result;
     }
 
-    public static void postWapper(String url, String data) throws IOException {
+    public static String postWapper(String url, String data) throws IOException {
         HttpPost httpPost = new HttpPost(url);
         StringEntity stringEntity = new StringEntity(data, "UTF-8");
         stringEntity.setContentType("application/json");
@@ -54,11 +54,13 @@ public class RestfulWapper {
         CloseableHttpResponse res = httpclient.execute(httpPost);
         try {
             logger.info(res.getStatusLine().getStatusCode()+"");
-            HttpEntity entity2 = res.getEntity();
-            logger.info(entity2.toString());
+            HttpEntity entity1 = res.getEntity();
+            result = EntityUtils.toString(entity1, "UTF-8");
+            logger.info(entity1.toString());
         } finally {
             res.close();
         }
+        return result;
     }
 
     public static void formPostWapper(String url, List<NameValuePair> data) throws IOException {

@@ -56,6 +56,7 @@ public class WechatProvider {
         try {
             Element root = doc.getRootElement();
             List<Element> list = root.elements();
+            map.clear();
             list.forEach(e -> {
                 map.put(e.getName(), e.getText());
             });
