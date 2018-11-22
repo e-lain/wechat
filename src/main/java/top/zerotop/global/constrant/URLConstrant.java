@@ -9,7 +9,7 @@ public class URLConstrant {
 	 */
 	public static final String URL_MEDIA_UPLOAD = BASE_URL + "/media/upload?access_token=";
 	
-	public static final String URL_MEDIA_GET = BASE_URL + "/media/get?access_token=";
+	public static final String URL_MEDIA_GET = BASE_URL + "/media/get?access_token={ACCESS_TOKEN}&&media_id={MEDIA_ID}";
 	
 	/**
 	 * 永久素材
