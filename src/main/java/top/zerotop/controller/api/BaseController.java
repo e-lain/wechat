@@ -9,7 +9,8 @@ import java.util.Map;
 public class BaseController {
 
     @ExceptionHandler(Exception.class)
-    public String handlerException() {
+    public String handlerException(Exception e) {
+        e.printStackTrace();
         Map<String, String> map = new HashMap<>();
         map.put("error", "catch exception ..");
         return JSON.toJSONString(map);

@@ -1,5 +1,7 @@
 package top.zerotop.util;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -7,14 +9,24 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Part;
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 public class RestfulWapper {
@@ -63,16 +75,40 @@ public class RestfulWapper {
         return result;
     }
 
-    public static void formPostWapper(String url, List<NameValuePair> data) throws IOException {
+    public static String formPostWapper(String url, List<NameValuePair> data, MultipartFile file) throws IOException {
         HttpPost httpPost = new HttpPost(url);
-        httpPost.setEntity(new UrlEncodedFormEntity(data));
+//        httpPost.setEntity(new UrlEncodedFormEntity(data));
+        File file1 = new File(file.getName());
+        FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
+        FileBody fileBody = new FileBody(file1);
+
+
+        String boundary = "----------" + System.currentTimeMillis();
+        httpPost.addHeader("Connection", "keep-alive");
+        httpPost.addHeader("Accept", "*/*");
+        httpPost.addHeader("Content-Type", "multipart/form-data;boundary=" + boundary);
+        httpPost.addHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
+
+        MultipartEntityBuilder mbuilder = MultipartEntityBuilder.create().addPart("file", fileBody);
+        mbuilder.setBoundary(boundary).setCharset(Charset.forName("utf-8")).setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        mbuilder.addBinaryBody("media", file1, ContentType.MULTIPART_FORM_DATA, file.getName());
+
+        HttpEntity  httpEntity = mbuilder.build();
+
+        System.out.println(file.getName());
+        System.out.println(httpEntity.getContentLength());
+        System.out.println(httpEntity.getContentType());
+
+        httpPost.setEntity(httpEntity);
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
         try {
             logger.info(response2.getStatusLine().getStatusCode()+"");
-            HttpEntity entity2 = response2.getEntity();
-            EntityUtils.consume(entity2);
+            HttpEntity entity = response2.getEntity();
+            result = EntityUtils.toString(entity, "UTF-8");
+            EntityUtils.consume(entity);
         } finally {
             response2.close();
         }
+        return result;
     }
 }
