@@ -77,10 +77,10 @@ public class RestfulWapper {
 
     public static String formPostWapper(String url, List<NameValuePair> data, MultipartFile file) throws IOException {
         HttpPost httpPost = new HttpPost(url);
-//        httpPost.setEntity(new UrlEncodedFormEntity(data));
-        File file1 = new File(file.getName());
+        File file1 = new File(file.getOriginalFilename());
         FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
-        FileBody fileBody = new FileBody(file1);
+        FileBody fileBody = new FileBody(file1, ContentType.create("image/*"));
+        System.out.println(fileBody.getMediaType());
 
 
         String boundary = "----------" + System.currentTimeMillis();
@@ -89,15 +89,13 @@ public class RestfulWapper {
         httpPost.addHeader("Content-Type", "multipart/form-data;boundary=" + boundary);
         httpPost.addHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
 
-        MultipartEntityBuilder mbuilder = MultipartEntityBuilder.create().addPart("file", fileBody);
-        mbuilder.setBoundary(boundary).setCharset(Charset.forName("utf-8")).setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-        mbuilder.addBinaryBody("media", file1, ContentType.MULTIPART_FORM_DATA, file.getName());
+
+        MultipartEntityBuilder mbuilder = MultipartEntityBuilder.create().setMode(HttpMultipartMode.RFC6532);
+        mbuilder.setBoundary("--"+boundary).setCharset(Charset.forName("utf-8"));
+//        mbuilder.addBinaryBody("file", file1, ContentType.create("image/*"), file1.getName());
+        mbuilder.addPart("file", fileBody).setContentType(ContentType.APPLICATION_OCTET_STREAM);
 
         HttpEntity  httpEntity = mbuilder.build();
-
-        System.out.println(file.getName());
-        System.out.println(httpEntity.getContentLength());
-        System.out.println(httpEntity.getContentType());
 
         httpPost.setEntity(httpEntity);
         CloseableHttpResponse response2 = httpclient.execute(httpPost);

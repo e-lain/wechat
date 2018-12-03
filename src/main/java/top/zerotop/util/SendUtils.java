@@ -195,7 +195,6 @@ public class SendUtils {
                 conn.disconnect();
             }
         }
-
         return "getImage success";
     }
 
