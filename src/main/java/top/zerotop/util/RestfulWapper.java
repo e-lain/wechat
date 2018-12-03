@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Part;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RestfulWapper {
     private static Logger logger = LoggerFactory.getLogger(RestfulWapper.class);
@@ -36,7 +36,9 @@ public class RestfulWapper {
 
     private static  String result = "";
 
-    public static String getWapper(String url) throws IOException {
+    private static Map<String, Object> resultMap = new HashMap<>();
+
+    public static Map<String, Object> getWapper(String url) throws IOException {
         System.out.println(url);
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse res = null;
@@ -44,10 +46,17 @@ public class RestfulWapper {
         try {
             res = httpclient.execute(httpGet);
             if(HttpStatus.SC_OK == res.getStatusLine().getStatusCode()) {
-                entity1 = res.getEntity();
-                result = EntityUtils.toString(entity1, "UTF-8");
+                if (entity1.getContentType().getValue().contains("image")) {
+                    OutputStream out = new FileOutputStream(new File("image"));
+                    entity1.writeTo(out);
+                    resultMap.put("img", out);
+                } else {
+                    entity1 = res.getEntity();
+                    result = EntityUtils.toString(entity1, "UTF-8");
+                    resultMap.put("result", result);
+                }
             }
-            System.out.println(result);
+//            System.out.println(result);
         } catch (IOException e1) {
             logger.info(String.format("url:[%s], get fail, exception:[IOException]", url));
         } finally {
@@ -55,7 +64,7 @@ public class RestfulWapper {
                 res.close();
             }
         }
-        return result;
+        return resultMap;
     }
 
     public static String postWapper(String url, String data) throws IOException {

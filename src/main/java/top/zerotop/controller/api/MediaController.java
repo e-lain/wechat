@@ -49,11 +49,11 @@ public class MediaController extends BaseController {
                 .replace("{MEDIA_ID}", mediaId);
         String res = null;
         try {
-            res = RestfulWapper.getWapper(url);
+            res = (String)RestfulWapper.getWapper(url).get("result");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(res);
+//        System.out.println(res);
         return res;
     }
 }

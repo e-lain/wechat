@@ -29,7 +29,7 @@ public class MenuController extends BaseController{
         String url = URLConstrant.URL_MENU_GET + TokenThread.accessToken.getAccessToken();
         String res = null;
         try {
-            res = RestfulWapper.getWapper(url);
+            res = (String)RestfulWapper.getWapper(url).get("result");
         } catch (IOException e) {
             e.printStackTrace();
         }
