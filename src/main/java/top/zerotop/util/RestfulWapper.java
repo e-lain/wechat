@@ -46,12 +46,15 @@ public class RestfulWapper {
         try {
             res = httpclient.execute(httpGet);
             if(HttpStatus.SC_OK == res.getStatusLine().getStatusCode()) {
-                if (entity1.getContentType().getValue().contains("image")) {
-                    OutputStream out = new FileOutputStream(new File("image"));
-                    entity1.writeTo(out);
-                    resultMap.put("img", out);
+                entity1 = res.getEntity();
+                System.out.println(entity1.getContentType());
+                if (null != entity1 && entity1.getContentType().getValue().contains("image")) {
+                    String name = "D://"+System.currentTimeMillis()+".jpg";
+                    FileOutputStream outputStream = new FileOutputStream(name);
+                    entity1.writeTo(outputStream);
+                    resultMap.put("img", name);
+                    outputStream.close();
                 } else {
-                    entity1 = res.getEntity();
                     result = EntityUtils.toString(entity1, "UTF-8");
                     resultMap.put("result", result);
                 }
