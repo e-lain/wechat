@@ -45,22 +45,14 @@ public class SendUtils {
             conn.connect();
 
             outt = conn.getOutputStream();
-
             outt.write(gson.toJson(param).toString().getBytes("UTF-8"));
-            outt.flush();
             outt.close();
 
             int code = conn.getResponseCode();
-            logger.info("res: " + conn.getResponseMessage());
-            InputStream is = null;
-            if (code == 200) {
-                is = conn.getInputStream();
-            } else {
-                is = conn.getErrorStream();
-            }
+            InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
-            int length = (int) conn.getContentLength();// 获取长度
+            int length = conn.getContentLength();// 获取长度
             result = readData(length, is);
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,20 +76,13 @@ public class SendUtils {
             //为群发修改，其他接口问题之后调试
             outt.write((param).getBytes("UTF-8"));
 //			outt.write(parser.parse(param).toString().getBytes("UTF-8"));
-            outt.flush();
             outt.close();
 
             int code = conn.getResponseCode();
-            InputStream is = null;
-            if (code == 200) {
-                is = conn.getInputStream();
-            } else {
-                is = conn.getErrorStream();
-            }
+            InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
-            int length = (int) conn.getContentLength();// 获取长度
-            System.out.println("length " + length);
+            int length = conn.getContentLength();// 获取长度
             result = readData(length, is);
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,16 +110,10 @@ public class SendUtils {
 
             int code = conn.getResponseCode();
             logger.info("res: " + conn.getResponseMessage());
-            InputStream is = null;
-            if (code == 200) {
-                is = conn.getInputStream();
-            } else {
-                is = conn.getErrorStream();
-            }
+            InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
-            int length = (int) conn.getContentLength();// 获取长度
-            logger.info("length " + length);
+            int length = conn.getContentLength();// 获取长度
             result = readData(length, is);
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,12 +136,7 @@ public class SendUtils {
 
             int code = conn.getResponseCode();
             logger.info("res:" + conn.getResponseMessage());
-            InputStream inStream = null;
-            if (code == 200) {
-                inStream = conn.getInputStream();
-            } else {
-                inStream = conn.getErrorStream();
-            }
+            InputStream inputStream = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
             int length = (int) conn.getContentLength();// 获取长度
@@ -173,12 +147,12 @@ public class SendUtils {
             //每次读取的字符串长度，如果为-1，代表全部读取完毕
             int len = 0;
             //使用一个输入流从buffer里把数据读取出来
-            while ((len = inStream.read(buffer)) != -1) {
+            while ((len = inputStream.read(buffer)) != -1) {
                 //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
                 outStream.write(buffer, 0, len);
             }
             //关闭输入流
-            inStream.close();
+            inputStream.close();
             byte[] data = outStream.toByteArray();
             File imageFile = new File("D:\\BeautyGirl.jpg");
             //创建输出流
@@ -249,21 +223,14 @@ public class SendUtils {
 
             conn.connect();
             //outt.append((CharSequence) parser.parse(param).toString());
-            output.flush();
-
             output.close();
 
             int code = conn.getResponseCode();
             System.out.println("resmessage " + conn.getResponseMessage());
-            InputStream is = null;
-            if (code == 200) {
-                is = conn.getInputStream();
-            } else {
-                is = conn.getErrorStream();
-            }
+            InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
-            int length = (int) conn.getContentLength();// 获取长度
+            int length = conn.getContentLength();// 获取长度
             result = readData(length, is);
         } catch (Exception e) {
             e.printStackTrace();
@@ -275,7 +242,7 @@ public class SendUtils {
         return result;
     }
 
-    private static String readData(int length, InputStream is) throws UnsupportedEncodingException, IOException {
+    private static String readData(int length, InputStream is) throws IOException {
         byte[] data = new byte[length];
         if (length != -1) {
             byte[] temp = new byte[512];

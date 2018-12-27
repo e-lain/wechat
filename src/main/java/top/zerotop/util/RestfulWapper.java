@@ -92,15 +92,12 @@ public class RestfulWapper {
         File file1 = new File(file.getOriginalFilename());
         FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
         FileBody fileBody = new FileBody(file1, ContentType.create("image/*"));
-        System.out.println(fileBody.getMediaType());
-
 
         String boundary = "----------" + System.currentTimeMillis();
         httpPost.addHeader("Connection", "keep-alive");
         httpPost.addHeader("Accept", "*/*");
         httpPost.addHeader("Content-Type", "multipart/form-data;boundary=" + boundary);
         httpPost.addHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
-
 
         MultipartEntityBuilder mbuilder = MultipartEntityBuilder.create().setMode(HttpMultipartMode.RFC6532);
         mbuilder.setBoundary("--"+boundary).setCharset(Charset.forName("utf-8"));
