@@ -15,7 +15,7 @@ import java.util.List;
  * Created by jupeng.wang on 2018/9/11.
  */
 public class SocketHandler extends TextWebSocketHandler {
-    private static Logger logger = LoggerFactory.getLogger(TextWebSocketHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(TextWebSocketHandler.class);
 
     public final static List<WebSocketSession> socketSession = Collections.synchronizedList(new ArrayList<>());
 

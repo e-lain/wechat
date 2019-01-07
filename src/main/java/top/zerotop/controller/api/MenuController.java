@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import top.zerotop.domain.menu.Menu;
 import top.zerotop.global.constrant.URLConstrant;
 import top.zerotop.util.RestfulWapper;
+import top.zerotop.util.Result;
 import top.zerotop.wechat.TokenThread;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class MenuController extends BaseController{
 
     @GetMapping("/get")
     @ApiOperation(value = "获取当前公众号菜单")
-    public String getMenu() {
+    public Result<String> getMenu() {
         logger.info("--get menu--");
         String url = URLConstrant.URL_MENU_GET + TokenThread.accessToken.getAccessToken();
         String res = null;
@@ -34,27 +35,22 @@ public class MenuController extends BaseController{
             e.printStackTrace();
         }
         logger.info(url);
-        System.out.println(res);
-        return res;
+        return new Result<>(res);
     }
 
     @PostMapping("/create")
     @ApiOperation(value = "创建菜单")
-    public String createMenu(@ApiParam(value = "菜单")
+    public Result<String> createMenu(@ApiParam(value = "菜单")
                             @RequestBody Menu menu) {
-        System.out.println("--create menu--");
-
         String url = URLConstrant.URL_MENU_CREATE + TokenThread.accessToken.getAccessToken();
         String res = null;
         try {
             res = RestfulWapper.postWapper(url, JSON.toJSONString(menu));
-            System.out.println(res);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         logger.info(url);
-        return res;
+        return new Result<>(res);
     }
 
 }

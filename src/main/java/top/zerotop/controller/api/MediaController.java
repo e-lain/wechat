@@ -4,13 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.MediaType;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.zerotop.global.constrant.URLConstrant;
 import top.zerotop.util.RestfulWapper;
+import top.zerotop.util.Result;
 import top.zerotop.wechat.TokenThread;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,42 +23,35 @@ public class MediaController extends BaseController {
 
     @PostMapping("media/upload/{type}")
     @ApiOperation(value = "上传临时文件")
-    public String uploadMedia(@ApiParam(value = "文件")
+    public Result<String> uploadMedia(@ApiParam(value = "文件")
                               @PathVariable("type") String type,
-                              @ApiParam(value = "文件")
+                                      @ApiParam(value = "文件")
                               @RequestParam("file") MultipartFile file) {
-        System.out.println("--create media--");
-        if (file.isEmpty()) {
-            return "";
-        }
+        Assert.isTrue(!file.isEmpty(), "文件不能为空");
 
         String url = URLConstrant.URL_MEDIA_UPLOAD.replace("{ACCESS_TOKEN}", TokenThread.accessToken.getAccessToken())
                 .replace("{TYPE}", type);
-        System.out.println(url);
         String res = null;
         try {
             res = RestfulWapper.formPostWapper(url, null, file);
-            System.out.println(res);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return res;
+        return new Result<>(res);
     }
 
     @GetMapping("/media/get/{mediaId}")
     @ApiOperation(value = "获取公众号素材")
-    public Map<String, Object> listMedia(@ApiParam(value = "类型：image, voice, video, thumb")
+    public Result<Map<String, Object>> listMedia(@ApiParam(value = "类型：image, voice, video, thumb")
                             @PathVariable("mediaId") String mediaId) {
         String url = URLConstrant.URL_MEDIA_GET.replace("{ACCESS_TOKEN}", TokenThread.accessToken.getAccessToken())
                 .replace("{MEDIA_ID}", mediaId);
-        String res = null;
         try {
 //            res = (String)RestfulWapper.getWapper(url).get("result");
-            return RestfulWapper.getWapper(url);
+            return new Result<>(RestfulWapper.getWapper(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        System.out.println(res);
-        return new HashMap<>();
+        return new Result<>(new HashMap<>());
     }
 }
