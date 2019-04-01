@@ -30,14 +30,12 @@ public class TypeConvertUtils {
 	 * @return
 	 */
 	public static Map<String, String> xmlToMap(HttpServletRequest request) {
-
-		logger.info(" now begin convert ");
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		InputStream ins = null;
 		try {
 			ins = request.getInputStream();
 		} catch (IOException e1) {
-			logger.info("e1");
+			logger.info("exception e1 catched...");
 		}
 
 		Document doc = null;

@@ -132,12 +132,9 @@ public class SignatureController {
 							+ "&url="+rurl;
 		String signature = DecriptUtils.SHA1(signatureStr);
 
-		logger.info("signatureVue url:"+rurl);
-		logger.info("signatureVue timestamp:"+timestamp);
-		logger.info("signatureVue nonceStr:"+nonceStr);
-		logger.info("signatureVue signatureStr:"+signatureStr);
-		logger.info("signatureVue signature:"+signature);
-		
+		logger.info("signatureVue url: {}, timestamp: {}, nonceStr: {}", rurl, timestamp, nonceStr);
+		logger.info("signatureVue signatureStr: {}, signatrue {}",signatureStr, signature);
+
 		map.put("appId", "appId");
 		map.put("nonceStr", nonceStr);
 		map.put("timestamp", timestamp);

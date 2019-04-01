@@ -1,4 +1,5 @@
 package top.zerotop.util;
+
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
@@ -7,18 +8,18 @@ import java.security.NoSuchAlgorithmException;
 
 public class DecriptUtils {
     public static String MD5(String str) {
-        if (StringUtils.hasText(str)){
+        if (StringUtils.hasText(str)) {
             return null;
         }
         return DigestUtils.md5DigestAsHex(str.getBytes());
     }
-  
+
     public static String SHA1(String decript) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            
+
             digest.update(decript.getBytes());
-            
+
             byte messageDigest[] = digest.digest();
             // Create Hex String
             StringBuffer hexString = new StringBuffer();
@@ -31,7 +32,7 @@ public class DecriptUtils {
                 hexString.append(shaHex);
             }
             return hexString.toString();
- 
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

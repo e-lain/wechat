@@ -13,10 +13,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig{
+public class SwaggerConfig {
 
     @Bean
-    public Docket ProductApi(){
+    public Docket ProductApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(productApiInfo())
                 .select()
@@ -29,7 +29,7 @@ public class SwaggerConfig{
         return new ApiInfoBuilder()
                 .title("wechat接口测试")
                 .description("接口测试")
-                .termsOfServiceUrl("http://localhost:8088/wechat" )
+                .termsOfServiceUrl("http://localhost:8088/wechat")
                 .contact(new Contact("zerotop", "https://0top.github.io", ""))
                 .version("2.0")
                 .build();
