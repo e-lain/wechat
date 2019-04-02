@@ -8,7 +8,11 @@ import org.slf4j.LoggerFactory;
 import top.zerotop.Provider.NetWorkHelper;
 import top.zerotop.domain.AccessToken;
 import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.RestfulWapper;
 import top.zerotop.util.SendUtils;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class TokenThread implements Runnable {
 	private static Logger logger = LoggerFactory.getLogger(TokenThread.class);
@@ -27,8 +31,7 @@ public class TokenThread implements Runnable {
 			try {
 				accessToken = this.getAccessToken();
 				if (null != accessToken) {
-					System.out.println("==============token===============");
-					System.out.println(AccessToken.getAccessToken());
+					System.out.println(String.format("==date:{%s}  token:{%s}", LocalDateTime.now(), AccessToken.getAccessToken()));
 					Thread.sleep(7000 * 1000); // 获取到access_token 休眠7000秒
 				} else {
 					Thread.sleep(1000 * 3); // 获取的access_token为空 休眠3秒
@@ -39,7 +42,6 @@ public class TokenThread implements Runnable {
 				try {
 					Thread.sleep(1000 * 10); // 发生异常休眠1秒
 				} catch (Exception e1) {
-
 				}
 			}
 		}
@@ -51,14 +53,18 @@ public class TokenThread implements Runnable {
 	 * @return
 	 */
 	private AccessToken getAccessToken() {
-		NetWorkHelper netHelper = new NetWorkHelper();
+//		NetWorkHelper netHelper = new NetWorkHelper();
 		String Url = String.format(
 				URLConstrant.BASE_URL + "/token?grant_type=client_credential&appid=%s&secret=%s",
 				TokenThread.appId, TokenThread.appSecret);
 		
-		String result = netHelper.getHttpsResponse(Url, "");
-		System.out.println("=================");
-		System.out.println(result);
+//		String result = netHelper.getHttpsResponse(Url, "");
+		String result = "";
+		try {
+			result = (String) RestfulWapper.getWapper(Url).getOrDefault("result", "");
+		} catch (IOException ioE) {
+			ioE.printStackTrace();
+		}
 		logger.info(result);
 		JSONObject json = JSON.parseObject(result);
 		AccessToken token = new AccessToken();

@@ -14,7 +14,6 @@
     <mvc:annotation-driven />
     <!-- 扫描controller包，使注解生效 -->
     <context:component-scan base-package="top.zerotop.controller"/>
-    <context:component-scan base-package="top.zerotop.config"/>
 
     <mvc:default-servlet-handler />
 
@@ -29,6 +28,4 @@
         <property name="maxUploadSize" value="10240000"/>
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
-
-
 </beans>

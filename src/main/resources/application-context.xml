@@ -12,8 +12,6 @@
        http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/context 
        http://www.springframework.org/schema/context/spring-context-4.1.xsd">
-       
-
 
     
     <context:property-placeholder location="classpath:database/*.properties"/>
@@ -55,7 +53,6 @@
     <tx:annotation-driven/>
 
     <tx:advice id="txAdvice">
-    
         <tx:attributes>  
             <tx:method name="add*"/>
             <tx:method name="insert*"/>
@@ -65,14 +62,13 @@
             <tx:method name="list*" propagation="SUPPORTS" read-only="true" />
             <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
             <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
-            
         </tx:attributes>
     </tx:advice>
     
     <!-- 切面  -->
-    <aop:config>
-        <aop:advisor advice-ref="txAdvice"
-            pointcut="execution(* top.zerotop.webchat.tunnel.service.*.*(..))" />
-    </aop:config>
+    <!--<aop:config>-->
+        <!--<aop:advisor advice-ref="txAdvice"-->
+            <!--pointcut="execution(* top.zerotop.service.*.*(..))" />-->
+    <!--</aop:config>-->
     
 </beans>

@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @WebServlet(name = "AccessTokenServlet")
 public class AccessTokenServlet extends HttpServlet implements Serializable {
-	private static final long serialVersionUID = 4246161980523214021L;
+	private static final long serialVersionUID = 1L;
 
 	private static Logger logger = LoggerFactory.getLogger(AccessTokenServlet.class);
 
