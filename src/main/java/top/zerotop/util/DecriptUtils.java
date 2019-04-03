@@ -32,7 +32,6 @@ public class DecriptUtils {
                 hexString.append(shaHex);
             }
             return hexString.toString();
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

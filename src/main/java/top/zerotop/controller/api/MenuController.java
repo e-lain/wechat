@@ -26,7 +26,6 @@ public class MenuController extends BaseController{
     @GetMapping("/get")
     @ApiOperation(value = "获取当前公众号菜单")
     public Result<String> getMenu() {
-        logger.info("--get menu--");
         String url = URLConstrant.URL_MENU_GET + TokenThread.accessToken.getAccessToken();
         String res = null;
         try {

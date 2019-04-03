@@ -21,7 +21,7 @@ public class AccessTokenServlet extends HttpServlet implements Serializable {
         TokenThread.appId = getInitParameter("appid");
         TokenThread.appSecret = getInitParameter("appsecret");
 
-        logger.info(String.format("[ appid:%s ], [ appSecret:%s ]",TokenThread.appId,TokenThread.appSecret));
+        logger.info(String.format(" ======> appid:[ %s ], appSecret:[ %s ]",TokenThread.appId,TokenThread.appSecret));
         new Thread(new TokenThread()).start(); //启动进程
     }
  

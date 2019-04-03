@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="30 seconds">
+    <!-- 日志文件路径 -->
+    <property name="Log_Home" value="${catalina.base}/logs/"/>
+
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 设置过滤级别 -->
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss SSS} [%level] [%logger:%line] -- %msg%n</pattern>
+            <!--<pattern>%d{yyyy-MM-dd HH:mm:ss SSS} [%level] [%thread] [%logger:%line] &#45;&#45; %msg%n</pattern>-->
+        </encoder>
+    </appender>
+
+    <!-- DEBUG 级别 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 级别过滤器 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 设置过滤级别 -->
+            <level>DEBUG</level>
+        </filter>
+        <!-- 根据时间来制定滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 时间滚动策略需要先填写 FileNamePattern -->
+            <FileNamePattern>${Log_Home}/wechat_server.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxHistory>180</MaxHistory>
+            <MaxFileSize>20MB</MaxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%thread] [%logger:%line] -- %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 当前日志总级别为TRACE、DEBUG、INFO、 WARN、ERROR、ALL和 OF -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

@@ -25,22 +25,19 @@ public class EventHandler {
     private static String responseMsg;
 
     public static String textEvent(Map<String, String> map, String fromUserName, String toUserName) {
-        System.out.println("textEvent===");
         // 文本消息
-        logger.info("======== Text message ======= ");
+        logger.info("========> Text message");
         TextMessage textMessage = new TextMessage(fromUserName, toUserName);
         textMessage.setContent("收到消息: " + map.get("Content"));
 
         responseMsg =  makeXML(textMessage);
-        System.out.println(responseMsg);
 
         return responseMsg;
     }
 
     public static String imgEvent(Map<String, String> map, String fromUserName, String toUserName) {
-        System.out.println("imgEvent===");
         // 图片消息
-        logger.info(" ======= Image message ======= ");
+        logger.info(" =======> Image message");
         ImageMessage imageMessage = new ImageMessage(fromUserName, toUserName);
         Media image = new Media(map.get("MediaId"));
         imageMessage.setImage(image);
@@ -50,9 +47,8 @@ public class EventHandler {
     }
 
     public static String voiceEvent(Map<String, String> map, String fromUserName, String toUserName) {
-        System.out.println("voiceEvent===");
         // 语音消息
-        logger.info(" ======= Voice message ======= ");
+        logger.info(" =======> Voice message");
         VoiceMessage voiceMessage = new VoiceMessage(fromUserName, toUserName);
         Media voice = new Media(map.get("MediaId"));
         voiceMessage.setVoice(voice);
@@ -65,17 +61,16 @@ public class EventHandler {
 
 
     public static String mssageEvent(Map<String, String> map, String fromUserName, String toUserName) {
-        System.out.println("mssageEvent===");
         TextMessage textMessage = new TextMessage(fromUserName, toUserName);
         switch (map.get("Event")) {
             case MessageTypeConstrant.MESSAGE_EVENT_SUBSCRIBE :
-                logger.info(" ======= Text message ======= ");
+                logger.info(" =======> subscribe message");
                 textMessage.setContent("感谢您的关注");
                 responseMsg =  makeXML(textMessage);
                 break;
 
             case MessageTypeConstrant.MESSAGE_LOCATION :
-                logger.info(" ======= locationevent message ======= ");
+                logger.info(" =======> location event message");
                 textMessage.setContent("维度:" + map.get("Latitude") + "  经度:" + map.get("Longitude") + "  精度:" + map.get("Precision"));
                 responseMsg =  makeXML(textMessage);
                 break;
@@ -93,7 +88,7 @@ public class EventHandler {
         System.out.println(JSON.toJSONString(map));
         //菜单栏点击
         if ("clickme".equals(map.get("EventKey"))) {
-            logger.info(" ======= clickme event ======= ");
+            logger.info(" =======> clickme event");
             Map<String, String> tempMap = new HashMap<>();
             tempMap.put("type","news");
             tempMap.put("offset","0");
