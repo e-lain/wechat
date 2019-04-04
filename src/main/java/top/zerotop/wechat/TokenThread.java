@@ -31,14 +31,13 @@ public class TokenThread implements Runnable {
             try {
                 accessToken = this.getAccessToken();
                 if (null != accessToken) {
-                    System.out.println(String.format("==date:{%s}  token:{%s}", LocalDateTime.now(), AccessToken.getAccessToken()));
+                    logger.info(String.format("get token... date:{ %s }  token:{ %s }", LocalDateTime.now(), AccessToken.getAccessToken()));
                     Thread.sleep(7000 * 1000); // 获取到access_token 休眠7000秒
                 } else {
                     Thread.sleep(1000 * 3); // 获取的access_token为空 休眠3秒
                 }
             } catch (Exception e) {
-                logger.info("发生异常：" + e.getMessage());
-                e.printStackTrace();
+                logger.error("发生异常：" + e.getMessage());
                 try {
                     Thread.sleep(1000 * 10); // 发生异常休眠1秒
                 } catch (Exception e1) {
@@ -76,7 +75,7 @@ public class TokenThread implements Runnable {
         String ticket = SendUtils.sendGet(url);
         JSONObject ticketJson = JSON.parseObject(ticket);
         AccessToken.setJsapiTicket(ticketJson.getString("ticket"));
-        logger.info("ticket:{%s}", ticketJson.getString("ticket"));
+        logger.info("ticket: {}", ticketJson.getString("ticket"));
 
         return token;
     }

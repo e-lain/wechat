@@ -27,12 +27,7 @@ public class MenuController extends BaseController{
     @ApiOperation(value = "获取当前公众号菜单")
     public Result<String> getMenu() {
         String url = URLConstrant.URL_MENU_GET + TokenThread.accessToken.getAccessToken();
-        String res = null;
-        try {
-            res = (String)RestfulWapper.getWapper(url).get("result");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String res = (String)RestfulWapper.getWapper(url).get("result");
         logger.info(url);
         return new Result<>(res);
     }
@@ -42,14 +37,8 @@ public class MenuController extends BaseController{
     public Result<String> createMenu(@ApiParam(value = "菜单")
                             @RequestBody Menu menu) {
         String url = URLConstrant.URL_MENU_CREATE + TokenThread.accessToken.getAccessToken();
-        String res = null;
-        try {
-            res = RestfulWapper.postWapper(url, JSON.toJSONString(menu));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        logger.info(url);
-        return new Result<>(res);
+        String res = RestfulWapper.postWapper(url, JSON.toJSONString(menu));
+        return Result.make(res);
     }
 
 }

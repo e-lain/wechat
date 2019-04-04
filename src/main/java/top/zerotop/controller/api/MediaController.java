@@ -37,7 +37,7 @@ public class MediaController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Result<>(res);
+        return Result.make(res);
     }
 
     @GetMapping("/media/get/{mediaId}")
@@ -46,12 +46,7 @@ public class MediaController extends BaseController {
                             @PathVariable("mediaId") String mediaId) {
         String url = URLConstrant.URL_MEDIA_GET.replace("{ACCESS_TOKEN}", TokenThread.accessToken.getAccessToken())
                 .replace("{MEDIA_ID}", mediaId);
-        try {
 //            res = (String)RestfulWapper.getWapper(url).get("result");
-            return new Result<>(RestfulWapper.getWapper(url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new Result<>(new HashMap<>());
+            return Result.make(RestfulWapper.getWapper(url));
     }
 }

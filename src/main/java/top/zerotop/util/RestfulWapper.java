@@ -30,22 +30,21 @@ public class RestfulWapper {
 
     private static CloseableHttpClient httpclient = HttpClients.createDefault();
 
-    private static  String result = "";
+    private static String result = "";
 
     private static Map<String, Object> resultMap = new HashMap<>();
 
-    public static Map<String, Object> getWapper(String url) throws IOException {
+    public static Map<String, Object> getWapper(String url) {
         System.out.println(url);
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse res = null;
         HttpEntity entity1 = null;
         try {
             res = httpclient.execute(httpGet);
-            if(HttpStatus.SC_OK == res.getStatusLine().getStatusCode()) {
+            if (HttpStatus.SC_OK == res.getStatusLine().getStatusCode()) {
                 entity1 = res.getEntity();
-                System.out.println(entity1.getContentType());
                 if (null != entity1 && entity1.getContentType().getValue().contains("image")) {
-                    String name = "D://"+System.currentTimeMillis()+".jpg";
+                    String name = "D://" + System.currentTimeMillis() + ".jpg";
                     FileOutputStream outputStream = new FileOutputStream(name);
                     entity1.writeTo(outputStream);
                     resultMap.put("img", name);
@@ -59,26 +58,38 @@ public class RestfulWapper {
         } catch (IOException e1) {
             logger.info(String.format("url:[%s], get fail, exception:[IOException]", url));
         } finally {
-            if (res != null) {
-                res.close();
+            try {
+                if (res != null) {
+                    res.close();
+                }
+            } catch (IOException e2) {
             }
         }
         return resultMap;
     }
 
-    public static String postWapper(String url, String data) throws IOException {
+    public static String postWapper(String url, String data) {
         HttpPost httpPost = new HttpPost(url);
         StringEntity stringEntity = new StringEntity(data, "UTF-8");
         stringEntity.setContentType("application/json");
         httpPost.setEntity(stringEntity);
-        CloseableHttpResponse res = httpclient.execute(httpPost);
+        CloseableHttpResponse res = null;
         try {
-            logger.info(res.getStatusLine().getStatusCode()+"");
+            res = httpclient.execute(httpPost);
+            logger.info(res.getStatusLine().getStatusCode() + "");
             HttpEntity entity1 = res.getEntity();
             result = EntityUtils.toString(entity1, "UTF-8");
             logger.info(entity1.toString());
+        } catch (IOException e) {
+            logger.error("post request wrong ...");
+            logger.error(e.getMessage());
         } finally {
-            res.close();
+            try {
+                if (res != null) {
+                    res.close();
+                }
+            } catch (IOException e1) {
+            }
         }
         return result;
     }
@@ -96,16 +107,16 @@ public class RestfulWapper {
         httpPost.addHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
 
         MultipartEntityBuilder mbuilder = MultipartEntityBuilder.create().setMode(HttpMultipartMode.RFC6532);
-        mbuilder.setBoundary("--"+boundary).setCharset(Charset.forName("utf-8"));
+        mbuilder.setBoundary("--" + boundary).setCharset(Charset.forName("utf-8"));
 //        mbuilder.addBinaryBody("file", file1, ContentType.create("image/*"), file1.getName());
         mbuilder.addPart("file", fileBody).setContentType(ContentType.APPLICATION_OCTET_STREAM);
 
-        HttpEntity  httpEntity = mbuilder.build();
+        HttpEntity httpEntity = mbuilder.build();
 
         httpPost.setEntity(httpEntity);
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
         try {
-            logger.info(response2.getStatusLine().getStatusCode()+"");
+            logger.info(response2.getStatusLine().getStatusCode() + "");
             HttpEntity entity = response2.getEntity();
             result = EntityUtils.toString(entity, "UTF-8");
             EntityUtils.consume(entity);

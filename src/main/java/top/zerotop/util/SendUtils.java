@@ -109,7 +109,7 @@ public class SendUtils {
 //			outt.close();
 
             int code = conn.getResponseCode();
-            logger.info("res: " + conn.getResponseMessage());
+            logger.info(" request res : {} " , conn.getResponseMessage());
             InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应

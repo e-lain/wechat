@@ -108,7 +108,7 @@ public class EventHandler {
         }
 
         else {
-            logger.info(" ======= click message ======= ");
+            logger.info(" =======> click message");
 //            ImageMessage imageMessage = new ImageMessage(fromUserName, toUserName);
 //            Media image = new Media("MediaId");
 //            imageMessage.setImage(image);
