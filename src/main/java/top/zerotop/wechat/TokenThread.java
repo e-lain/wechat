@@ -59,11 +59,7 @@ public class TokenThread implements Runnable {
 
 //		String result = netHelper.getHttpsResponse(Url, "");
         String result = "";
-        try {
-            result = (String) RestfulWapper.getWapper(Url).getOrDefault("result", "");
-        } catch (IOException ioE) {
-            ioE.printStackTrace();
-        }
+        result = (String) RestfulWapper.getWapper(Url).getOrDefault("result", "");
         logger.info(result);
         JSONObject tokenJson = JSON.parseObject(result);
         AccessToken token = new AccessToken();

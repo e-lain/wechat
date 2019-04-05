@@ -29,7 +29,7 @@ public class MenuController extends BaseController{
         String url = URLConstrant.URL_MENU_GET + TokenThread.accessToken.getAccessToken();
         String res = (String)RestfulWapper.getWapper(url).get("result");
         logger.info(url);
-        return new Result<>(res);
+        return Result.make(res);
     }
 
     @PostMapping("/create")

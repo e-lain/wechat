@@ -14,8 +14,13 @@
     <mvc:annotation-driven />
     <!-- 扫描controller包，使注解生效 -->
     <context:component-scan base-package="top.zerotop.controller"/>
+    <bean class="top.zerotop.config.SwaggerConfig"/>
 
     <mvc:default-servlet-handler />
+
+    <!-- swagger ui resources -->
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
 
      <!-- 配置视图解析器，将ModelAndView及字符串解析为据图界面 -->
     <bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver"
