@@ -17,8 +17,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 
+import org.springframework.web.servlet.ModelAndView;
 import top.zerotop.domain.AccessToken;
-import top.zerotop.util.ExtractJsonUtils;
+import top.zerotop.util.JsonUtils;
 import top.zerotop.wechat.TokenThread;
 import top.zerotop.util.DecriptUtils;
 import top.zerotop.util.SendUtils;
@@ -53,11 +54,11 @@ public class SignatureController {
 							+ "&timestamp="+timestamp
 							+ "&url="+url;
 		String signature = DecriptUtils.SHA1(signatureStr);
-		logger.info("url:"+url);
-		logger.info("timestamp:"+timestamp);
-		logger.info("nonceStr:"+nonceStr);
-		logger.info("signatureStr:"+signatureStr);
-		logger.info("signature:"+signature);
+		logger.info("url: {}", url);
+		logger.info("timestamp: {}", timestamp);
+		logger.info("nonceStr: {}", nonceStr);
+		logger.info("signatureStr: {}", signatureStr);
+		logger.info("signature: {}", signature);
 		
 		Map<String, String> result = new HashMap<>();
 		result.put("appId", "appId");
@@ -115,13 +116,13 @@ public class SignatureController {
 		
 		System.out.println("--------------- vue signature -------------------");
 		
-		String json = ExtractJsonUtils.extractJson(req);
+		String json = JsonUtils.toJsonString(req);
 		Gson gson = new Gson();
 		JSONObject tjson = JSON.parseObject(json);
 		String rurl = tjson.get("url").toString();
 		System.out.println("realurl: "+rurl);
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		
 //		String url = req.getRequestURL().toString();
 		String timestamp = SignatureController.createTimestamp();

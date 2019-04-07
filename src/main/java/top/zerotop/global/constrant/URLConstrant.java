@@ -32,6 +32,8 @@ public class URLConstrant {
 	
 	public static final String URL_MENU_GET = BASE_URL + "/menu/get?access_token=";
 
+	public static final String URL_MENU_DELETE = BASE_URL + "/menu/delete?access_token=";
+
 	/**
 	 * follower
 	 */

@@ -54,7 +54,6 @@ public class RestfulWapper {
                     resultMap.put("result", result);
                 }
             }
-//            System.out.println(result);
         } catch (IOException e1) {
             logger.info(String.format("url:[%s], get fail, exception:[IOException]", url));
         } finally {

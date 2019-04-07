@@ -84,11 +84,9 @@ public class EventHandler {
     }
 
     private static String clickEventHandler(Map<String, String> map, String fromUserName, String toUserName) {
-        System.out.println("clickEventHandler===");
-        System.out.println(JSON.toJSONString(map));
+        logger.info(" =======> clickme event");
         //菜单栏点击
         if ("clickme".equals(map.get("EventKey"))) {
-            logger.info(" =======> clickme event");
             Map<String, String> tempMap = new HashMap<>();
             tempMap.put("type","news");
             tempMap.put("offset","0");
