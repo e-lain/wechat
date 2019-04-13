@@ -8,12 +8,11 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by:zerotop  date:2019/4/7
  */
 @Controller
-@RequestMapping(value = "/jssdk")
+@RequestMapping(value = "/page")
 public class IndexController {
-    @RequestMapping(value = "/testpage")
+    @RequestMapping(value = "/share")
     public ModelAndView jsIndexPage() {
-        System.out.println("get js index page req...");
-        ModelAndView model = new ModelAndView("jsindex");
+        ModelAndView model = new ModelAndView("page/share");
         return model;
     }
 }

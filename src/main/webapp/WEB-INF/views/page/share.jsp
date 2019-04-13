@@ -6,7 +6,7 @@
     <title>签名验证</title>
 </head>
 
-<body>
+<br>
 签名校验....
 <br> timestamp.${timestamp}
 <br> nonceStr.${nonceStr}
@@ -16,26 +16,34 @@
 <button class="btn btn_primary" id="checkJsApi">checkJsApi</button>
 
 <h3 id="menu-share">分享接口</h3>
-<span class="desc">获取“分享到朋友圈”按钮点击状态及自定义分享内容接口</span>
+<span class="desc">获取“分享到朋友圈”按钮点击状态及自定义分享内容接口:</span>
 <button class="btn btn_primary" id="onMenuShareTimeline">onMenuShareTimeline</button>
-<span class="desc">获取“分享给朋友”按钮点击状态及自定义分享内容接口</span>
+</br>
+<span class="desc">获取“分享给朋友”按钮点击状态及自定义分享内容接口:</span>
 <button class="btn btn_primary" id="onMenuShareAppMessage">onMenuShareAppMessage</button>
-<span class="desc">获取“分享到QQ”按钮点击状态及自定义分享内容接口</span>
+</br>
+<span class="desc">获取“分享到QQ”按钮点击状态及自定义分享内容接口:</span>
 <button class="btn btn_primary" id="onMenuShareQQ">onMenuShareQQ</button>
-<span class="desc">获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口</span>
+</br>
+<span class="desc">获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口:</span>
 <button class="btn btn_primary" id="onMenuShareWeibo">onMenuShareWeibo</button>
-<span class="desc">获取“分享到QZone”按钮点击状态及自定义分享内容接口</span>
+</br>
+<span class="desc">获取“分享到QZone”按钮点击状态及自定义分享内容接口:</span>
 <button class="btn btn_primary" id="onMenuShareQZone">onMenuShareQZone</button>
 
-<h3 id="menu-image">图像接口</h3>
-<span class="desc">拍照或从手机相册中选图接口</span>
+<h3 id="menu-image">图像接口</h3></br>
+<span class="desc">拍照或从手机相册中选图接口:</span>
 <button class="btn btn_primary" id="chooseImage">chooseImage</button>
-<span class="desc">预览图片接口</span>
+</br>
+<span class="desc">预览图片接口:</span>
 <button class="btn btn_primary" id="previewImage">previewImage</button>
-<span class="desc">上传图片接口</span>
+</br>
+<span class="desc">上传图片接口:</span>
 <button class="btn btn_primary" id="uploadImage">uploadImage</button>
-<span class="desc">下载图片接口</span>
+</br>
+<span class="desc">下载图片接口:</span>
 <button class="btn btn_primary" id="downloadImage">downloadImage</button>
+</br>
 
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>

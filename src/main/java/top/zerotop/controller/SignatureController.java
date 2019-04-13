@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSON;
@@ -30,148 +31,153 @@ import top.zerotop.util.SendUtils;
  */
 @Api(value = "WeChat接口")
 @RestController
+@RequestMapping(value = "/jssdk", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class SignatureController {
-	private static Logger logger = LoggerFactory.getLogger(SignatureController.class);
+    private static Logger logger = LoggerFactory.getLogger(SignatureController.class);
 
-	@GetMapping(value = "/token")
-	public @ResponseBody String getToken() {
-		return TokenThread.accessToken.getAccessToken();
-	}
-	
-	/**
-	 * 项目中jsp使用jssdk签名接口
-	 * @param req
-	 * @return
-	 */
-	@ApiOperation(value = "微信接口验证")
-	@GetMapping("/signature")
-	public Map<String, String> signature(HttpServletRequest req){
-		String url = req.getRequestURL().toString();
-		String timestamp = SignatureController.createTimestamp();
-		String nonceStr = SignatureController.createNonce();
-		String signatureStr = "jsapi_ticket="+AccessToken.getJsapiTicket()
-							+ "&noncestr="+nonceStr
-							+ "&timestamp="+timestamp
-							+ "&url="+url;
-		String signature = DecriptUtils.SHA1(signatureStr);
-		logger.info("url: {}", url);
-		logger.info("timestamp: {}", timestamp);
-		logger.info("nonceStr: {}", nonceStr);
-		logger.info("signatureStr: {}", signatureStr);
-		logger.info("signature: {}", signature);
-		
-		Map<String, String> result = new HashMap<>();
-		result.put("appId", "appId");
-		result.put("nonceStr", nonceStr);
-		result.put("timestamp", timestamp);
-		result.put("signature", signature);
-		return result;
-	}
-	
-	/**
-	 * 微信小程序登录        wx.login
-	 * @param req	 HttpServletRequest
-	 * @param code   临时登录凭证code只能使用一次
-	 * @return
-	 */
-	@ApiOperation(value = "微信小程序登录接口")
-	@GetMapping(value = "/mini/login/{code}", produces="application/json;charset=utf-8")
-	public String miniLogin(HttpServletRequest req ,@PathVariable("code")String code){
-		
-		Map<String, String> map = new HashMap<>();
+    @GetMapping(value = "/token")
+    public @ResponseBody
+    String getToken() {
+        return TokenThread.accessToken.getAccessToken();
+    }
 
-		logger.info("sessionid:"+req.getSession().getId());
-		
-		String url = "https://api.weixin.qq.com/sns/jscode2session?"
-				+ "appid=yourappid"
-				+ "&secret=yoursecret"
-				+ "&js_code="+code
-				+ "&grant_type=authorization_code";
-		logger.info("splice is url: "+ url);
-		
-		String res = SendUtils.sendGet(url);
-		
-		JSONObject json = JSON.parseObject(res);
-		String openid = json.get("openid").toString();
-		String session_key = json.get("openid").toString();
-		
-		//用于验证微信小程序用户身份
-		String minisign = DecriptUtils.SHA1(openid+session_key);
-		req.getSession().setAttribute("minisign", minisign);
-		
-		map.put("session_id", req.getSession().getId());
-		map.put("minisign", minisign);
+    /**
+     * 项目中jsp使用jssdk签名接口
+     * @return
+     */
+    @ApiOperation(value = "微信接口验证")
+    @GetMapping("/signature")
+    public Map<String, String> signature(HttpServletRequest req) {
+        String url = req.getRequestURL().toString();
+        String timestamp = SignatureController.createTimestamp();
+        String nonceStr = SignatureController.createNonce();
+        String signatureStr = "jsapi_ticket=" + AccessToken.getJsapiTicket()
+                + "&noncestr=" + nonceStr
+                + "&timestamp=" + timestamp
+                + "&url=" + url;
+        String signature = DecriptUtils.SHA1(signatureStr);
+        logger.info("url: {}", url);
+        logger.info("timestamp: {}", timestamp);
+        logger.info("nonceStr: {}", nonceStr);
+        logger.info("signatureStr: {}", signatureStr);
+        logger.info("signature: {}", signature);
 
-		return JSON.toJSONString(map);
-	}
-		
-	/**
-	 * 微信公众号本地jssdk验证
-	 * @param req
-	 * @return
-	 */
-	@ApiOperation(value = "微信公众号本地jssdk验证")
-	@PostMapping(value= "/signature/vue")
-	public @ResponseBody String signatureVue(HttpServletRequest req){
-		
-		System.out.println("--------------- vue signature -------------------");
-		
-		String json = JsonUtils.toJsonString(req);
-		Gson gson = new Gson();
-		JSONObject tjson = JSON.parseObject(json);
-		String rurl = tjson.get("url").toString();
-		System.out.println("realurl: "+rurl);
+        Map<String, String> result = new HashMap<>();
+        result.put("appId", "appId");
+        result.put("nonceStr", nonceStr);
+        result.put("timestamp", timestamp);
+        result.put("signature", signature);
+        return result;
+    }
 
-		Map<String, String> map = new HashMap<>();
-		
+    /**
+     * 微信小程序登录        wx.login
+     *
+     * @param req  HttpServletRequest
+     * @param code 临时登录凭证code只能使用一次
+     * @return
+     */
+    @ApiOperation(value = "微信小程序登录接口")
+    @GetMapping(value = "/mini/login/{code}", produces = "application/json;charset=utf-8")
+    public String miniLogin(HttpServletRequest req, @PathVariable("code") String code) {
+        Map<String, String> map = new HashMap<>();
+
+        logger.info("sessionid:" + req.getSession().getId());
+
+        String url = "https://api.weixin.qq.com/sns/jscode2session?"
+                + "appid=yourappid"
+                + "&secret=yoursecret"
+                + "&js_code=" + code
+                + "&grant_type=authorization_code";
+        logger.info("splice is url: " + url);
+
+        String res = SendUtils.sendGet(url);
+
+        JSONObject json = JSON.parseObject(res);
+        String openid = json.get("openid").toString();
+        String session_key = json.get("openid").toString();
+
+        //用于验证微信小程序用户身份
+        String minisign = DecriptUtils.SHA1(openid + session_key);
+        req.getSession().setAttribute("minisign", minisign);
+
+        map.put("session_id", req.getSession().getId());
+        map.put("minisign", minisign);
+
+        return JSON.toJSONString(map);
+    }
+
+    /**
+     * 微信公众号本地jssdk验证
+     *
+     * @param req
+     * @return
+     */
+    @ApiOperation(value = "微信公众号本地jssdk验证")
+    @PostMapping(value = "/signature/vue")
+    public @ResponseBody
+    String signatureVue(HttpServletRequest req) {
+
+        System.out.println("--------------- vue signature -------------------");
+
+        String json = JsonUtils.toJsonString(req);
+        Gson gson = new Gson();
+        JSONObject tjson = JSON.parseObject(json);
+        String rurl = tjson.get("url").toString();
+        System.out.println("realurl: " + rurl);
+
+        Map<String, String> map = new HashMap<>();
+
 //		String url = req.getRequestURL().toString();
-		String timestamp = SignatureController.createTimestamp();
-		String nonceStr = SignatureController.createNonce();
-		String signatureStr = "jsapi_ticket="+AccessToken.getJsapiTicket()
-							+ "&noncestr="+nonceStr
-							+ "&timestamp="+timestamp
-							+ "&url="+rurl;
-		String signature = DecriptUtils.SHA1(signatureStr);
+        String timestamp = SignatureController.createTimestamp();
+        String nonceStr = SignatureController.createNonce();
+        String signatureStr = "jsapi_ticket=" + AccessToken.getJsapiTicket()
+                + "&noncestr=" + nonceStr
+                + "&timestamp=" + timestamp
+                + "&url=" + rurl;
+        String signature = DecriptUtils.SHA1(signatureStr);
 
-		logger.info("signatureVue url: {}, timestamp: {}, nonceStr: {}", rurl, timestamp, nonceStr);
-		logger.info("signatureVue signatureStr: {}, signatrue {}",signatureStr, signature);
+        logger.info("signatureVue url: {}, timestamp: {}, nonceStr: {}", rurl, timestamp, nonceStr);
+        logger.info("signatureVue signatureStr: {}, signatrue {}", signatureStr, signature);
 
-		map.put("appId", "appId");
-		map.put("nonceStr", nonceStr);
-		map.put("timestamp", timestamp);
-		map.put("signature", signature);
-		
-		return gson.toJson(map);
-	}
+        map.put("appId", "appId");
+        map.put("nonceStr", nonceStr);
+        map.put("timestamp", timestamp);
+        map.put("signature", signature);
 
-	private static String createTimestamp() {
-		return Long.toString(System.currentTimeMillis() / 1000);
-	}
+        return gson.toJson(map);
+    }
 
-	/**
-	 * 生成jssdk需要的nonce
-	 * @return
-	 */
-	private static String createNonce() {
-		return UUID.randomUUID().toString();
-	}
+    private static String createTimestamp() {
+        return Long.toString(System.currentTimeMillis() / 1000);
+    }
 
-	public static String sort(String ticket, String timestamp, String nonceStr, String url) {
-		String[] strArray = { ticket, timestamp, nonceStr, url};
-		Map<String, String> map = new HashMap<String, String>();
-		map.put( ticket,"jsapi_ticket");
-		map.put(nonceStr,"noncestr");		map.put(timestamp,"timestamp");
-		map.put(url,"url");
-		Arrays.sort(strArray);
+    /**
+     * 生成jssdk需要的nonce
+     *
+     * @return
+     */
+    private static String createNonce() {
+        return UUID.randomUUID().toString();
+    }
 
-		String str = map.get(strArray[0])+"="+strArray[0]
-						+"&"+map.get(strArray[1])+"="+strArray[1]
-						+"&"+map.get(strArray[2])+"="+strArray[2]
-						+"&"+map.get(strArray[3])+"="+strArray[3];
+    public static String sort(String ticket, String timestamp, String nonceStr, String url) {
+        String[] strArray = {ticket, timestamp, nonceStr, url};
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(ticket, "jsapi_ticket");
+        map.put(nonceStr, "noncestr");
+        map.put(timestamp, "timestamp");
+        map.put(url, "url");
+        Arrays.sort(strArray);
 
-		logger.info("str:"+str);
+        String str = map.get(strArray[0]) + "=" + strArray[0]
+                + "&" + map.get(strArray[1]) + "=" + strArray[1]
+                + "&" + map.get(strArray[2]) + "=" + strArray[2]
+                + "&" + map.get(strArray[3]) + "=" + strArray[3];
 
-		return str;
-	}
+        logger.info("str:" + str);
+
+        return str;
+    }
 
 }

@@ -1,14 +1,22 @@
 package top.zerotop.util;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
+import top.zerotop.domain.menu.Button;
+import top.zerotop.domain.menu.Menu;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +34,16 @@ public class JsonUtils {
 		return objectMapper;
 	}
 
-	public static <T> T fromJson(String json, Class<T> clazz) {
+	public static String toJson(Object o) {
+		try {
+			return objectMapper().writeValueAsString(o).toString();
+		} catch (IOException e) {
+			return "";
+		}
+	}
+
+
+	public static <T> T toObject(String json, Class<T> clazz) {
 		try {
 			return objectMapper().readValue(json, clazz);
 		} catch (IOException ioe) {
@@ -34,6 +51,44 @@ public class JsonUtils {
 			logger.info("convert to object failed...");
 			return null;
 		}
+	}
+
+	/**
+	 * 传入json对象中clazz的属性名
+	 * @return
+	 */
+	public static <T> T toSubObject(String json, String attrName, Class<T> clazz) {
+		try {
+			JsonNode jsonNode = objectMapper().readTree(json).get(attrName);
+			JavaType javaType = createType(clazz);
+			T t = objectMapper().readValue(jsonNode.toString(), javaType);
+			return t;
+		} catch (IOException e) {
+			logger.info("wrong sub type ...");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static <T> List<T> fromJson(String json, Class<T> clazz) {
+		List<T> result = new ArrayList<>();
+		try {
+			JsonNode jsonNode = objectMapper().readTree(json);
+			JavaType javaType = createJavaType(ArrayList.class, clazz);
+			result = objectMapper().readValue(jsonNode.toString(), javaType);
+		} catch (Exception e) {
+			logger.warn(" convert to list wrong ...");
+			e.printStackTrace();
+		}
+		return CollectionUtils.isEmpty(result) ? new ArrayList<>() : result;
+	}
+
+	public static JavaType createType(Class clazz) {
+		return objectMapper().getTypeFactory().constructType(clazz);
+	}
+
+	public static JavaType createJavaType(Class<?> collectionClass, Class ... elementClasses) {
+		return objectMapper().getTypeFactory().constructParametricType(collectionClass, elementClasses);
 	}
 
 	public static String toJsonString(HttpServletRequest req){
