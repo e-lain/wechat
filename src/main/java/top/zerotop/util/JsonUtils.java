@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import top.zerotop.domain.menu.Button;
 import top.zerotop.domain.menu.Menu;
 
@@ -58,6 +59,9 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static <T> T toSubObject(String json, String attrName, Class<T> clazz) {
+		if (!StringUtils.hasText(json)) {
+			return null;
+		}
 		try {
 			JsonNode jsonNode = objectMapper().readTree(json).get(attrName);
 			JavaType javaType = createType(clazz);
@@ -72,6 +76,9 @@ public class JsonUtils {
 
 	public static <T> List<T> fromJson(String json, Class<T> clazz) {
 		List<T> result = new ArrayList<>();
+		if (!StringUtils.hasText(json)) {
+			return result;
+		}
 		try {
 			JsonNode jsonNode = objectMapper().readTree(json);
 			JavaType javaType = createJavaType(ArrayList.class, clazz);

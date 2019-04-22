@@ -20,12 +20,12 @@ import static top.zerotop.global.constrant.URLConstrant.URL_MENU_GET;
 @RestController
 @Api(value = "公众号菜单管理", description = "公众号菜单管理")
 @RequestMapping(value = "/menu", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-public class MenuController extends BaseController{
+public class MenuController extends BaseController {
     @GetMapping("/get")
     @ApiOperation(value = "获取当前公众号菜单")
     public Result<Menu> getMenu() {
         String url = URL_MENU_GET + TokenThread.accessToken.getAccessToken();
-        String res = (String)RestfulWapper.getWapper(url).get("result");
+        String res = (String) RestfulWapper.getWapper(url).get("result");
         return Result.make(JsonUtils.toSubObject(res, "menu", Menu.class));
     }
 
@@ -33,14 +33,14 @@ public class MenuController extends BaseController{
     @ApiOperation(value = "获取当前公众号菜单")
     public Result<String> deleteMenu() {
         String url = URL_MENU_DELETE + TokenThread.accessToken.getAccessToken();
-        String res = (String)RestfulWapper.getWapper(url).get("result");
+        String res = (String) RestfulWapper.getWapper(url).get("result");
         return Result.make(res);
     }
 
     @PostMapping("/create")
     @ApiOperation(value = "创建菜单")
     public Result<String> createMenu(@ApiParam(value = "菜单")
-                            @RequestBody Menu menu) {
+                                     @RequestBody Menu menu) {
         String url = URL_MENU_CREATE + TokenThread.accessToken.getAccessToken();
         String res = RestfulWapper.postWapper(url, JSON.toJSONString(menu));
         return Result.make(res);
