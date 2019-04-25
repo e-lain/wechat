@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by jupeng.wang on 2018/9/11.
+ * Created by:zerotop on 2018/9/11.
  */
 public class SocketHandler extends TextWebSocketHandler {
     private final static Logger logger = LoggerFactory.getLogger(TextWebSocketHandler.class);
@@ -21,11 +21,10 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        logger.info("get message "+message.getPayload());
+        logger.info("get message: {}" , message.getPayload());
         for (WebSocketSession websession : socketSession) {
-            websession.sendMessage(new TextMessage("收到新消息"+message.getPayload()));
+            websession.sendMessage(new TextMessage("收到新消息" + message.getPayload()));
         }
-
         super.handleTextMessage(session, message);
     }
 
@@ -34,12 +33,13 @@ public class SocketHandler extends TextWebSocketHandler {
         if (session.isOpen()) {
             socketSession.add(session);
         }
-        session.sendMessage(new TextMessage("id 为 "+ session.getId() + " 用户建立连接"));
+        session.sendMessage(new TextMessage("id 为:" + session.getId() + " 用户建立连接"));
         super.afterConnectionEstablished(session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        logger.info("用户id 退出登录:{}", session.getId());
         socketSession.remove(session);
         super.afterConnectionClosed(session, status);
     }

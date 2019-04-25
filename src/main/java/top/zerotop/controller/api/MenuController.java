@@ -11,7 +11,10 @@ import top.zerotop.domain.menu.Menu;
 import top.zerotop.util.JsonUtils;
 import top.zerotop.util.RestfulWapper;
 import top.zerotop.util.Result;
+import top.zerotop.util.URLUtils;
 import top.zerotop.wechat.TokenThread;
+
+import java.util.Map;
 
 import static top.zerotop.global.constrant.URLConstrant.URL_MENU_CREATE;
 import static top.zerotop.global.constrant.URLConstrant.URL_MENU_DELETE;
@@ -24,7 +27,7 @@ public class MenuController extends BaseController {
     @GetMapping("/get")
     @ApiOperation(value = "获取当前公众号菜单")
     public Result<Menu> getMenu() {
-        String url = URL_MENU_GET + TokenThread.accessToken.getAccessToken();
+        String url = URLUtils.getUrl(URL_MENU_GET);
         String res = (String) RestfulWapper.getWapper(url).get("result");
         return Result.make(JsonUtils.toSubObject(res, "menu", Menu.class));
     }
@@ -32,18 +35,19 @@ public class MenuController extends BaseController {
     @GetMapping("/delete")
     @ApiOperation(value = "获取当前公众号菜单")
     public Result<String> deleteMenu() {
-        String url = URL_MENU_DELETE + TokenThread.accessToken.getAccessToken();
+        String url = URLUtils.getUrl(URL_MENU_DELETE);
         String res = (String) RestfulWapper.getWapper(url).get("result");
         return Result.make(res);
     }
 
     @PostMapping("/create")
     @ApiOperation(value = "创建菜单")
-    public Result<String> createMenu(@ApiParam(value = "菜单")
+    public Result createMenu(@ApiParam(value = "菜单")
                                      @RequestBody Menu menu) {
-        String url = URL_MENU_CREATE + TokenThread.accessToken.getAccessToken();
+        String url = URLUtils.getUrl(URL_MENU_CREATE);
         String res = RestfulWapper.postWapper(url, JSON.toJSONString(menu));
-        return Result.make(res);
+        Map<String, String> map = JsonUtils.toObject(res, Map.class);
+        return Result.make(map);
     }
 
 

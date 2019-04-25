@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import org.springframework.web.servlet.ModelAndView;
 import top.zerotop.domain.AccessToken;
 import top.zerotop.util.JsonUtils;
+import top.zerotop.util.Result;
 import top.zerotop.wechat.TokenThread;
 import top.zerotop.util.DecriptUtils;
 import top.zerotop.util.SendUtils;
@@ -35,15 +36,20 @@ import top.zerotop.util.SendUtils;
 public class SignatureController {
     private static Logger logger = LoggerFactory.getLogger(SignatureController.class);
 
+//    @GetMapping(value = "/token")
+//    public @ResponseBody String getToken() {
+//        return TokenThread.accessToken.getAccessToken();
+//    }
+    @ApiOperation(value = "微信接口验证")
     @GetMapping(value = "/token")
-    public @ResponseBody
-    String getToken() {
-        return TokenThread.accessToken.getAccessToken();
+    public Result<String> getToken() {
+        logger.info("get token reqest");
+        return Result.make(TokenThread.accessToken.getAccessToken());
     }
+
 
     /**
      * 项目中jsp使用jssdk签名接口
-     * @return
      */
     @ApiOperation(value = "微信接口验证")
     @GetMapping("/signature")
@@ -56,11 +62,10 @@ public class SignatureController {
                 + "&timestamp=" + timestamp
                 + "&url=" + url;
         String signature = DecriptUtils.SHA1(signatureStr);
-        logger.info("url: {}", url);
-        logger.info("timestamp: {}", timestamp);
-        logger.info("nonceStr: {}", nonceStr);
-        logger.info("signatureStr: {}", signatureStr);
-        logger.info("signature: {}", signature);
+        logger.info("===============>>>signature");
+        logger.info("url: {}, timestamp: {}, nonceStr: {}", url, timestamp, nonceStr);
+        logger.info("signatureStr: {}, signature: {}", signatureStr, signature);
+        logger.info("===============>>>signature done");
 
         Map<String, String> result = new HashMap<>();
         result.put("appId", "appId");
@@ -78,7 +83,7 @@ public class SignatureController {
      * @return
      */
     @ApiOperation(value = "微信小程序登录接口")
-    @GetMapping(value = "/mini/login/{code}", produces = "application/json;charset=utf-8")
+    @GetMapping(value = "/mini/login/{code}")
     public String miniLogin(HttpServletRequest req, @PathVariable("code") String code) {
         Map<String, String> map = new HashMap<>();
 
@@ -109,19 +114,14 @@ public class SignatureController {
 
     /**
      * 微信公众号本地jssdk验证
-     *
-     * @param req
-     * @return
      */
     @ApiOperation(value = "微信公众号本地jssdk验证")
     @PostMapping(value = "/signature/vue")
-    public @ResponseBody
-    String signatureVue(HttpServletRequest req) {
+    public Result signatureVue(HttpServletRequest req) {
 
         System.out.println("--------------- vue signature -------------------");
 
         String json = JsonUtils.toJsonString(req);
-        Gson gson = new Gson();
         JSONObject tjson = JSON.parseObject(json);
         String rurl = tjson.get("url").toString();
         System.out.println("realurl: " + rurl);
@@ -145,7 +145,9 @@ public class SignatureController {
         map.put("timestamp", timestamp);
         map.put("signature", signature);
 
-        return gson.toJson(map);
+//        Gson gson = new Gson();
+//        return gson.toJson(map);
+        return Result.make(map);
     }
 
     private static String createTimestamp() {

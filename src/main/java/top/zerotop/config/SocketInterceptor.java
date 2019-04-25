@@ -10,9 +10,6 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import java.util.Map;
 
-/**
- * Created by jupeng.wang on 2018/9/11.
- */
 public class SocketInterceptor implements HandshakeInterceptor {
     private static Logger logger = LoggerFactory.getLogger(HandshakeInterceptor.class);
 

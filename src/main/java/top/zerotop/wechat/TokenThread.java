@@ -5,13 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.zerotop.Provider.NetWorkHelper;
 import top.zerotop.domain.AccessToken;
 import top.zerotop.global.constrant.URLConstrant;
 import top.zerotop.util.RestfulWapper;
 import top.zerotop.util.SendUtils;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class TokenThread implements Runnable {
