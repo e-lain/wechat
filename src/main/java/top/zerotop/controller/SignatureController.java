@@ -20,11 +20,8 @@ import com.google.gson.Gson;
 
 import org.springframework.web.servlet.ModelAndView;
 import top.zerotop.domain.AccessToken;
-import top.zerotop.util.JsonUtils;
-import top.zerotop.util.Result;
+import top.zerotop.util.*;
 import top.zerotop.wechat.TokenThread;
-import top.zerotop.util.DecriptUtils;
-import top.zerotop.util.SendUtils;
 
 /**
  * @author 作者: zerotop
@@ -54,24 +51,7 @@ public class SignatureController {
     @ApiOperation(value = "微信接口验证")
     @GetMapping("/signature")
     public Map<String, String> signature(HttpServletRequest req) {
-        String url = req.getRequestURL().toString();
-        String timestamp = SignatureController.createTimestamp();
-        String nonceStr = SignatureController.createNonce();
-        String signatureStr = "jsapi_ticket=" + AccessToken.getJsapiTicket()
-                + "&noncestr=" + nonceStr
-                + "&timestamp=" + timestamp
-                + "&url=" + url;
-        String signature = DecriptUtils.SHA1(signatureStr);
-        logger.info("===============>>>signature");
-        logger.info("url: {}, timestamp: {}, nonceStr: {}", url, timestamp, nonceStr);
-        logger.info("signatureStr: {}, signature: {}", signatureStr, signature);
-        logger.info("===============>>>signature done");
-
-        Map<String, String> result = new HashMap<>();
-        result.put("appId", "appId");
-        result.put("nonceStr", nonceStr);
-        result.put("timestamp", timestamp);
-        result.put("signature", signature);
+        Map<String, String> result = SignatureUtils.signatureJSSDK(req);
         return result;
     }
 
@@ -126,60 +106,8 @@ public class SignatureController {
         String rurl = tjson.get("url").toString();
         System.out.println("realurl: " + rurl);
 
-        Map<String, String> map = new HashMap<>();
-
-//		String url = req.getRequestURL().toString();
-        String timestamp = SignatureController.createTimestamp();
-        String nonceStr = SignatureController.createNonce();
-        String signatureStr = "jsapi_ticket=" + AccessToken.getJsapiTicket()
-                + "&noncestr=" + nonceStr
-                + "&timestamp=" + timestamp
-                + "&url=" + rurl;
-        String signature = DecriptUtils.SHA1(signatureStr);
-
-        logger.info("signatureVue url: {}, timestamp: {}, nonceStr: {}", rurl, timestamp, nonceStr);
-        logger.info("signatureVue signatureStr: {}, signatrue {}", signatureStr, signature);
-
-        map.put("appId", "appId");
-        map.put("nonceStr", nonceStr);
-        map.put("timestamp", timestamp);
-        map.put("signature", signature);
-
-//        Gson gson = new Gson();
-//        return gson.toJson(map);
+        Map<String, String> map = SignatureUtils.signatureJSSDK(req);
         return Result.make(map);
-    }
-
-    private static String createTimestamp() {
-        return Long.toString(System.currentTimeMillis() / 1000);
-    }
-
-    /**
-     * 生成jssdk需要的nonce
-     *
-     * @return
-     */
-    private static String createNonce() {
-        return UUID.randomUUID().toString();
-    }
-
-    public static String sort(String ticket, String timestamp, String nonceStr, String url) {
-        String[] strArray = {ticket, timestamp, nonceStr, url};
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(ticket, "jsapi_ticket");
-        map.put(nonceStr, "noncestr");
-        map.put(timestamp, "timestamp");
-        map.put(url, "url");
-        Arrays.sort(strArray);
-
-        String str = map.get(strArray[0]) + "=" + strArray[0]
-                + "&" + map.get(strArray[1]) + "=" + strArray[1]
-                + "&" + map.get(strArray[2]) + "=" + strArray[2]
-                + "&" + map.get(strArray[3]) + "=" + strArray[3];
-
-        logger.info("str:" + str);
-
-        return str;
     }
 
 }
