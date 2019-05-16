@@ -10,24 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import top.zerotop.Provider.WechatProvider;
 import top.zerotop.util.DecriptUtils;
 
 public class Entrance extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-
     private static Logger logger = LoggerFactory.getLogger(Entrance.class);
 
-    /**
-     * Token
-     */
+    // Token
     private final String token = "zerotop";
 
     WechatProvider wechatService = new WechatProvider();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         logger.info("======> 开始签名校验");
         String signature = request.getParameter("signature");
         String timestamp = request.getParameter("timestamp");
@@ -47,14 +42,19 @@ public class Entrance extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            logger.info(request.getRequestURL().toString());
+
             String responseMessage = wechatService.processRequest(request);
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("");
-            PrintWriter wout = response.getWriter();
-            wout.print(responseMessage);
-            wout.flush();
-            wout.close();
+            if (StringUtils.hasText(responseMessage)) {
+                response.setCharacterEncoding("UTF-8");
+//                response.setContentType("");
+                PrintWriter wout = response.getWriter();
+                wout.print(responseMessage);
+                wout.flush();
+                wout.close();
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.info("error: " + e.getMessage());
         }
     }

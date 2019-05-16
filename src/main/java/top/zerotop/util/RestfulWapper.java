@@ -75,13 +75,10 @@ public class RestfulWapper {
         CloseableHttpResponse res = null;
         try {
             res = httpclient.execute(httpPost);
-            logger.info(res.getStatusLine().getStatusCode() + "");
             HttpEntity entity1 = res.getEntity();
             result = EntityUtils.toString(entity1, "UTF-8");
-            logger.info(entity1.toString());
         } catch (IOException e) {
-            logger.error("post request wrong ...");
-            logger.error(e.getMessage());
+            logger.error("post request wrong. {}", e.getMessage());
         } finally {
             try {
                 if (res != null) {

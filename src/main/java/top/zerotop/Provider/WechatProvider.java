@@ -3,11 +3,12 @@ package top.zerotop.Provider;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import com.sun.javafx.binding.StringFormatter;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 public class WechatProvider {
     private static Logger logger = LoggerFactory.getLogger(WechatProvider.class);
 
-    private Map<String, String> map = new HashMap<>();
+    private Map<String, String> map = new ConcurrentHashMap<>();
     private String responseMes;
+    private String EMPTYTEXT = "";
 
     public String processRequest(HttpServletRequest request) {
         responseMes = "";
@@ -34,12 +36,13 @@ public class WechatProvider {
             inputStream = request.getInputStream();
         } catch (IOException e1) {
             logger.info(e1.getMessage());
+            return responseMes;
         }
 
         Document doc = null;
-        StringBuffer content = new StringBuffer();
-        String line = null;
         try {
+            String line = null;
+            StringBuilder content = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             while (null != (line = bufferedReader.readLine())) {
                 content.append(line + "\n");
@@ -50,16 +53,14 @@ public class WechatProvider {
         } catch (IOException e2) {
             logger.info(e2.getMessage());
         } catch (DocumentException e) {
-            logger.info(e.getMessage());
+            e.printStackTrace();
         }
 
         try {
             Element root = doc.getRootElement();
             List<Element> list = root.elements();
             map.clear();
-            list.forEach(e -> {
-                map.put(e.getName(), e.getText());
-            });
+            list.forEach(e -> map.put(e.getName(), e.getText()));
         } catch (Exception e) {
             logger.info(e.getMessage());
         }
@@ -68,7 +69,7 @@ public class WechatProvider {
         return responseMes;
     }
 
-    String createResponseMessage() {
+    private String createResponseMessage() {
         // 发送信息内容
         String fromUserName = map.get("FromUserName");
         String toUserName = map.get("ToUserName");
@@ -90,16 +91,16 @@ public class WechatProvider {
                 break;
         }
 
-        if (responseMes.equals("")) {
-            responseMes = "<xml><ToUserName>" + fromUserName + "</ToUserName>"
-                    + "<FromUserName>" + toUserName + "</FromUserName>"
-                    + "<CreateTime>" + System.currentTimeMillis() + "</CreateTime>"
+        if (EMPTYTEXT.equals(responseMes)) {
+            responseMes = StringFormatter.format("<xml>"
+                    + "<ToUserName>%s</ToUserName>"
+                    + "<FromUserName>%s</FromUserName>"
+                    + "<CreateTime>%s</CreateTime>"
                     + "<MsgType>text</MsgType>"
                     + "<Content>收到消息：默认处理</Content>"
-                    + "</xml>";
+                    + "</xml>", fromUserName, toUserName, System.currentTimeMillis()).toString();
         }
-        logger.info(" res: " + responseMes);
-
+        logger.info("res: {}", responseMes);
         return responseMes;
     }
 }

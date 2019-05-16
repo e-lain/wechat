@@ -98,13 +98,10 @@ public class SignatureController {
     @ApiOperation(value = "微信公众号本地jssdk验证")
     @PostMapping(value = "/signature/vue")
     public Result signatureVue(HttpServletRequest req) {
-
         System.out.println("--------------- vue signature -------------------");
-
         String json = JsonUtils.toJsonString(req);
         JSONObject tjson = JSON.parseObject(json);
         String rurl = tjson.get("url").toString();
-        System.out.println("realurl: " + rurl);
 
         Map<String, String> map = SignatureUtils.signatureJSSDK(req);
         return Result.make(map);

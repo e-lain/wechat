@@ -22,7 +22,6 @@ import static top.zerotop.global.constrant.URLConstrant.URL_MEDIA_UPLOAD;
 @Api(value = "公众号素材", description = "公众号临时和永久素材管理")
 @RequestMapping(value = "/media", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class MediaController extends BaseController {
-
     @PostMapping("media/upload/{type}")
     @ApiOperation(value = "上传临时文件")
     public Result<String> uploadMedia(@ApiParam(value = "文件")
@@ -46,7 +45,6 @@ public class MediaController extends BaseController {
     public Result<Map<String, Object>> listMedia(@ApiParam(value = "类型：image, voice, video, thumb")
                                                  @PathVariable("mediaId") String mediaId) {
         String url = URLUtils.getUrl(URL_MEDIA_GET).replace("{MEDIA_ID}", mediaId);
-//            res = (String)RestfulWapper.getWapper(url).get("result");
         return Result.make(RestfulWapper.getWapper(url));
     }
 }
