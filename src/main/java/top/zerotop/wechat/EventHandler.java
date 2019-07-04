@@ -1,6 +1,7 @@
 package top.zerotop.wechat;
 
 import com.alibaba.fastjson.JSON;
+import com.sun.javafx.binding.StringFormatter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.slf4j.Logger;
@@ -24,107 +25,96 @@ public class EventHandler {
     private static XStream xstream = new XStream(new DomDriver());
     private static String responseMsg;
 
+    // 文本消息
     public static String textEvent(Map<String, String> map, String fromUserName, String toUserName) {
-        // 文本消息
         logger.info("========> Text message");
         TextMessage textMessage = new TextMessage(fromUserName, toUserName);
         textMessage.setContent("收到消息: " + map.get("Content"));
 
-        responseMsg =  makeXML(textMessage);
-
-        return responseMsg;
+        return makeXML(textMessage);
     }
 
+    // 图片消息
     public static String imgEvent(Map<String, String> map, String fromUserName, String toUserName) {
-        // 图片消息
         logger.info(" =======> Image message");
         ImageMessage imageMessage = new ImageMessage(fromUserName, toUserName);
-        Media image = new Media(map.get("MediaId"));
-        imageMessage.setImage(image);
+        imageMessage.setImage(new Media(map.get("MediaId")));
 
-        responseMsg =  makeXML(imageMessage);
-        return responseMsg;
+        return makeXML(imageMessage);
     }
 
+    // 语音消息
     public static String voiceEvent(Map<String, String> map, String fromUserName, String toUserName) {
-        // 语音消息
         logger.info(" =======> Voice message");
         VoiceMessage voiceMessage = new VoiceMessage(fromUserName, toUserName);
-        Media voice = new Media(map.get("MediaId"));
-        voiceMessage.setVoice(voice);
+        voiceMessage.setVoice(new Media(map.get("MediaId")));
         voiceMessage.setRecognition(map.get("Recognition"));
 
-        responseMsg =  makeXML(voiceMessage);
-        return responseMsg;
+        return makeXML(voiceMessage);
     }
-
-
 
     public static String mssageEvent(Map<String, String> map, String fromUserName, String toUserName) {
         TextMessage textMessage = new TextMessage(fromUserName, toUserName);
         switch (map.get("Event")) {
-            case MessageTypeConstrant.MESSAGE_EVENT_SUBSCRIBE :
+            case MessageTypeConstrant.MESSAGE_EVENT_SUBSCRIBE:
                 logger.info(" =======> subscribe message");
                 textMessage.setContent("感谢您的关注");
-                responseMsg =  makeXML(textMessage);
+                responseMsg = makeXML(textMessage);
                 break;
-
-            case MessageTypeConstrant.MESSAGE_LOCATION :
+            case MessageTypeConstrant.MESSAGE_LOCATION:
                 logger.info(" =======> location event message");
-                textMessage.setContent("维度:" + map.get("Latitude") + "  经度:" + map.get("Longitude") + "  精度:" + map.get("Precision"));
-                responseMsg =  makeXML(textMessage);
+                String content = StringFormatter.format("维度: %s, 经度: %s, 精度:%s.", map.get("Latitude"), map.get("Longitude"), map.get("Precision")).toString();
+                textMessage.setContent(content);
+                responseMsg = makeXML(textMessage);
                 break;
-
-            case MessageTypeConstrant.MESSAGE_EVENT_CLICK :
-                responseMsg =  clickEventHandler(map, fromUserName, toUserName);
+            case MessageTypeConstrant.MESSAGE_EVENT_CLICK:
+                responseMsg = clickEventHandler(map, fromUserName, toUserName);
                 break;
         }
-
         return responseMsg;
     }
 
     private static String clickEventHandler(Map<String, String> map, String fromUserName, String toUserName) {
         logger.info(" =======> clickme event");
         //菜单栏点击
-        if ("clickme".equals(map.get("EventKey"))) {
-            Map<String, String> tempMap = new HashMap<>();
-            tempMap.put("type","news");
-            tempMap.put("offset","0");
-            tempMap.put("count","5");
+        switch (map.get("EventKey")) {
+            case "clickme":
+                Map<String, String> tempMap = new HashMap<>();
+                tempMap.put("type", "news");
+                tempMap.put("offset", "0");
+                tempMap.put("count", "5");
 
-            NewsMessage newMessage = new NewsMessage(fromUserName, toUserName);
-            try {
-                List<ArticleItem> itemList =
-                        MediaManager.batchgetMaterial(AccessToken.getAccessToken(), JSON.toJSONString(map));
-                newMessage.setArticles(itemList);
-                newMessage.setArticleCount(itemList.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            responseMsg = makeXML(newMessage);
-            responseMsg = responseMsg.replaceAll("top.zerotop.domain.material.ArticleItem", "item");
-        }
-
-        else {
-            logger.info(" =======> click message");
+                NewsMessage newMessage = new NewsMessage(fromUserName, toUserName);
+                try {
+                    List<ArticleItem> itemList =
+                            MediaManager.batchgetMaterial(AccessToken.getAccessToken(), JSON.toJSONString(tempMap));
+                    newMessage.setArticles(itemList);
+                    newMessage.setArticleCount(itemList.size());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                responseMsg = makeXML(newMessage).replaceAll("top.zerotop.domain.material.ArticleItem", "item");
+                break;
+            default:
+                logger.info(" =======> click message");
 //            ImageMessage imageMessage = new ImageMessage(fromUserName, toUserName);
 //            Media image = new Media("MediaId");
 //            imageMessage.setImage(image);
-            TextMessage textMessage = new TextMessage(fromUserName, toUserName);
-            textMessage.setContent("获取click事件" + map.get("EventKey"));
-
-            responseMsg = makeXML(textMessage);
+                TextMessage textMessage = new TextMessage(fromUserName, toUserName);
+                textMessage.setContent("获取click事件" + map.get("EventKey"));
+                responseMsg = makeXML(textMessage);
         }
+
         return responseMsg;
     }
 
     private static String makeXML(BaseMessage message) {
         try {
             xstream.alias("xml", message.getClass());
-            responseMsg = xstream.toXML(message);
+            return xstream.toXML(message);
         } catch (Exception e) {
             e.printStackTrace();
+            return "";
         }
-        return responseMsg;
     }
 }

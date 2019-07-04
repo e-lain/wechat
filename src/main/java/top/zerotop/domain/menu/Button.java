@@ -82,5 +82,16 @@ public class Button {
 	public void setSub_button(List<Button> sub_button) {
 		this.sub_button = sub_button;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Button{" +
+				"type='" + type + '\'' +
+				", name='" + name + '\'' +
+				", key='" + key + '\'' +
+				", url='" + url + '\'' +
+				", media_id='" + media_id + '\'' +
+				", sub_button=" + sub_button +
+				'}';
+	}
 }

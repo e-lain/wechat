@@ -67,7 +67,7 @@ public class SendUtils {
     public static String sendPost(String url, String param) {
         try {
             getConn(url);
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod("POST");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
             conn.connect();
@@ -75,7 +75,6 @@ public class SendUtils {
 
             //为群发修改，其他接口问题之后调试
             outt.write((param).getBytes("UTF-8"));
-//			outt.write(parser.parse(param).toString().getBytes("UTF-8"));
             outt.close();
 
             int code = conn.getResponseCode();
@@ -252,7 +251,6 @@ public class SendUtils {
                 System.arraycopy(temp, 0, data, destPos, readLen);
                 destPos += readLen;
             }
-
         }
         return new String(data, "UTF-8"); // utf-8编码
     }

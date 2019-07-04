@@ -1,8 +1,6 @@
 package top.zerotop.domain;
 
-
 public class Media{
-
 	/**
 	 * MediaId
 	 */
@@ -31,5 +29,4 @@ public class Media{
 	public void setMedia_id(String media_id) {
 		this.media_id = media_id;
 	}
-
 }

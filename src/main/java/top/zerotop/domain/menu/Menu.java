@@ -16,5 +16,11 @@ public class Menu {
 	public void setButton(List<Button> button) {
 		this.button = button;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Menu{" +
+				"button=" + button +
+				'}';
+	}
 }

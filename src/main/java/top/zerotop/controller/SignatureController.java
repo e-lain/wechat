@@ -23,6 +23,8 @@ import top.zerotop.domain.AccessToken;
 import top.zerotop.util.*;
 import top.zerotop.wechat.TokenThread;
 
+import static top.zerotop.wechat.TokenThread.accessToken;
+
 /**
  * @author 作者: zerotop
  * @createDate 创建时间: 2018年5月4日下午9:48:14
@@ -41,7 +43,7 @@ public class SignatureController {
     @GetMapping(value = "/token")
     public Result<String> getToken() {
         logger.info("get token reqest");
-        return Result.make(TokenThread.accessToken.getAccessToken());
+        return Result.make(accessToken.getAccessToken());
     }
 
 

@@ -20,7 +20,7 @@
 <button class="btn btn_primary" id="onMenuShareTimeline">onMenuShareTimeline</button>
 </br>
 <span class="desc">获取“分享给朋友”按钮点击状态及自定义分享内容接口:</span>
-<button class="btn btn_primary" id="onMenuShareAppMessage">onMenuShareAppMessage</button>
+<button class="btn btn_primary" id="updateAppMessageShareData">updateAppMessageShareData</button>
 </br>
 <span class="desc">获取“分享到QQ”按钮点击状态及自定义分享内容接口:</span>
 <button class="btn btn_primary" id="onMenuShareQQ">onMenuShareQQ</button>
@@ -57,7 +57,7 @@
         jsApiList: [
             "checkJsApi",
             "onMenuShareTimeline",
-            "onMenuShareAppMessage",
+            "updateAppMessageShareData",
             "onMenuShareQQ",
             "onMenuShareWeibo",
 
@@ -72,7 +72,7 @@
         // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
         document.querySelector("#checkJsApi").onclick = function () {
             wx.checkJsApi({
-                jsApiList: ["getNetworkType", "previewImage"],
+                jsApiList: ["getNetworkType", "previewImage", "", "onMenuShareQQ", "chooseImage"],
                 success: function (res) {
                     alert(JSON.stringify(res));
                 }
@@ -81,8 +81,8 @@
 
         // 2. 分享接口
         // 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
-        document.querySelector("#onMenuShareAppMessage").onclick = function () {
-            wx.onMenuShareAppMessage({
+        document.querySelector("#updateAppMessageShareData").onclick = function () {
+            wx.updateAppMessageShareData({
                 title: "互联网之子",
                 desc:
                     "在长大的过程中，我才慢慢发现，我身边的所有事，别人跟我说的所有事，那些所谓本来如此，注定如此的事，它们其实没有非得如此，事情是可以改变的。更重要的是，有些事既然错了，那就该做出改变。",
@@ -123,9 +123,9 @@
         // 5.2 图片预览
         document.querySelector('#previewImage').onclick = function () {
             wx.previewImage({
-                current: 'http://img5.douban.com/view/photo/photo/public/p1353993776.jpg',
+                current: 'http://www.zerotop.top:8080/resource/img/1526802973833.png',
                 urls: [
-                    'http://img3.douban.com/view/photo/photo/public/p2152117150.jpg',
+                    'https://mmbiz.qlogo.cn/mmbiz_jpg/0m6wtfaAWzrZsWfUGtibxhm2iac8SVWN0h5OpicPRcibCNPz825ITsgB4Eyhbictaj2c2Qghf7PRIniaVxVBYE4mUcqw/640?wx_fmt=jpeg',
                     'http://img5.douban.com/view/photo/photo/public/p1353993776.jpg',
                     'http://img3.douban.com/view/photo/photo/public/p2152134700.jpg'
                 ]

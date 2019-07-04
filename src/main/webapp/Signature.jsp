@@ -15,13 +15,13 @@ signature:${signature} <br>
 <button class="btn btn_primary" id="checkJsApi">checkJsApi</button>
 
 <h3 id="menu-image">图像接口</h3>
-<span class="desc">拍照或从手机相册中选图接口</span>
+<span class="desc">拍照或从手机相册中选图接口</span></body></br>
 <button class="btn btn_primary" id="chooseImage">chooseImage</button>
-<span class="desc">预览图片接口</span>
+<span class="desc">预览图片接口</span></br>
 <button class="btn btn_primary" id="previewImage">previewImage</button>
-<span class="desc">上传图片接口</span>
+<span class="desc">上传图片接口</span></br>
 <button class="btn btn_primary" id="uploadImage">uploadImage</button>
-<span class="desc">下载图片接口</span>
+<span class="desc">下载图片接口</span></br>
 <button class="btn btn_primary" id="downloadImage">downloadImage</button>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
