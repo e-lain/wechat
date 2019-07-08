@@ -90,6 +90,22 @@ public class JsonUtils {
 		return CollectionUtils.isEmpty(result) ? new ArrayList<>() : result;
 	}
 
+	public static <T> List<T> fromJson(String json, String attrName, Class<T> clazz) {
+		List<T> result = new ArrayList<>();
+		if (!StringUtils.hasText(json)) {
+			return result;
+		}
+		try {
+			JsonNode jsonNode = objectMapper().readTree(json).get(attrName);
+			JavaType javaType = createJavaType(ArrayList.class, clazz);
+			result = objectMapper().readValue(jsonNode.toString(), javaType);
+		} catch (Exception e) {
+			logger.warn(" convert to list wrong ...");
+			e.printStackTrace();
+		}
+		return CollectionUtils.isEmpty(result) ? new ArrayList<>() : result;
+	}
+
 	public static JavaType createType(Class clazz) {
 		return objectMapper().getTypeFactory().constructType(clazz);
 	}

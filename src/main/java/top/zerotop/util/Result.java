@@ -26,6 +26,13 @@ public class Result<Content> {
         return result;
     }
 
+    public static <Content> Result<Content> error(Content content) {
+        Result<Content> result = new Result<>();
+        result.success = false;
+        result.content = content;
+        return result;
+    }
+
     public static Result<Boolean> getSUCCESS() {
         return SUCCESS;
     }

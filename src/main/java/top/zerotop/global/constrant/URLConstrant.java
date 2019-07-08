@@ -1,7 +1,6 @@
 package top.zerotop.global.constrant;
 
 public class URLConstrant {
-
 	public static final String BASE_URL = "https://api.weixin.qq.com/cgi-bin";
 
 	/**
@@ -40,23 +39,13 @@ public class URLConstrant {
 	public static final String URL_FOLLOWER_GET = BASE_URL + "/user/get?access_token={ACCESS_TOKEN}";
 	
 	//https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID1
-	
-	
+
+
+	public static final String DATACUBE_URL = "https://api.weixin.qq.com/datacube";
 	/**
-	 * examples
+	 * 用户分析接口
 	 */
-	String uploadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload?"
-			+ "access_token=ACCESS_TOKEN"
-			+ "&type=image";
-	
-	String getUrl = "https://api.weixin.qq.com/cgi-bin/media/get?"
-			+ "access_token=ACCESS_TOKEN"
-			+ "&media_id=MediaId";
-	
-	String PostUrlMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?"
-			+ "access_token=ACCESS_TOKEN";
+	public static final String URL_USER_SUMMARY = DATACUBE_URL + "/getusersummary?access_token={ACCESS_TOKEN}";
 
-	String postUrl = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?"
-			+ "access_token=ACCESS_TOKEN";
-
+	public static final String URL_USER_CUMULATE = DATACUBE_URL + "/getusercumulate?access_token=ACCESS_TOKEN";
 }

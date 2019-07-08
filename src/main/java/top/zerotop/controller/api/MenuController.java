@@ -16,7 +16,7 @@ import top.zerotop.util.Result;
 @RequestMapping(value = "/menu", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class MenuController extends BaseController {
     @Autowired
-    protected MenuService menuService;
+    private MenuService menuService;
 
     @GetMapping("/get")
     @ApiOperation(value = "获取当前公众号菜单")
@@ -34,6 +34,6 @@ public class MenuController extends BaseController {
     @ApiOperation(value = "创建菜单")
     public Result createMenu(@ApiParam(value = "菜单")
                              @RequestBody Menu menu) {
-        return Result.make(menuService.createMenu(url, menu));
+        return Result.make(menuService.createMenu(menu));
     }
 }

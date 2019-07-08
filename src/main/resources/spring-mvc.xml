@@ -15,6 +15,7 @@
     <!-- 扫描controller包，使注解生效 -->
     <context:component-scan base-package="top.zerotop.controller"/>
     <context:component-scan base-package="top.zerotop.wechat.controller"/>
+    <context:component-scan base-package="top.zerotop.service"/>
     <bean class="top.zerotop.config.SwaggerConfig"/>
 
     <mvc:default-servlet-handler/>
