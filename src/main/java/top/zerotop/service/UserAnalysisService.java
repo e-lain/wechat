@@ -20,7 +20,7 @@ public class UserAnalysisService {
         DateRange timeRange = new DateRange(begin, end);
 
         String url = URLUtils.getUrl(URL_USER_SUMMARY);
-        String res = (String) RestfulWapper.postWapper(url, JsonUtils.toJson(timeRange));
+        String res = RestfulWapper.postWapper(url, JsonUtils.toJson(timeRange));
         System.out.println(res);
         return JsonUtils.fromJson(res, "list", UserSummary.class);
     }

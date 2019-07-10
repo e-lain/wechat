@@ -34,11 +34,11 @@ public class TokenThread implements Runnable {
                 } else {
                     Thread.sleep(1000 * 3); // 获取的access_token为空 休眠3秒
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 logger.error("发生异常：" + e.getMessage());
                 try {
                     Thread.sleep(1000 * 10); // 发生异常休眠1秒
-                } catch (Exception e1) {
+                } catch (InterruptedException e1) {
                 }
             }
         }
@@ -50,22 +50,19 @@ public class TokenThread implements Runnable {
      * @return
      */
     private AccessToken getAccessToken() {
-//		NetWorkHelper netHelper = new NetWorkHelper();
         String Url = String.format(
-                URLConstrant.BASE_URL + "/token?grant_type=client_credential&appid=%s&secret=%s",
-                TokenThread.appId, TokenThread.appSecret);
-
-//		String result = netHelper.getHttpsResponse(Url, "");
-        String result = "";
-        result = (String) RestfulWapper.getWapper(Url).getOrDefault("result", "");
-        logger.info(result);
+                "%s/token?grant_type=client_credential&appid=%s&secret=%s",
+                URLConstrant.BASE_URL, TokenThread.appId, TokenThread.appSecret);
+        String result = (String) RestfulWapper.getWapper(Url).getOrDefault("result", "");
+        logger.info("=====> {}", result);
         JSONObject tokenJson = JSON.parseObject(result);
         AccessToken token = new AccessToken();
         AccessToken.setAccessToken(tokenJson.getString("access_token"));
         token.setExpiresin(tokenJson.getInteger("expires_in"));
 
-        String url = URLConstrant.BASE_URL + "/ticket/getticket?access_token=" + AccessToken.getAccessToken() + "&type=jsapi";
-
+        String url = String.format(
+                "%s/ticket/getticket?access_token=%s&type=jsapi",
+                URLConstrant.BASE_URL, AccessToken.getAccessToken());
         String ticket = SendUtils.sendGet(url);
         JSONObject ticketJson = JSON.parseObject(ticket);
         AccessToken.setJsapiTicket(ticketJson.getString("ticket"));

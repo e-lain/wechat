@@ -113,7 +113,6 @@ public class MediaManager {
         String result = null;
 
         String url = URLConstrant.URL_MEDIA_UPLOAD + accessToken + "&type=" + type;
-
         try {
             result = SendUtils.uploadTempMaterial(url, path);
         } catch (Exception e) {

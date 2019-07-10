@@ -32,7 +32,7 @@ public class Entrance extends HttpServlet {
         //排序 加密 校验签名
         String sortString = sort(token, timestamp, nonce);
         String mytoken = DecriptUtils.SHA1(sortString);
-        if (null != mytoken && mytoken != "" && mytoken.equals(signature)) {
+        if (!"".equals(mytoken) && mytoken.equals(signature)) {
             logger.info("<======签名校验通过...");
             response.getWriter().println(echostr); //如果检验成功输出echostr，微信服务器接收到此输出，才会确认检验完成。
         } else {
@@ -48,10 +48,10 @@ public class Entrance extends HttpServlet {
             if (StringUtils.hasText(responseMessage)) {
                 response.setCharacterEncoding("UTF-8");
 //                response.setContentType("");
-                PrintWriter wout = response.getWriter();
-                wout.print(responseMessage);
-                wout.flush();
-                wout.close();
+                PrintWriter writer = response.getWriter();
+                writer.print(responseMessage);
+                writer.flush();
+                writer.close();
             }
         } catch (Exception e) {
             e.printStackTrace();

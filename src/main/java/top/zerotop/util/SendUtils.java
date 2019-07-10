@@ -15,17 +15,13 @@ public class SendUtils {
     private static Logger logger = LoggerFactory.getLogger(SendUtils.class);
 
     private static Gson gson = new Gson();
-
     private static JsonParser parser = new JsonParser();
 
-    static URL realUrl = null;
-
-    static HttpURLConnection conn = null;
-
+    private static HttpURLConnection conn = null;
     private static String result;
 
-    private static void getConn(String url) throws MalformedURLException, IOException {
-        realUrl = new URL(url);
+    private static void createNetConnect(String url) throws IOException {
+        URL realUrl = new URL(url);
         conn = (HttpURLConnection) realUrl.openConnection();
         conn.setDoOutput(true);
         conn.setDoInput(true);
@@ -34,26 +30,24 @@ public class SendUtils {
     }
 
     public static String sendPostSC(String url, String param) {
-
-        OutputStream outt = null; // utf-8编码
         try {
-            getConn(url);
+            createNetConnect(url);
             // conn.setRequestProperty("user-agent", "Mozilla/5.0");
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
             conn.connect();
 
-            outt = conn.getOutputStream();
-            outt.write(gson.toJson(param).toString().getBytes("UTF-8"));
-            outt.close();
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(gson.toJson(param).getBytes("UTF-8"));
+            outputStream.close();
 
             int code = conn.getResponseCode();
-            InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
+            InputStream inputStream = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
             int length = conn.getContentLength();// 获取长度
-            result = readData(length, is);
+            result = readData(length, inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -66,23 +60,22 @@ public class SendUtils {
 
     public static String sendPost(String url, String param) {
         try {
-            getConn(url);
+            createNetConnect(url);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
             conn.connect();
-            OutputStream outt = conn.getOutputStream(); // utf-8编码
 
+            OutputStream outputStream = conn.getOutputStream(); // utf-8编码
             //为群发修改，其他接口问题之后调试
-            outt.write((param).getBytes("UTF-8"));
-            outt.close();
+            outputStream.write((param).getBytes("UTF-8"));
+            outputStream.close();
 
             int code = conn.getResponseCode();
-            InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
-
+            InputStream inputStream = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
             // 读取响应
             int length = conn.getContentLength();// 获取长度
-            result = readData(length, is);
+            result = readData(length, inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -93,27 +86,26 @@ public class SendUtils {
         return result;
     }
 
-
     public static String sendGet(String url) {
         try {
-            getConn(url);
+            createNetConnect(url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
             conn.connect();
 //			OutputStream outt = conn.getOutputStream(); // utf-8编码
 //			outt.write(parser.parse(param).toString().getBytes("UTF-8"));
-            //outt.append((CharSequence) parser.parse(param).toString());
-            //outt.flush();
+//            outt.append((CharSequence) parser.parse(param).toString());
+//            outt.flush();
 //			outt.close();
 
             int code = conn.getResponseCode();
-            logger.info(" request res : {} " , conn.getResponseMessage());
-            InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
+            logger.info("===>GET res: {} ", conn.getResponseMessage());
+            InputStream inputStream = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
             int length = conn.getContentLength();// 获取长度
-            result = readData(length, is);
+            result = readData(length, inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -121,25 +113,23 @@ public class SendUtils {
                 conn.disconnect();
             }
         }
-
         return result;
     }
 
     public static String sendGetImage(String url, String param) {
         try {
-            getConn(url);
+            createNetConnect(url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // 设置发送数据的格式
             conn.connect();
 
             int code = conn.getResponseCode();
-            logger.info("res:" + conn.getResponseMessage());
+            logger.info("===>GET res:" + conn.getResponseMessage());
             InputStream inputStream = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应
-            int length = (int) conn.getContentLength();// 获取长度
-            System.out.println("length " + length);
+            int length = conn.getContentLength();// 获取长度
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             //创建一个Buffer字符串
             byte[] buffer = new byte[1024];
@@ -154,11 +144,8 @@ public class SendUtils {
             inputStream.close();
             byte[] data = outStream.toByteArray();
             File imageFile = new File("D:\\BeautyGirl.jpg");
-            //创建输出流
             FileOutputStream foutStream = new FileOutputStream(imageFile);
-            //写入数据
             foutStream.write(data);
-            //关闭输出流
             foutStream.close();
             conn.disconnect();
         } catch (Exception e) {
@@ -168,7 +155,7 @@ public class SendUtils {
                 conn.disconnect();
             }
         }
-        return "getImage success";
+        return "GetImage success...";
     }
 
     /**
@@ -180,35 +167,31 @@ public class SendUtils {
      */
     public static String uploadTempMaterial(String url, String imgUrl) {
         File file = new File(imgUrl);
-        OutputStream output = null;
-        DataInputStream input = null;
         try {
             if (!file.isFile() || !file.exists()) {
                 throw new IOException("file is not exist");
             }
 
-            getConn(url);
+            createNetConnect(url);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Charset", "UTF-8");
             String boundary = "----------" + System.currentTimeMillis();
             conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-
-            output = new DataOutputStream(conn.getOutputStream());
             StringBuilder sb = new StringBuilder();
-            sb.append("--"); // 必须多两道线
-            sb.append(boundary);
-            sb.append("\r\n");
-            sb.append("Content-Disposition: form-data;name=\"media\";filelength=\"" + file.length()
-                    + "\";filename=\"" + file.getName() + "\"\r\n");
-            sb.append("Content-Type:application/octet-stream\r\n\r\n");
+            sb.append("--")
+                    .append(boundary)
+                    .append("\r\n")
+                    .append("Content-Disposition: form-data;name=\"media\";filelength=\"" + file.length()
+                            + "\";filename=\"" + file.getName() + "\"\r\n")
+                    .append("Content-Type:application/octet-stream\r\n\r\n");
             byte[] head = sb.toString().getBytes("utf-8");
             // 获得输出流
-            output = new DataOutputStream(conn.getOutputStream());
+            OutputStream output = new DataOutputStream(conn.getOutputStream());
             output.write(head);
             // 文件正文部分
             // 把文件已流文件的方式 推入到url中
-            input = new DataInputStream(new FileInputStream(file));
+            DataInputStream input = new DataInputStream(new FileInputStream(file));
             int bytes = 0;
             byte[] bufferOut = new byte[1024];
             while ((bytes = input.read(bufferOut)) != -1) {
@@ -221,11 +204,10 @@ public class SendUtils {
             output.write(foot);
 
             conn.connect();
-            //outt.append((CharSequence) parser.parse(param).toString());
             output.close();
 
             int code = conn.getResponseCode();
-            System.out.println("resmessage " + conn.getResponseMessage());
+            logger.info("===>Upload Temp Material res: {}", conn.getResponseMessage());
             InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
 
             // 读取响应

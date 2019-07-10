@@ -1,10 +1,8 @@
 package top.zerotop.wechat.controller;
 
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import top.zerotop.controller.SignatureController;
 import top.zerotop.util.SignatureUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +13,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/page")
-public class IndexController {
+public class PageController {
 
     @RequestMapping(value = "/share")
     public ModelAndView jsIndexPage(HttpServletRequest request) {

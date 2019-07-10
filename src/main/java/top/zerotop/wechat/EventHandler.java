@@ -61,9 +61,14 @@ public class EventHandler {
                 textMessage.setContent("感谢您的关注");
                 responseMsg = makeXML(textMessage);
                 break;
+            case MessageTypeConstrant.MESSAGE_EVENT_UNSUBSCRIBE:
+                logger.info(" =======> unsubscribe message");
+                textMessage.setContent("------->取消的关注" + map.get("FromUserName"));
+                responseMsg = makeXML(textMessage);
+                break;
             case MessageTypeConstrant.MESSAGE_LOCATION:
                 logger.info(" =======> location event message");
-                String content = StringFormatter.format("维度: %s, 经度: %s, 精度:%s.", map.get("Latitude"), map.get("Longitude"), map.get("Precision")).toString();
+                String content = String.format("维度: %s, 经度: %s, 精度:%s.", map.get("Latitude"), map.get("Longitude"), map.get("Precision"));
                 textMessage.setContent(content);
                 responseMsg = makeXML(textMessage);
                 break;
@@ -71,6 +76,12 @@ public class EventHandler {
                 responseMsg = clickEventHandler(map, fromUserName, toUserName);
                 break;
         }
+        return responseMsg;
+    }
+
+    // 视频消息
+    public static String videoMssage(Map<String, String> map, String fromUserName, String toUserName) {
+        TextMessage textMessage = new TextMessage(fromUserName, toUserName);
         return responseMsg;
     }
 
@@ -104,7 +115,6 @@ public class EventHandler {
                 textMessage.setContent("获取click事件" + map.get("EventKey"));
                 responseMsg = makeXML(textMessage);
         }
-
         return responseMsg;
     }
 
