@@ -20,77 +20,56 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RestfulWapper {
-    private static Logger logger = LoggerFactory.getLogger(RestfulWapper.class);
+public class RestfulWrapper {
+    private static Logger logger = LoggerFactory.getLogger(RestfulWrapper.class);
 
     private static CloseableHttpClient httpclient = HttpClients.createDefault();
 
-    private static String result = "";
-
-    private static Map<String, Object> resultMap = new HashMap<>();
-
-    public static Map<String, Object> getWapper(String url) {
-        System.out.println(url);
+    public static Map<String, Object> getWrapper(String url) {
         HttpGet httpGet = new HttpGet(url);
-        CloseableHttpResponse res = null;
-        HttpEntity entity1 = null;
-        try {
-            res = httpclient.execute(httpGet);
+        Map<String, Object> resultMap = new HashMap<>();
+        try (CloseableHttpResponse res = httpclient.execute(httpGet)) {
             if (HttpStatus.SC_OK == res.getStatusLine().getStatusCode()) {
-                entity1 = res.getEntity();
-                if (null != entity1 && entity1.getContentType().getValue().contains("image")) {
+                HttpEntity entity1 = res.getEntity();
+                if (null != entity1 && entity1.getContentType().getValue() != null && entity1.getContentType().getValue().contains("image")) {
                     String name = "D://" + System.currentTimeMillis() + ".jpg";
                     FileOutputStream outputStream = new FileOutputStream(name);
                     entity1.writeTo(outputStream);
                     resultMap.put("img", name);
                     outputStream.close();
                 } else {
-                    result = EntityUtils.toString(entity1, "UTF-8");
+                    String result = EntityUtils.toString(entity1, StandardCharsets.UTF_8);
                     resultMap.put("result", result);
                 }
             }
         } catch (IOException e1) {
             logger.info(String.format("url:[%s], get fail, exception:[IOException]", url));
-        } finally {
-            try {
-                if (res != null) {
-                    res.close();
-                }
-            } catch (IOException e2) {
-            }
         }
         return resultMap;
     }
 
-    public static String postWapper(String url, String data) {
+    public static String postWrapper(String url, String data) {
         HttpPost httpPost = new HttpPost(url);
         StringEntity stringEntity = new StringEntity(data, "UTF-8");
         stringEntity.setContentType("application/json");
         httpPost.setEntity(stringEntity);
-        CloseableHttpResponse res = null;
-        try {
-            res = httpclient.execute(httpPost);
+
+        try(CloseableHttpResponse res = httpclient.execute(httpPost)) {
             HttpEntity entity1 = res.getEntity();
-            result = EntityUtils.toString(entity1, "UTF-8");
+            String result = EntityUtils.toString(entity1, StandardCharsets.UTF_8);
+            return result;
         } catch (IOException e) {
             logger.error("post request wrong. {}", e.getMessage());
-        } finally {
-            try {
-                if (res != null) {
-                    res.close();
-                }
-            } catch (IOException e1) {
-            }
         }
-        return result;
+        return "";
     }
 
-    public static String formPostWapper(String url, List<NameValuePair> data, MultipartFile file) throws IOException {
+    public static String formPostWrapper(String url, List<NameValuePair> data, MultipartFile file) throws IOException {
         HttpPost httpPost = new HttpPost(url);
         File file1 = new File(file.getOriginalFilename());
         FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
@@ -103,7 +82,7 @@ public class RestfulWapper {
         httpPost.addHeader("User-Agent", "Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
 
         MultipartEntityBuilder mbuilder = MultipartEntityBuilder.create().setMode(HttpMultipartMode.RFC6532);
-        mbuilder.setBoundary("--" + boundary).setCharset(Charset.forName("utf-8"));
+        mbuilder.setBoundary("--" + boundary).setCharset(StandardCharsets.UTF_8);
 //        mbuilder.addBinaryBody("file", file1, ContentType.create("image/*"), file1.getName());
         mbuilder.addPart("file", fileBody).setContentType(ContentType.APPLICATION_OCTET_STREAM);
 
@@ -111,10 +90,11 @@ public class RestfulWapper {
 
         httpPost.setEntity(httpEntity);
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
+        String result = "";
         try {
             logger.info(response2.getStatusLine().getStatusCode() + "");
             HttpEntity entity = response2.getEntity();
-            result = EntityUtils.toString(entity, "UTF-8");
+            result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
             EntityUtils.consume(entity);
         } finally {
             response2.close();

@@ -1,4 +1,4 @@
-package top.zerotop.controller.api;
+package top.zerotop.controller.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,8 +12,8 @@ import top.zerotop.service.MenuService;
 import top.zerotop.util.Result;
 
 @RestController
-@Api(value = "公众号菜单管理", description = "公众号菜单管理")
-@RequestMapping(value = "/menu", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@Api(value = "公众号菜单管理", tags = "公众号菜单管理")
+@RequestMapping(value = "/wechat/api/menu", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class MenuController extends BaseController {
     @Autowired
     private MenuService menuService;

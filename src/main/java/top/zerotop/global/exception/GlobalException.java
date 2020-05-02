@@ -15,8 +15,8 @@ public class GlobalException {
     private final Logger logger = LoggerFactory.getLogger(GlobalException.class);
 
     @ExceptionHandler(Exception.class)
-    public Result handlerException(Exception e) {
-        e.printStackTrace();
-        return Result.make("catch exception, please try against later...");
+    public Result<String> handlerException(Exception e) {
+        logger.warn("catch global exception: ", e);
+        return Result.make("some wrong happened, please try against later..");
     }
 }

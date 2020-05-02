@@ -2,14 +2,12 @@ package top.zerotop.util;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class SendUtils {
     private static Logger logger = LoggerFactory.getLogger(SendUtils.class);

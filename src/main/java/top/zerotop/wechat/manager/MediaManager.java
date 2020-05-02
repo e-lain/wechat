@@ -20,14 +20,13 @@ import top.zerotop.domain.material.Article;
 import top.zerotop.domain.material.ArticleItem;
 import top.zerotop.domain.material.Material;
 import top.zerotop.global.constrant.URLConstrant;
-import top.zerotop.util.RestfulWapper;
 import top.zerotop.util.SendUtils;
+import top.zerotop.util.URLUtils;
 
 public class MediaManager {
 
-    public static final int MEDIA_TEMP = 0;
-
-    public static final int MEDIA = 1;
+    private static final int MEDIA_TEMP = 0;
+    private static final int MEDIA = 1;
 
     private static Gson gson = new Gson();
 
@@ -112,7 +111,7 @@ public class MediaManager {
     public static String uploadTempMediaFile(String accessToken, String type, String path) {
         String result = null;
 
-        String url = URLConstrant.URL_MEDIA_UPLOAD + accessToken + "&type=" + type;
+        String url = URLUtils.getUrl(URLConstrant.URL_MEDIA_UPLOAD, accessToken).replace("{type}", type);
         try {
             result = SendUtils.uploadTempMaterial(url, path);
         } catch (Exception e) {
@@ -135,7 +134,7 @@ public class MediaManager {
 //        params.put("access_token", accessToken);  
 //        params.put("type", type);  
 
-        String url = URLConstrant.URL_MATERIAL_ADD_MATERIAL + accessToken + "&type=" + type;
+        String url = URLUtils.getUrl(URLConstrant.URL_MATERIAL_ADD_MATERIAL, accessToken).replace("{type}", type);
 
         try {
             result = SendUtils.uploadTempMaterial(url, path);
@@ -154,7 +153,7 @@ public class MediaManager {
      */
     public static String getMaterial(String accessToken, String mediaid) {
 
-        String url = URLConstrant.URL_MATERIAL_GET_MATERIAL + accessToken;
+        String url = URLUtils.getUrl(URLConstrant.URL_MATERIAL_GET_MATERIAL);
 
         Media media = new Media();
         media.setMedia_id(mediaid);
@@ -192,16 +191,16 @@ public class MediaManager {
      * 修改永久素材
      *
      * @param accessToken
-     * @param mediaid     要修改的图文消息的id
+     * @param mediaId     要修改的图文消息的id
      * @param index       要更新的文章在图文消息中的位置（多图文消息时，此字段才有意义），第一篇为0
      * @param article     文章对象
      * @return
      */
-    public static String updateNews(String accessToken, String mediaid, int index, Article article) {
-        String url = URLConstrant.URL_MATERIAL_UPDATE_NEWS.replace("{ACCESS_TOKEN}", accessToken);
+    public static String updateNews(String accessToken, String mediaId, int index, Article article) {
+        String url = URLUtils.getUrl(URLConstrant.URL_MATERIAL_UPDATE_NEWS, accessToken);
 
         Map<String, String> data = new HashMap<>();
-        data.put("media_id", mediaid);
+        data.put("media_id", mediaId);
         data.put("index", String.valueOf(index));
         data.put("articles", gson.toJson(article));
 
@@ -224,7 +223,7 @@ public class MediaManager {
      * @return
      */
     public static List<ArticleItem> batchgetMaterial(String accessToken, String data) {
-        String url = URLConstrant.URL_MATERIAL_BATCHGET_MATERIAL.replace("{ACCESS_TOKEN}", accessToken);
+        String url = URLUtils.getUrl(URLConstrant.URL_MATERIAL_BATCHGET_MATERIAL, accessToken);
         List<ArticleItem> artItemList = new ArrayList<>();
         ArticleItem artItem = new ArticleItem();
         try {

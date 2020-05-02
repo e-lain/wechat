@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import top.zerotop.domain.Follower;
 import top.zerotop.global.constrant.URLConstrant;
 import top.zerotop.util.SendUtils;
+import top.zerotop.util.URLUtils;
 
 public class FollowerManager {
     private static Gson gson = new Gson();
@@ -13,7 +14,6 @@ public class FollowerManager {
         FollowerManager followermanager = new FollowerManager();
         followermanager.UserInfo("ACCESS_TOKEN", "openid");
     }
-
 
     /**
      * 列出所有用户
@@ -38,11 +38,7 @@ public class FollowerManager {
      * @return
      */
     public String UserInfo(String access_token, String openid) {
-
-        String url = "https://api.weixin.qq.com/cgi-bin/user/info?"
-                + "access_token=" + access_token
-                + "&openid=" + openid
-                + "&lang=zh_CN";
+        String url = URLUtils.getUrl(URLConstrant.URE_GET_USER_INFO, access_token).replace("{openid}", openid);
 
         String param = SendUtils.sendGet(url);
         System.out.println(param);

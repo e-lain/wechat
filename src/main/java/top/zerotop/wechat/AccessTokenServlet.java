@@ -18,10 +18,9 @@ public class AccessTokenServlet extends HttpServlet implements Serializable {
 	private static Logger logger = LoggerFactory.getLogger(AccessTokenServlet.class);
 
 	public void init() throws ServletException {
-        TokenThread.appId = getInitParameter("appid");
-        TokenThread.appSecret = getInitParameter("appsecret");
+	    TokenThread.initAppInfo(getInitParameter("appid"), getInitParameter("appsecret"));
 
-        logger.info(String.format(" ======> appid:[ %s ], appSecret:[ %s ]",TokenThread.appId,TokenThread.appSecret));
+        logger.info(String.format(" ======> appid:[ %s ], appSecret:[ %s ]",TokenThread.getAppId(),TokenThread.getAppSecret()));
         new Thread(new TokenThread()).start(); //启动进程
     }
  

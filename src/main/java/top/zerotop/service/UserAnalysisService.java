@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import top.zerotop.domain.user.DateRange;
 import top.zerotop.domain.user.UserSummary;
 import top.zerotop.util.JsonUtils;
-import top.zerotop.util.RestfulWapper;
+import top.zerotop.util.RestfulWrapper;
 import top.zerotop.util.URLUtils;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class UserAnalysisService {
         DateRange timeRange = new DateRange(begin, end);
 
         String url = URLUtils.getUrl(URL_USER_SUMMARY);
-        String res = RestfulWapper.postWapper(url, JsonUtils.toJson(timeRange));
+        String res = RestfulWrapper.postWrapper(url, JsonUtils.toJson(timeRange));
         System.out.println(res);
         return JsonUtils.fromJson(res, "list", UserSummary.class);
     }

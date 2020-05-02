@@ -33,7 +33,7 @@ public class SignatureUtils {
         logger.info("===============>>>signature done");
 
         Map<String, String> result = new HashMap<>();
-        result.put("appId", TokenThread.appId);
+        result.put("appId", TokenThread.getAppId());
         result.put("nonceStr", nonceStr);
         result.put("timestamp", timestamp);
         result.put("signature", signature);

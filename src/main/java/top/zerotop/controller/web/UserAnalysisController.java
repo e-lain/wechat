@@ -1,11 +1,10 @@
-package top.zerotop.controller.api;
+package top.zerotop.controller.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +19,8 @@ import java.time.format.DateTimeParseException;
  * Created by:zerotop  date:2019/7/8
  */
 @RestController
-@Api(value = "用户数据分析接口", description = "用户数据分析接口")
-@RequestMapping(value = "/menu", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@Api(value = "用户数据分析接口", tags = "用户数据分析接口")
+@RequestMapping(value = "/wechat/api/menu", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class UserAnalysisController {
     @Autowired
     private UserAnalysisService userAnalysisService;

@@ -1,8 +1,13 @@
 package top.zerotop.config;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.util.List;
 
 /**
  * Created by:zerotop  date:2019/5/19
@@ -18,7 +23,7 @@ public class CustomWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SocketInterceptor()).addPathPatterns("/**");
+//        registry.addInterceptor(new SocketInterceptor()).addPathPatterns("/**");
 //        registry.addInterceptor(new ContextInterceptor(userService, Arrays.asList(new String[]{"^/swagger", "/v2/api-docs"}))).addPathPatterns("/**");
     }
 
@@ -27,13 +32,13 @@ public class CustomWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
      *
      * @param converters
      */
-//    @Override
-//    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        for (HttpMessageConverter converter : converters) {
-//            if (converter instanceof MappingJackson2HttpMessageConverter) {
-//                MappingJackson2HttpMessageConverter mappingJsonConverter = (MappingJackson2HttpMessageConverter) converter;
-//                mappingJsonConverter.getObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-//            }
-//        }
-//    }
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (HttpMessageConverter converter : converters) {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                MappingJackson2HttpMessageConverter mappingJsonConverter = (MappingJackson2HttpMessageConverter) converter;
+                mappingJsonConverter.getObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+            }
+        }
+    }
 }

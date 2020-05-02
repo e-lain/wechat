@@ -13,7 +13,14 @@ public class URLUtils {
 
     public static String getUrl(String url) {
         if (StringUtils.hasText(url)) {
-            return url.replace("{ACCESS_TOKEN}", TokenThread.accessToken.getAccessToken());
+            return url.replace("{access_token}", TokenThread.accessToken.getAccessToken());
+        }
+        return url;
+    }
+
+    public static String getUrl(String url, String accessToken) {
+        if (StringUtils.hasText(url)) {
+            return url.replace("{access_token}", accessToken);
         }
         return url;
     }

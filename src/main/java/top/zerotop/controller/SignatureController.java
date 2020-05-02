@@ -1,9 +1,7 @@
 package top.zerotop.controller;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,12 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
 
-import org.springframework.web.servlet.ModelAndView;
-import top.zerotop.domain.AccessToken;
 import top.zerotop.util.*;
-import top.zerotop.wechat.TokenThread;
 
 import static top.zerotop.wechat.TokenThread.accessToken;
 
@@ -31,7 +25,7 @@ import static top.zerotop.wechat.TokenThread.accessToken;
  */
 @Api(value = "WeChat接口")
 @RestController
-@RequestMapping(value = "/jssdk", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@RequestMapping(value = "/wechat/api/jssdk", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class SignatureController {
     private static Logger logger = LoggerFactory.getLogger(SignatureController.class);
 

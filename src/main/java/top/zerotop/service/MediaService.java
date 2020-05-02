@@ -1,0 +1,33 @@
+package top.zerotop.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import top.zerotop.util.RestfulWrapper;
+import top.zerotop.util.URLUtils;
+
+import java.util.Map;
+
+import static top.zerotop.global.constrant.URLConstrant.URL_MEDIA_GET;
+import static top.zerotop.global.constrant.URLConstrant.URL_MEDIA_UPLOAD;
+
+/**
+ * Created by:zerotop  date:2020/5/2
+ */
+@Service
+public class MediaService {
+    public String uploadMedia(MultipartFile file, String type) {
+        try {
+            String url = URLUtils.getUrl(URL_MEDIA_UPLOAD).replace("{type}", type);
+            return RestfulWrapper.formPostWrapper(url, null, file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Map<String, Object> listMedia(String mediaId) {
+        String url = URLUtils.getUrl(URL_MEDIA_GET).replace("{media_id}", mediaId);
+
+        return RestfulWrapper.getWrapper(url);
+    }
+}

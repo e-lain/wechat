@@ -1,25 +1,22 @@
 # wechat
 
-wechat development
-
+wechat公众号相关开发
 
 ### 项目简介 
 
-项目有关直接通过发送get请求即可获取数据的接口  
-可直接在本地用js构造请求，前端界面正在写  
-例如获取用户列表，直接获取token  
-然后直接发送请求接口
+spring mvc项目  
+项目使用spring + xml配置的方式开发
 
-请求接口可直接调用服务中的接口
+主要是调用一些微信公众号接口，微信公众号管理页面的本地项目   
+微信公众号的一些开发
 
 ### 服务器上部署：
   
-项目可以直接打成war包放到服务器上  
-需要再项目的下的web.xml中写入自微信公众号的appid和appsecret  
-就可以直接打一个war包部署到服务器上运行    
+将项目打成war包放到服务器tomcat上  
+部署前需要再项目的webapp的web.xml中写入个人微信公众号的appid和appsecret      
 
 项目是直接在maven项目中修改的 web.xml如下
- 
+```
     <servlet>
       <servlet-name>initAccessTokenServlet</servlet-name>
       <servlet-class>top.zerotop.wechat.AccessTokenServlet</servlet-class>
@@ -41,17 +38,15 @@ wechat development
       <servlet-name>entrance</servlet-name>
       <url-pattern>/wechat</url-pattern>
     </servlet-mapping>
+```
 
+### 技术栈：    
 
-### 技术栈：  
-
-maven构建项目  
-
-spring管理项目  
-数据库： mysql  
+spring + mvc  
+数据库： mysql    
 连接池： druid  
   
-添加接口测试工具： swagger-ui
+接口管理工具： swagger-ui
 
 ### 备注
 
