@@ -14,13 +14,12 @@ import java.io.Serializable;
 @WebServlet(name = "AccessTokenServlet")
 public class AccessTokenServlet extends HttpServlet implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	private static Logger logger = LoggerFactory.getLogger(AccessTokenServlet.class);
 
 	public void init() throws ServletException {
 	    TokenThread.initAppInfo(getInitParameter("appid"), getInitParameter("appsecret"));
 
-        logger.info(String.format(" ======> appid:[ %s ], appSecret:[ %s ]",TokenThread.getAppId(),TokenThread.getAppSecret()));
+        logger.info(" ====> appId:{}, appSecret:{}",TokenThread.getAppId(),TokenThread.getAppSecret());
         new Thread(new TokenThread()).start(); //启动进程
     }
  

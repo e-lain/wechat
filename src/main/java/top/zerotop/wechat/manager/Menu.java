@@ -1,15 +1,10 @@
 package top.zerotop.wechat.manager;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import top.zerotop.util.SendUtils;
 
 public class Menu {
-
-	private static Gson gson = new Gson();
-	
 	public String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=access_token=ACCESS_TOKEN";
-	
 	public String param = "";
 
 	//创建菜单
@@ -19,9 +14,6 @@ public class Menu {
 
 		return SendUtils.sendPost(url, data);
 	}
-
-	//
-	
 
 	public static void main(String [] args){
 		String uploadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload?"

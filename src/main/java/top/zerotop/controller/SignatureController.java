@@ -23,7 +23,7 @@ import static top.zerotop.wechat.TokenThread.accessToken;
  * @author 作者: zerotop
  * @createDate 创建时间: 2018年5月4日下午9:48:14
  */
-@Api(value = "WeChat接口")
+@Api(value = "WeChat认证相关API", tags = "WeChat认证相关API")
 @RestController
 @RequestMapping(value = "/wechat/api/jssdk", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class SignatureController {

@@ -66,7 +66,7 @@ public class TokenThread implements Runnable {
     private AccessToken getAccessToken() {
         String Url = LoginURLConstrant.URL_GET_TOKEN.replace("{appid}", TokenThread.appId).replace("{app_secret}", TokenThread.appSecret);
         String result = (String) RestfulWrapper.getWrapper(Url).getOrDefault("result", "");
-        logger.info("=====> {}", result);
+        logger.info("=====> get Token: {}", result);
         JSONObject tokenJson = JSON.parseObject(result);
         AccessToken token = new AccessToken();
         AccessToken.setAccessToken(tokenJson.getString("access_token"));
@@ -77,7 +77,6 @@ public class TokenThread implements Runnable {
         JSONObject ticketJson = JSON.parseObject(ticket);
         AccessToken.setJsapiTicket(ticketJson.getString("ticket"));
         logger.info("ticket: {}", ticketJson.getString("ticket"));
-
         return token;
     }
 }

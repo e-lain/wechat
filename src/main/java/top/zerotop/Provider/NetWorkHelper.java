@@ -103,13 +103,11 @@ public class NetWorkHelper {
         @Override
         public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             // TODO Auto-generated method stub
-
         }
 
         @Override
         public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             // TODO Auto-generated method stub
-
         }
     };
 }

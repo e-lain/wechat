@@ -23,8 +23,7 @@ public class CustomWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new SocketInterceptor()).addPathPatterns("/**");
-//        registry.addInterceptor(new ContextInterceptor(userService, Arrays.asList(new String[]{"^/swagger", "/v2/api-docs"}))).addPathPatterns("/**");
+        registry.addInterceptor(new RequestTimeInterceptor()).addPathPatterns("/**");
     }
 
     /**

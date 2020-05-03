@@ -9,16 +9,13 @@ import top.zerotop.domain.menu.Button;
 import top.zerotop.domain.menu.Menu;
 import top.zerotop.global.constrant.ButtonTypeConstrant;
 import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.GsonUtils;
 import top.zerotop.util.SendUtils;
 
 public class MenuManager {
-	
-	private static Gson gson = new Gson();
-	
+
 	public static void main(String args[]){
-		
 		MenuManager menumanager = new MenuManager();
-		
 		String accessToken = "";
 		
 //		menumanager.getMenu("ACCESS_TOKEN");
@@ -26,17 +23,14 @@ public class MenuManager {
 
 	//创建menu
 	public String getMenu(String access_token){
-		
 		String url = URLConstrant.URL_MENU_GET + access_token;
 		
 		System.out.println(SendUtils.sendGet(url));
-		
 		return url;
 	}
 
 	//删除菜单
 	public String deleteMenu(String access_token){
-		
 		String url = URLConstrant.URL_MENU_GET + access_token;
 		
 		System.out.println(SendUtils.sendGet(url));
@@ -46,7 +40,6 @@ public class MenuManager {
 
 	//创建menu
 	public String createMenu(String accessToken){
-		
 		Button b1 = new Button();
 		Button b2 = new Button();
 		Button b3 = new Button();
@@ -85,8 +78,7 @@ public class MenuManager {
 		
 		String url = URLConstrant.URL_MENU_CREATE + accessToken;
 		
-		System.out.println(SendUtils.sendPost(url, gson.toJson(menu)));
-		
+		System.out.println(SendUtils.sendPost(url, GsonUtils.toJson(menu)));
 		return url; 
 	}
 

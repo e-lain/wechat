@@ -19,7 +19,7 @@ import java.time.format.DateTimeParseException;
  * Created by:zerotop  date:2019/7/8
  */
 @RestController
-@Api(value = "用户数据分析接口", tags = "用户数据分析接口")
+@Api(value = "用户数据分析相关API", tags = "用户数据分析接口")
 @RequestMapping(value = "/wechat/api/menu", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class UserAnalysisController {
     @Autowired
@@ -27,18 +27,14 @@ public class UserAnalysisController {
 
     @GetMapping("/getUserSummary")
     @ApiOperation(value = "获取当前公众号菜单")
-    public Result getUserSummary(@ApiParam(value = "开始时间")
-                                                    @RequestParam String beginTime,
-                                                    @ApiParam(value = "结束时间")
-                                                    @RequestParam String endTime) {
+    public Result getUserSummary(@ApiParam(value = "开始时间") @RequestParam String beginTime,
+                                 @ApiParam(value = "结束时间") @RequestParam String endTime) {
         try {
             LocalDate begin = LocalDate.parse(beginTime);
             LocalDate end = LocalDate.parse(endTime);
+            return Result.make(userAnalysisService.getUserSummary(beginTime, endTime));
         } catch (DateTimeParseException e) {
-            return Result.error("开始时间结束时间无法解析");
+            return Result.error("开始时间/结束时间无法解析");
         }
-
-        return Result.make(userAnalysisService.getUserSummary(beginTime, endTime));
     }
-
 }

@@ -42,38 +42,37 @@ public class RestfulWrapper {
                     entity1.writeTo(outputStream);
                     resultMap.put("img", name);
                     outputStream.close();
-                } else {
+                } else if (entity1 != null) {
                     String result = EntityUtils.toString(entity1, StandardCharsets.UTF_8);
                     resultMap.put("result", result);
                 }
             }
-        } catch (IOException e1) {
-            logger.info(String.format("url:[%s], get fail, exception:[IOException]", url));
+        } catch (IOException e) {
+            logger.info(String.format("===> url:[%s], get fail, exception:[IOException]", url), e);
         }
         return resultMap;
     }
 
     public static String postWrapper(String url, String data) {
         HttpPost httpPost = new HttpPost(url);
-        StringEntity stringEntity = new StringEntity(data, "UTF-8");
+        StringEntity stringEntity = new StringEntity(data, StandardCharsets.UTF_8);
         stringEntity.setContentType("application/json");
         httpPost.setEntity(stringEntity);
 
         try(CloseableHttpResponse res = httpclient.execute(httpPost)) {
             HttpEntity entity1 = res.getEntity();
-            String result = EntityUtils.toString(entity1, StandardCharsets.UTF_8);
-            return result;
+            return EntityUtils.toString(entity1, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.error("post request wrong. {}", e.getMessage());
+            logger.error("post wrapper wrong. {}", e.getMessage());
         }
         return "";
     }
 
     public static String formPostWrapper(String url, List<NameValuePair> data, MultipartFile file) throws IOException {
         HttpPost httpPost = new HttpPost(url);
-        File file1 = new File(file.getOriginalFilename());
-        FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
-        FileBody fileBody = new FileBody(file1, ContentType.create("image/*"));
+        File tempFile = new File(file.getOriginalFilename());
+        FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
+        FileBody fileBody = new FileBody(tempFile, ContentType.create("image/*"));
 
         String boundary = "----------" + System.currentTimeMillis();
         httpPost.addHeader("Connection", "keep-alive");
@@ -83,21 +82,20 @@ public class RestfulWrapper {
 
         MultipartEntityBuilder mbuilder = MultipartEntityBuilder.create().setMode(HttpMultipartMode.RFC6532);
         mbuilder.setBoundary("--" + boundary).setCharset(StandardCharsets.UTF_8);
-//        mbuilder.addBinaryBody("file", file1, ContentType.create("image/*"), file1.getName());
+//        mbuilder.addBinaryBody("file", file1, ContentType.create("image/*"), tempFile.getName());
         mbuilder.addPart("file", fileBody).setContentType(ContentType.APPLICATION_OCTET_STREAM);
 
         HttpEntity httpEntity = mbuilder.build();
 
         httpPost.setEntity(httpEntity);
-        CloseableHttpResponse response2 = httpclient.execute(httpPost);
         String result = "";
-        try {
-            logger.info(response2.getStatusLine().getStatusCode() + "");
-            HttpEntity entity = response2.getEntity();
+        try (CloseableHttpResponse response = httpclient.execute(httpPost);) {
+            logger.info(response.getStatusLine().getStatusCode() + "");
+            HttpEntity entity = response.getEntity();
             result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
             EntityUtils.consume(entity);
-        } finally {
-            response2.close();
+        } catch (Exception e) {
+            logger.warn("form post wrapper failed. cause: ", e);
         }
         return result;
     }

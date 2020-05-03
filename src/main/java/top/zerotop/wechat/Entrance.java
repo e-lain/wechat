@@ -2,6 +2,7 @@ package top.zerotop.wechat;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServlet;
@@ -18,9 +19,7 @@ public class Entrance extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(Entrance.class);
 
     // Token
-    private final String token = "zerotop";
-
-    WechatProvider wechatService = new WechatProvider();
+    private final String personalToken = "zerotop";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.info("======> 开始签名校验");
@@ -30,9 +29,9 @@ public class Entrance extends HttpServlet {
         String echostr = request.getParameter("echostr");
 
         //排序 加密 校验签名
-        String sortString = sort(token, timestamp, nonce);
-        String mytoken = DecriptUtils.SHA1(sortString);
-        if (!"".equals(mytoken) && mytoken.equals(signature)) {
+        String sortString = sort(personalToken, timestamp, nonce);
+        String token = DecriptUtils.SHA1(sortString);
+        if (StringUtils.hasText(token) && token.equals(signature)) {
             logger.info("<======签名校验通过...");
             response.getWriter().println(echostr); //如果检验成功输出echostr，微信服务器接收到此输出，才会确认检验完成。
         } else {
@@ -42,20 +41,19 @@ public class Entrance extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
-            logger.info(request.getRequestURL().toString());
-
-            String responseMessage = wechatService.processRequest(request);
+            logger.info(" ===> new post request uri: {}", request.getRequestURL().toString());
+            String responseMessage = WechatProvider.processRequest(request);
             if (StringUtils.hasText(responseMessage)) {
-                response.setCharacterEncoding("UTF-8");
-//                response.setContentType("");
+                response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
                 PrintWriter writer = response.getWriter();
                 writer.print(responseMessage);
                 writer.flush();
                 writer.close();
+            } else {
+                logger.warn(" ===> nothing response.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.info("error: " + e.getMessage());
+            logger.warn(" catch exception when process weChat request: ", e);
         }
     }
 
@@ -67,8 +65,7 @@ public class Entrance extends HttpServlet {
      * @param nonce
      * @return
      */
-    public static String sort(String token, String timestamp, String nonce) {
-
+    private static String sort(String token, String timestamp, String nonce) {
         String[] strArray = {token, timestamp, nonce};
         Arrays.sort(strArray);
 
@@ -76,7 +73,6 @@ public class Entrance extends HttpServlet {
         for (String str : strArray) {
             stringBuilder.append(str);
         }
-
         return stringBuilder.toString();
     }
 }

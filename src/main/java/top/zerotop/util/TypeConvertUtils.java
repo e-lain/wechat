@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,23 +33,20 @@ public class TypeConvertUtils {
 	public static Map<String, String> xmlToMap(HttpServletRequest request) {
 		Map<String, String> map = new HashMap<>();
 		InputStream ins = null;
+		Document doc = null;
+		StringBuilder content = new StringBuilder();
 		try {
 			ins = request.getInputStream();
-		} catch (IOException e1) {
-			logger.info("exception e1 catched...");
-		}
-
-		Document doc = null;
-		StringBuffer content = new StringBuffer();
-		String line = null;
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(ins, StandardCharsets.UTF_8));
+			String line = null;
 			while ((line = br.readLine()) != null) {
-				content.append(line + "\n");
+				content.append(line).append("\n");
 			}
 			br.close();
 			doc = DocumentHelper.parseText(content.toString());
-			
+			if (doc == null) {
+				return map;
+			}
 		} catch (Exception e1) {
 			logger.info(e1.getMessage());
 		}
@@ -61,11 +59,14 @@ public class TypeConvertUtils {
 			}
 		} catch (Exception e) {
 			logger.info(e.getMessage());
-		}
-		try {
-			ins.close();
-		} catch (IOException e1) {
-			logger.info(e1.getMessage());
+		} finally {
+			if (ins != null) {
+				try {
+					ins.close();
+				} catch (IOException e1) {
+					logger.info(e1.getMessage());
+				}
+			}
 		}
 		return map;
 	}
@@ -77,10 +78,8 @@ public class TypeConvertUtils {
 	 * @return
 	 */
 	public static String textMessageToXml(TextMessage textMessage) {
-
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("xml", textMessage.getClass());
 		return xstream.toXML(textMessage);
-
 	}
 }

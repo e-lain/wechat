@@ -17,7 +17,6 @@ public class DecriptUtils {
     public static String SHA1(String decript) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
-
             digest.update(decript.getBytes());
 
             byte messageDigest[] = digest.digest();

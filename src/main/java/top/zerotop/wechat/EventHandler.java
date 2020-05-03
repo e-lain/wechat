@@ -86,7 +86,7 @@ public class EventHandler {
     }
 
     private static String clickEventHandler(Map<String, String> map, String fromUserName, String toUserName) {
-        logger.info(" =======> clickme event");
+        logger.info(" =======> click me event");
         //菜单栏点击
         switch (map.get("EventKey")) {
             case "clickme":

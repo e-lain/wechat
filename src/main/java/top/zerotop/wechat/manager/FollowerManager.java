@@ -4,12 +4,11 @@ import com.google.gson.Gson;
 
 import top.zerotop.domain.Follower;
 import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.JsonUtils;
 import top.zerotop.util.SendUtils;
 import top.zerotop.util.URLUtils;
 
 public class FollowerManager {
-    private static Gson gson = new Gson();
-
     public static void main(String args[]) {
         FollowerManager followermanager = new FollowerManager();
         followermanager.UserInfo("ACCESS_TOKEN", "openid");
@@ -24,7 +23,7 @@ public class FollowerManager {
     public String ListFollower(String access_token) {
         String url = URLConstrant.URL_FOLLOWER_GET + access_token;
         String param = SendUtils.sendGet(url);
-        Follower follow = gson.fromJson(param, Follower.class);
+        Follower follow = JsonUtils.toObject(param, Follower.class);
         System.out.println(follow);
 
         return url;

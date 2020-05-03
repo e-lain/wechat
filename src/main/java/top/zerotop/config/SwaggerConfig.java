@@ -28,7 +28,7 @@ public class SwaggerConfig {
 
     private ApiInfo productApiInfo() {
         return new ApiInfoBuilder()
-                .title("wechat接口测试")
+                .title("weChat接口测试")
                 .description("wechat接口测试, 供团队内部人员使用")
                 .termsOfServiceUrl("http://www.zerotop.top")
                 .contact(new Contact("zerotop", "https://0top.github.io", ""))

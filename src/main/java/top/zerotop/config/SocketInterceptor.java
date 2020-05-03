@@ -18,12 +18,12 @@ public class SocketInterceptor implements HandshakeInterceptor {
                                    ServerHttpResponse serverHttpResponse,
                                    WebSocketHandler webSocketHandler,
                                    Map<String, Object> map) throws Exception {
-        logger.info("start shake...");
+        logger.info(" ===> before hand shake...");
         return true;
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, @Nullable Exception e) {
-        logger.info("end shake...");
+        logger.info(" ===> after shake...");
     }
 }

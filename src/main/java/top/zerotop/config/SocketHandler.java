@@ -17,13 +17,13 @@ import java.util.List;
 public class SocketHandler extends TextWebSocketHandler {
     private final static Logger logger = LoggerFactory.getLogger(TextWebSocketHandler.class);
 
-    public final static List<WebSocketSession> socketSession = Collections.synchronizedList(new ArrayList<>());
+    private final static List<WebSocketSession> socketSession = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        logger.info("get message: {}" , message.getPayload());
-        for (WebSocketSession websession : socketSession) {
-            websession.sendMessage(new TextMessage("收到新消息" + message.getPayload()));
+        logger.info(" ===> get socket message: {}" , message.getPayload());
+        for (WebSocketSession webSession : socketSession) {
+            session.sendMessage(new TextMessage("收到新消息" + message.getPayload()));
         }
         super.handleTextMessage(session, message);
     }
@@ -39,7 +39,7 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        logger.info("用户id 退出登录:{}", session.getId());
+        logger.info(" ===> 用户id 退出登录:{}", session.getId());
         socketSession.remove(session);
         super.afterConnectionClosed(session, status);
     }

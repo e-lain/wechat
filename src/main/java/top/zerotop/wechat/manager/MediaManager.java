@@ -20,6 +20,8 @@ import top.zerotop.domain.material.Article;
 import top.zerotop.domain.material.ArticleItem;
 import top.zerotop.domain.material.Material;
 import top.zerotop.global.constrant.URLConstrant;
+import top.zerotop.util.GsonUtils;
+import top.zerotop.util.JsonUtils;
 import top.zerotop.util.SendUtils;
 import top.zerotop.util.URLUtils;
 
@@ -27,8 +29,6 @@ public class MediaManager {
 
     private static final int MEDIA_TEMP = 0;
     private static final int MEDIA = 1;
-
-    private static Gson gson = new Gson();
 
     Map<String, String> map = new HashMap<String, String>();
     static XStream xstream = new XStream(new DomDriver());
@@ -158,8 +158,7 @@ public class MediaManager {
         Media media = new Media();
         media.setMedia_id(mediaid);
 
-        System.out.println(SendUtils.sendPost(url, gson.toJson(media)));
-
+        System.out.println(SendUtils.sendPost(url, GsonUtils.toJson(media)));
         return url;
     }
 
@@ -172,13 +171,13 @@ public class MediaManager {
      * @return
      */
     public static String addNews(String accessToken, List<Article> articles) {
-        System.out.println("{\"articles\":" + gson.toJson(articles) + "}");
+        System.out.println("{\"articles\":" + JsonUtils.toJson(articles) + "}");
 
 //    	String url = URLConstrant.URL_MATERIAL_ADD_NEWS + accessToken;
         String url = "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=" + accessToken;
 
         try {
-            String res = SendUtils.sendPost(url, "{\"articles\":" + gson.toJson(articles) + "}");
+            String res = SendUtils.sendPost(url, "{\"articles\":" + JsonUtils.toJson(articles) + "}");
             System.out.println(res);
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,7 +201,7 @@ public class MediaManager {
         Map<String, String> data = new HashMap<>();
         data.put("media_id", mediaId);
         data.put("index", String.valueOf(index));
-        data.put("articles", gson.toJson(article));
+        data.put("articles", JsonUtils.toJson(article));
 
         try {
             String res = SendUtils.sendPost(url, JSONObject.toJSONString(data));
@@ -237,7 +236,7 @@ public class MediaManager {
             if (jsonArray != null) {
                 List<Material> materialList = new ArrayList<>();
                 for (JsonElement a : jsonArray) {
-                    Material me = gson.fromJson(a, new TypeToken<Material>() {
+                    Material me = GsonUtils.getGson().fromJson(a, new TypeToken<Material>() {
                     }.getType());
                     materialList.add(me);
 

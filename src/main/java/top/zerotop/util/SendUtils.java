@@ -3,6 +3,7 @@ package top.zerotop.util;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
@@ -12,7 +13,6 @@ import org.slf4j.LoggerFactory;
 public class SendUtils {
     private static Logger logger = LoggerFactory.getLogger(SendUtils.class);
 
-    private static Gson gson = new Gson();
     private static JsonParser parser = new JsonParser();
 
     private static HttpURLConnection conn = null;
@@ -37,7 +37,7 @@ public class SendUtils {
             conn.connect();
 
             OutputStream outputStream = conn.getOutputStream();
-            outputStream.write(gson.toJson(param).getBytes("UTF-8"));
+            outputStream.write(JsonUtils.toJson(param).getBytes(StandardCharsets.UTF_8));
             outputStream.close();
 
             int code = conn.getResponseCode();
